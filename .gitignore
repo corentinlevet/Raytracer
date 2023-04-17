@@ -1,0 +1,18 @@
+# Subjects
+B-OOP-400_raytracer.pdf
+
+# Binary
+raytracer
+
+# Temp files
+*.o
+*.so
+*#
+*~
+
+# IDEs
+.idea/
+.vscode/
+
+# Valgrind
+vgcore.*
