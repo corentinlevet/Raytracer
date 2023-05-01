@@ -2,7 +2,7 @@
 ## EPITECH PROJECT, 2022
 ## Makefile
 ## File description:
-## Makefile for the Raytracer project
+## Makefile for the Forms of the Raytracer project
 ##
 
 ###############################################################################
@@ -12,7 +12,7 @@
 CXX			=	g++
 
 CXXFLAGS	=	-Wall -Wextra -Werror -std=c++20 -pedantic	\
-				-fPIC -fno-gnu-unique -ldl
+				-fPIC -fno-gnu-unique -shared
 
 AUTHOR		=	Corentin LEVET - Benjamin COTTONE - Hugo GRISEL\
 				- Jeremy CALOSSO-MERLINO
@@ -23,15 +23,23 @@ RM			=	rm -rf
 #                                    SOURCES                                  #
 ###############################################################################
 
-SRC		=	$(wildcard src/*.cpp)			\
-			$(wildcard src/Forms/*.cpp)
+SRC_CUBE	=	3D/Cube.cpp
 
-OBJ		=	$(SRC:.cpp=.o)
+OBJ_CUBE	=	$(SRC_CUBE:.cpp=.o)
 
-NAME	=	raytracer
+NAME_CUBE	=	../../libs/Forms/3D/Cube.so
 
-INC		=	-I./include
-INC		+=	-I./include/Forms
+INC_CUBE	=	-I../../include/Forms
+INC_CUBE	+=	-I../../include/Forms/3D
+
+SRC_SPHERE	=	3D/Sphere.cpp
+
+OBJ_SPHERE	=	$(SRC_SPHERE:.cpp=.o)
+
+NAME_SPHERE	=	../../libs/Forms/3D/Sphere.so
+
+INC_SPHERE	=	-I../../include/Forms
+INC_SPHERE	+=	-I../../include/Forms/3D
 
 ###############################################################################
 #                                MAKEFILE LOGIC                               #
@@ -73,7 +81,7 @@ ifeq ($(shell git rev-parse HEAD &>/dev/null; echo $$?),0)
 endif
 
 define run_and_test
-	printf "%b%-88b" "$(COM_COLOR)$(COM_STRING) "						\
+	printf "\t%b%-80b" "$(COM_COLOR)$(COM_STRING) "						\
 		"$(OBJ_COLOR)$(@F)$(NO_COLOR)"; 								\
 	$(RUN_CMD);															\
 	if [ $$RESULT -ne 0 ]; then											\
@@ -96,36 +104,34 @@ endef
 #                                 Makefile rules                              #
 ###############################################################################
 
-all:	header $(OBJ) forms
-	@$(CXX) $(OBJ) -o $(NAME) $(CXXFLAGS) $(INC)
-	@printf "\n%b" "$(OK_COLOR)Compilation done !\n$(NO_COLOR)"
+all:
+	@printf "%b" "$(ERROR_COLOR)Compiling Forms...\n$(NO_COLOR)"
+	@printf "%b" "$(ERROR_COLOR)\tCompiling Cube...\n$(NO_COLOR)"
+	@make compile_cube -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_CUBE) $(OBJ_CUBE) $(INC_CUBE)
+	@printf "%b" "$(ERROR_COLOR)\tCompiling Sphere...\n$(NO_COLOR)"
+	@make compile_sphere -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_SPHERE) $(OBJ_SPHERE) $(INC_SPHERE)
+	@printf "%b" "$(OK_COLOR)Forms compiled !\n$(NO_COLOR)"
 
-src/%.o:	src/%.cpp
-	@$(call run_and_test, $(CXX) $(CXXFLAGS) $(INC) -c $< -o $@)
+compile_cube: $(OBJ_CUBE)
 
-header:
-	@printf "\n%b" "$(OBJ_COLOR)Name\t:\t$(WARN_COLOR)$(NAME)\n"
+3D/Cube.o: 3D/Cube.cpp
+	@$(call run_and_test, $(CXX) $(CXXFLAGS) -c $< -o $@ $(INC_CUBE))
 
-	@printf "%b" "$(OBJ_COLOR)Author\t:\t$(WARN_COLOR)$(AUTHOR)\n"
-	@printf "%b" "$(OBJ_COLOR)Date\t:\t$(WARN_COLOR)$(DATE)\n\033[m"
-	@printf "%b" "$(OBJ_COLOR)CC\t:\t$(WARN_COLOR)$(CXX)\n\033[m"
-	@printf "%b" "$(OBJ_COLOR)Flags\t:\t$(WARN_COLOR)$(CXXFLAGS)\n\033[m"
-	@echo
+compile_sphere: $(OBJ_SPHERE)
 
-forms:
-	@printf "\n"
-	@make -s -C src/Forms
+3D/Sphere.o: 3D/Sphere.cpp
+	@$(call run_and_test, $(CXX) $(CXXFLAGS) -c $< -o $@ $(INC_SPHERE))
 
 clean:
-	@make -s clean -C src/Forms &>/dev/null
-	@$(RM) $(OBJ)
-	@printf "%-95b%b" "$(CLEAN_COLOR)clean" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
+	@$(RM) $(OBJ_CUBE) $(OBJ_SPHERE)
+	@printf "%-95b%b" "$(CLEAN_COLOR)Forms cleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
-fclean:	clean
-	@make -s fclean -C src/Forms &>/dev/null
-	@$(RM) $(NAME)
-	@printf "%-95b%b" "$(FCLEAN_COLOR)fclean" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
+fclean: clean
+	@$(RM) $(NAME_CUBE) $(NAME_SPHERE)
+	@printf "%-95b%b" "$(FCLEAN_COLOR)Forms fcleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
-re:	fclean all
+re: fclean all
 
-.PHONY:	all clean fclean re
+.PHONY: all clean fclean re

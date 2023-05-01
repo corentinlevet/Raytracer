@@ -12,6 +12,8 @@
 
     #include "Error.hpp"
 
+    #include "FormFactory.hpp"
+
     #include <fstream>
     #include <iostream>
 

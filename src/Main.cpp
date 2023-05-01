@@ -24,13 +24,13 @@ int main(int ac, char **av)
     if (ac != 2)
         return (usage(84));
 
-    try {
-        Raytracer::Raytracer raytracer(av[1]);
-        raytracer.run();
-    } catch (const Raytracer::Raytracer::hardError &e) {
-        std::cerr << e.what() << std::endl;
-        return (84);
-    }
+    std::unique_ptr<Raytracer::Forms::IForm> cube = Raytracer::Forms::FormFactory::createForm("Cube");
+    std::unique_ptr<Raytracer::Forms::IForm> sphere = Raytracer::Forms::FormFactory::createForm("Sphere");
+
+    std::cout << cube->getType() << std::endl;
+    std::cout << sphere->getType() << std::endl;
+
+    std::cout << "Ça fonctionne sa mère la pute !!!" << std::endl;
 
     return (0);
 }
