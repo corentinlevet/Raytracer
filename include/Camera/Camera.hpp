@@ -17,16 +17,16 @@
     namespace RayTracer::Camera {
         class Camera {
             public:
-                Camera(const Math::Point3D &origin = Math::Point3D(), const RayTracer::Camera::Rectangle &rectangle = RayTracer::Camera::Rectangle());
+                Camera(const Math::Point3D &origin = Math::Point3D(), const RayTracer::Camera::Rectangle &rectangle = RayTracer::Camera::Rectangle(Math::Point3D(), Math::Vector3D(1, 0), Math::Vector3D(0, 1)));
                 ~Camera() = default;
 
                 /* Getters and setters */
 
                 const Math::Point3D &getOrigin() const;
-                const RayTracer::Camera::Rectangle &getRectangle() const;
+                const RayTracer::Camera::Rectangle &getScreen() const;
 
                 void setOrigin(const Math::Point3D &origin);
-                void setRectangle(const RayTracer::Camera::Rectangle &rectangle);
+                void setScreen(const RayTracer::Camera::Rectangle &rectangle);
 
                 /* Methods */
 
@@ -34,7 +34,7 @@
 
             private:
                 Math::Point3D _origin;
-                RayTracer::Camera::Rectangle _rectangle;
+                RayTracer::Camera::Rectangle _screen;
         };
     }
 
