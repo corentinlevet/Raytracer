@@ -17,6 +17,8 @@
 
     #include <map>
 
+    typedef std::unique_ptr<Raytracer::Forms::IForm> FormPtr;
+
     namespace Raytracer::Forms {
         class FormFactory {
             public:
@@ -26,8 +28,10 @@
                  * @param name The name of the form to create
                  * @return std::unique_ptr<IForm> A pointer to the created form
                 **/
-                static std::unique_ptr<IForm> createForm(const std::string &name);
+                static FormPtr createForm(const std::string &name);
         };
     }
+
+    typedef Raytracer::Forms::FormFactory FormFactory;
 
 #endif /* !FORMFACTORY_HPP_ */

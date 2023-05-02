@@ -7,7 +7,7 @@
 
 #include "FormFactory.hpp"
 
-std::unique_ptr<Raytracer::Forms::IForm> Raytracer::Forms::FormFactory::createForm(const std::string &name)
+FormPtr Raytracer::Forms::FormFactory::createForm(const std::string &name)
 {
     std::map<std::string, std::string> paths = {
         {"Cube", "libs/Forms/3D/Cube.so"},
