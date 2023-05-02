@@ -9,10 +9,11 @@
 #                                     CONFIG                                  #
 ###############################################################################
 
+AR			=	ar rcs
+
 CXX			=	g++
 
-CXXFLAGS	=	-Wall -Wextra -Werror -std=c++20 -pedantic	\
-				-fPIC -fno-gnu-unique -shared
+CXXFLAGS	=	-Wall -Wextra -Werror -std=c++20
 
 AUTHOR		=	Corentin LEVET - Benjamin COTTONE - Hugo GRISEL\
 				- Jeremy CALOSSO-MERLINO
@@ -23,24 +24,13 @@ RM			=	rm -rf
 #                                    SOURCES                                  #
 ###############################################################################
 
-SRC_CUBE	=	3D/Cube.cpp
+NAME		=	../../libs/Math/Math.a
 
-OBJ_CUBE	=	$(SRC_CUBE:.cpp=.o)
+SRC			=	$(wildcard *.cpp)
 
-NAME_CUBE	=	../../libs/Forms/3D/Cube.so
+OBJ			=	$(SRC:.cpp=.o)
 
-SRC_SPHERE	=	3D/Sphere.cpp
-
-OBJ_SPHERE	=	$(SRC_SPHERE:.cpp=.o)
-
-NAME_SPHERE	=	../../libs/Forms/3D/Sphere.so
-
-INC			=	-I../../include/
-INC			+=	-I../../include/Forms
-INC			+=	-I../../include/Forms/3D
-INC			+=	-I../../include/Math
-
-LIB         =   -L../../libs/Math -l:Math.a
+INC			=	-I../../include/Math
 
 ###############################################################################
 #                                MAKEFILE LOGIC                               #
@@ -101,45 +91,28 @@ define run_and_test
 	exit $$RESULT
 endef
 
-define check_math
-	if [ ! -f ../../libs/Math/Math.a ]; then							\
-		make -s -C ../Math;												\
-		printf "\n";													\
-	fi;
-endef
-
 ###############################################################################
 #                                 Makefile rules                              #
 ###############################################################################
 
 all:
-	@$(call check_math)
-	@printf "%b" "$(ERROR_COLOR)Compiling Forms...\n$(NO_COLOR)"
-	@printf "%b" "$(ERROR_COLOR)\tCompiling Cube...\n$(NO_COLOR)"
-	@make compile_cube -s
-	@$(CXX) $(CXXFLAGS) -o $(NAME_CUBE) $(OBJ_CUBE) $(INC) $(LIB)
-	@printf "%b" "$(ERROR_COLOR)\tCompiling Sphere...\n$(NO_COLOR)"
-	@make compile_sphere -s
-	@$(CXX) $(CXXFLAGS) -o $(NAME_SPHERE) $(OBJ_SPHERE) $(INC) $(LIB)
-	@printf "%b" "$(OK_COLOR)Forms compiled !\n$(NO_COLOR)"
+	@printf "%b" "$(ERROR_COLOR)Compiling Math...\n$(NO_COLOR)"
+	@make compile_math -s
+	@$(AR) $(NAME) $(OBJ)
+	@printf "%b" "$(OK_COLOR)Math compiled !\n$(NO_COLOR)"
 
-compile_cube: $(OBJ_CUBE)
+compile_math: $(OBJ)
 
-3D/Cube.o: 3D/Cube.cpp
-	@$(call run_and_test, $(CXX) $(CXXFLAGS) -c $< -o $@ $(INC) $(LIB))
-
-compile_sphere: $(OBJ_SPHERE)
-
-3D/Sphere.o: 3D/Sphere.cpp
-	@$(call run_and_test, $(CXX) $(CXXFLAGS) -c $< -o $@ $(INC) $(LIB))
+%.o: %.cpp
+	@$(call run_and_test, $(CXX) $(CXXFLAGS) -c $< -o $@ $(INC))
 
 clean:
-	@$(RM) $(OBJ_CUBE) $(OBJ_SPHERE)
-	@printf "%-95b%b" "$(CLEAN_COLOR)Forms cleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
+	@$(RM) $(OBJ)
+	@printf "%-95b%b" "$(CLEAN_COLOR)Math cleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 fclean: clean
-	@$(RM) $(NAME_CUBE) $(NAME_SPHERE)
-	@printf "%-95b%b" "$(FCLEAN_COLOR)Forms fcleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
+	@$(RM) $(NAME)
+	@printf "%-95b%b" "$(FCLEAN_COLOR)Math fcleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 re: fclean all
 

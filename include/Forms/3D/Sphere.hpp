@@ -12,17 +12,33 @@
 
     #include "AForm.hpp"
 
-    namespace Raytracer::Forms {
+    namespace RayTracer::Forms {
         class Sphere : public AForm {
             public:
-                Sphere();
+                Sphere(double radius = 0, const RayTracer::Math::Point3D &center = {0, 0, 0});
                 ~Sphere() = default;
+
+                /* Getters and setters */
+
+                double getRadius() const;
+                RayTracer::Math::Point3D getCenter() const;
+
+                void setRadius(double radius);
+                void setCenter(const RayTracer::Math::Point3D &center);
+
+                /* Methods */
+
+                bool hits(const RayTracer::Ray &ray) const override;
+
+            private:
+                double _radius;
+                RayTracer::Math::Point3D _center;
         };
     }
 
     extern "C"
     {
-        std::unique_ptr<Raytracer::Forms::IForm> entryPoint();
+        std::unique_ptr<RayTracer::Forms::IForm> entryPoint();
     }
 
 #endif /* !SPHERE_HPP_ */

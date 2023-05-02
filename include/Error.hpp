@@ -12,7 +12,7 @@
 
     #include <string>
 
-    namespace Raytracer {
+    namespace RayTracer {
         class Error : public std::exception {
             public:
                 Error(const std::string &where, const std::string &what) : _where(where), _what(what) {}

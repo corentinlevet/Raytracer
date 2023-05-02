@@ -17,9 +17,9 @@
 
     #include <map>
 
-    typedef std::unique_ptr<Raytracer::Forms::IForm> FormPtr;
+    typedef std::unique_ptr<RayTracer::Forms::IForm> FormPtr;
 
-    namespace Raytracer::Forms {
+    namespace RayTracer::Forms {
         class FormFactory {
             public:
                 /**
@@ -32,6 +32,6 @@
         };
     }
 
-    typedef Raytracer::Forms::FormFactory FormFactory;
+    typedef RayTracer::Forms::FormFactory FormFactory;
 
 #endif /* !FORMFACTORY_HPP_ */

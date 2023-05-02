@@ -9,15 +9,15 @@
 
 extern "C"
 {
-    std::unique_ptr<Raytracer::Forms::IForm> entryPoint()
+    std::unique_ptr<RayTracer::Forms::IForm> entryPoint()
     {
-        return std::make_unique<Raytracer::Forms::Cube>();
+        return std::make_unique<RayTracer::Forms::Cube>();
     }
 }
 
 /* Constructor */
 
-Raytracer::Forms::Cube::Cube()
+RayTracer::Forms::Cube::Cube()
 {
     _type = "Cube";
 }

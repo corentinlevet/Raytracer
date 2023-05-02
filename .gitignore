@@ -6,6 +6,7 @@ raytracer
 
 # Temp files
 *.o
+*.a
 *.so
 *#
 *~

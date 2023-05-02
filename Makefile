@@ -24,14 +24,19 @@ RM			=	rm -rf
 ###############################################################################
 
 SRC		=	$(wildcard src/*.cpp)			\
-			$(wildcard src/Forms/*.cpp)
+			$(wildcard src/Camera/*.cpp)	\
+			$(wildcard src/Forms/*.cpp)		\
 
 OBJ		=	$(SRC:.cpp=.o)
 
 NAME	=	raytracer
 
 INC		=	-I./include
+INC		+=	-I./include/Camera
+INC		+=	-I./include/Math
 INC		+=	-I./include/Forms
+
+LIB 	=	-L./libs/Math -l:Math.a
 
 ###############################################################################
 #                                MAKEFILE LOGIC                               #
@@ -96,12 +101,12 @@ endef
 #                                 Makefile rules                              #
 ###############################################################################
 
-all:	header $(OBJ) forms
-	@$(CXX) $(OBJ) -o $(NAME) $(CXXFLAGS) $(INC)
+all:	header $(OBJ) math forms
+	@$(CXX) $(OBJ) -o $(NAME) $(CXXFLAGS) $(INC) $(LIB)
 	@printf "\n%b" "$(OK_COLOR)Compilation done !\n$(NO_COLOR)"
 
 src/%.o:	src/%.cpp
-	@$(call run_and_test, $(CXX) $(CXXFLAGS) $(INC) -c $< -o $@)
+	@$(call run_and_test, $(CXX) $(CXXFLAGS) $(INC) $(LIB) -c $< -o $@)
 
 header:
 	@printf "\n%b" "$(OBJ_COLOR)Name\t:\t$(WARN_COLOR)$(NAME)\n"
@@ -116,13 +121,19 @@ forms:
 	@printf "\n"
 	@make -s -C src/Forms
 
+math:
+	@printf "\n"
+	@make -s -C src/Math
+
 clean:
 	@make -s clean -C src/Forms &>/dev/null
+	@make -s clean -C src/Math &>/dev/null
 	@$(RM) $(OBJ)
 	@printf "%-95b%b" "$(CLEAN_COLOR)clean" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 fclean:	clean
 	@make -s fclean -C src/Forms &>/dev/null
+	@make -s fclean -C src/Math &>/dev/null
 	@$(RM) $(NAME)
 	@printf "%-95b%b" "$(FCLEAN_COLOR)fclean" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 

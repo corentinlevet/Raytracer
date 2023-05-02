@@ -12,12 +12,14 @@
 
     #include "Error.hpp"
 
+    #include "Camera.hpp"
+
     #include "FormFactory.hpp"
 
     #include <fstream>
     #include <iostream>
 
-    namespace Raytracer {
+    namespace RayTracer {
         class Raytracer {
             public:
                 Raytracer(const std::string &sceneFile);
@@ -27,13 +29,13 @@
 
                 class softError : public Error {
                     public:
-                        softError(const std::string &where, const std::string &what) : Error("Raytracer::Raytracer::" + where, what) {}
+                        softError(const std::string &where, const std::string &what) : Error("RayTracer::RayTracer::" + where, what) {}
                         ~softError() = default;
                 };
 
                 class hardError : public Error {
                     public:
-                        hardError(const std::string &where, const std::string &what) : Error("Raytracer::Raytracer::" + where, what) {}
+                        hardError(const std::string &where, const std::string &what) : Error("RayTracer::RayTracer::" + where, what) {}
                         ~hardError() = default;
                 };
 

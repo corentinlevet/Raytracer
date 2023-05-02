@@ -56,13 +56,13 @@
                     throw DLLoader::hardError("closeLibrary", "Failed to close library: " + std::string(dlerror()));
             }
 
-            class softError : public Raytracer::Error {
+            class softError : public RayTracer::Error {
                 public:
                     softError(const std::string &where, const std::string &what) : Error("DLLoader::" + where, what) {}
                     ~softError() = default;
             };
 
-            class hardError : public Raytracer::Error {
+            class hardError : public RayTracer::Error {
                 public:
                     hardError(const std::string &where, const std::string &what) : Error("DLLoader::" + where, what) {}
                     ~hardError() = default;

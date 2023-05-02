@@ -13,7 +13,9 @@
     #include <memory>
     #include <string>
 
-    namespace Raytracer::Forms {
+    #include "Ray.hpp"
+
+    namespace RayTracer::Forms {
         class IForm {
             public:
                 virtual ~IForm() = default;
@@ -24,6 +26,21 @@
                  * @return std::string The type of the Form
                 **/
                 virtual std::string getType() const = 0;
+
+                virtual double getRadius() const = 0;
+                virtual RayTracer::Math::Point3D getCenter() const = 0;
+
+                virtual void setRadius(double radius) = 0;
+                virtual void setCenter(const RayTracer::Math::Point3D &center) = 0;
+
+                /**
+                 * @brief Checks if the Ray hits the Form
+                 *
+                 * @param ray The Ray to check
+                 * @return true If the Ray hits the Form
+                 * @return false If the Ray doesn't hit the Form
+                **/
+                virtual bool hits(const RayTracer::Ray &ray) const = 0;
         };
     }
 
