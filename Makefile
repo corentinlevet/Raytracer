@@ -11,8 +11,8 @@
 
 CXX			=	g++
 
-CXXFLAGS	=	-Wall -Wextra -Werror -std=c++20 -pedantic	\
-				-fPIC -fno-gnu-unique -ldl
+CXXFLAGS	=	-Wall -Wextra -std=c++20 -pedantic	\
+				-fPIC -fno-gnu-unique -ldl -lconfig++		\
 
 AUTHOR		=	Corentin LEVET - Benjamin COTTONE - Hugo GRISEL\
 				- Jeremy CALOSSO-MERLINO

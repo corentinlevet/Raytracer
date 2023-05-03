@@ -21,6 +21,14 @@
                     return _type;
                 }
 
+                std::tuple<short int, short int, short int> getColor() const override final {
+                    return _color;
+                }
+
+                void setColor(const std::tuple<short int, short int, short int> &color) override final {
+                    _color = color;
+                }
+
                 virtual double getRadius() const = 0;
                 virtual RayTracer::Math::Point3D getCenter() const = 0;
 
@@ -31,6 +39,8 @@
 
             protected:
                 std::string _type;
+
+                std::tuple<short int, short int, short int> _color;
         };
     }
 

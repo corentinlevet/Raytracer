@@ -16,14 +16,17 @@ void RayTracer::Raytracer::run()
 
 /* Constructor */
 
-RayTracer::Raytracer::Raytracer(const std::string &sceneFile) : _sceneFile(sceneFile)
+RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
 {
-    std::ifstream file(sceneFile);
-    std::string line;
+    RayTracer::Parser parser(sceneFile);
 
-    if (!file.is_open())
-        throw RayTracer::Raytracer::hardError("Raytracer", "Could not open file " + sceneFile);
-    while (std::getline(file, line)) {
-        std::cout << line << std::endl;
+    try {
+        _camera = parser.getCamera();
+        _forms = parser.getForms();
+    } catch (...) {
+        throw RayTracer::Raytracer::hardError("Raytracer", "Error while parsing the scene file");
     }
+
+    for (auto &form : _forms)
+        std::cout << form->getType() << std::endl;
 }

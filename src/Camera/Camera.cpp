@@ -11,7 +11,7 @@
 
 /* Constructors and destructors */
 
-RayTracer::Camera::Camera::Camera(const Math::Point3D &origin, const RayTracer::Camera::Rectangle &rectangle) : _origin(origin), _screen(rectangle) {}
+RayTracer::Camera::Camera::Camera(const Math::Point3D &origin, const RayTracer::Camera::Rectangle &rectangle, std::tuple<int, int> resolution, std::tuple<int, int, int> rotation, double fov) : _origin(origin), _screen(rectangle), _resolution(resolution), _rotation(rotation), _fov(fov) {}
 
 /* Getters and setters */
 

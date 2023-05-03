@@ -27,6 +27,20 @@
                 **/
                 virtual std::string getType() const = 0;
 
+                /**
+                 * @brief Get the Color of the Form
+                 *
+                 * @return std::tuple<short int, short int, short int> The color of the Form
+                **/
+                virtual std::tuple<short int, short int, short int> getColor() const = 0;
+
+                /**
+                 * @brief Set the Color of the Form
+                 *
+                 * @param color The new color of the Form
+                **/
+                virtual void setColor(const std::tuple<short int, short int, short int> &color) = 0;
+
                 virtual double getRadius() const = 0;
                 virtual RayTracer::Math::Point3D getCenter() const = 0;
 
