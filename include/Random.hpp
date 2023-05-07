@@ -13,10 +13,9 @@
     #include <random>
 
     inline double randomDouble(double min = 0.0, double max = 1.0) {
-        std::uniform_real_distribution<> dis(min, max);
-        std::mt19937 gen;
-
-        return dis(gen);
+        static std::uniform_real_distribution<double> distribution(min, max);
+        static std::mt19937 generator(std::random_device{}());
+        return distribution(generator);
     }
 
 #endif /* !RANDOM_HPP_ */

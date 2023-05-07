@@ -12,6 +12,8 @@
 
     #include "Color.hpp"
 
+    #include "Random.hpp"
+
     namespace RayTracer::Math {
         class Vector3D {
             public:
@@ -101,6 +103,36 @@
                  * @return The squared length of the vector
                 **/
                 double lengthSquared() const;
+
+                /**
+                 * @brief Gives a random vector
+                 * @return A random vector
+                **/
+                inline static Vector3D random() {
+                    return Vector3D(randomDouble(), randomDouble(), randomDouble());
+                }
+
+                /**
+                 * @brief Gives a random vector between a minimum and a maximum
+                 * @param min The minimum
+                 * @param max The maximum
+                 * @return A random vector between a minimum and a maximum
+                **/
+                inline static Vector3D random(double min, double max) {
+                    return Vector3D(randomDouble(min, max), randomDouble(min, max), randomDouble(min, max));
+                }
+
+                /**
+                 * @brief Gives a random vector in a unit sphere
+                 * @return A random vector in a unit sphere
+                **/
+                static Vector3D randomInUnitSphere();
+
+                /**
+                 * @brief Gives a random unit vector
+                 * @return A random unit vector
+                **/
+                static Vector3D randomUnitVector();
 
             private:
                 double _x;

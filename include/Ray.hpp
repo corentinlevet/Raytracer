@@ -86,7 +86,7 @@
                  * @param world The world
                  * @return The color of the ray
                 **/
-                Math::Color rayColor(const RayTracer::Forms::FormList &world) const;
+                Math::Color rayColor(const RayTracer::Ray &ray, const RayTracer::Forms::FormList &world, int depth) const;
 
             private:
                 Math::Point3D _origin;

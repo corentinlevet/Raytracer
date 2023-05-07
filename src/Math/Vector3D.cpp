@@ -109,3 +109,18 @@ double RayTracer::Math::Vector3D::lengthSquared() const
 {
     return _x * _x + _y * _y + _z * _z;
 }
+
+RayTracer::Math::Vector3D RayTracer::Math::Vector3D::randomInUnitSphere()
+{
+    while (true) {
+        auto p = Vector3D::random(-1, 1);
+        if (p.lengthSquared() >= 1)
+            continue;
+        return p;
+    }
+}
+
+RayTracer::Math::Vector3D RayTracer::Math::Vector3D::randomUnitVector()
+{
+    return unitVector(randomInUnitSphere());
+}

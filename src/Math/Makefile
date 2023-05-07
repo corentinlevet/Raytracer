@@ -13,7 +13,7 @@ AR			=	ar rcs
 
 CXX			=	g++
 
-CXXFLAGS	=	-Wall -Wextra -Werror -std=c++20
+CXXFLAGS	=	-Wall -Wextra -Werror -std=c++20 -fPIC
 
 AUTHOR		=	Corentin LEVET - Benjamin COTTONE - Hugo GRISEL\
 				- Jeremy CALOSSO-MERLINO
@@ -31,6 +31,7 @@ SRC			=	$(wildcard *.cpp)
 OBJ			=	$(SRC:.cpp=.o)
 
 INC			=	-I../../include/Math
+INC			+=  -I../../include/
 
 ###############################################################################
 #                                MAKEFILE LOGIC                               #

@@ -42,13 +42,22 @@ RayTracer::Math::Point3D RayTracer::Ray::pointAt(double t) const
     return point;
 }
 
-RayTracer::Math::Color RayTracer::Ray::rayColor(const RayTracer::Forms::FormList &world) const
+RayTracer::Math::Color RayTracer::Ray::rayColor(const RayTracer::Ray &ray, const RayTracer::Forms::FormList &world, int depth) const
 {
     RayTracer::Forms::HitRecord record;
-    if (world.hit(*this, 0, infinity, record)) {
-        RayTracer::Math::Color color(record.getNormal().getX() + 1, record.getNormal().getY() + 1, record.getNormal().getZ() + 1);
-        return color * 0.5;
+
+    if (depth <= 0)
+        return RayTracer::Math::Color(0, 0, 0);
+
+    if (world.hit(ray, 0.001, infinity, record)) {
+        RayTracer::Math::Vector3D normal(record.getNormal());
+        RayTracer::Math::Vector3D vectorPoint(record.getPoint().getX(), record.getPoint().getY(), record.getPoint().getZ());
+
+        RayTracer::Math::Vector3D target = vectorPoint + normal + Math::Vector3D::randomUnitVector();
+
+        return rayColor(RayTracer::Ray(record.getPoint(), target - vectorPoint), world, depth - 1) * 0.5;
     }
+
     RayTracer::Math::Vector3D unitDirection = unitVector(_direction);
     double t = 0.5 * (unitDirection.getY() + 1.0);
     return RayTracer::Math::Color(1.0, 1.0, 1.0) * (1.0 - t) + RayTracer::Math::Color(0.5, 0.7, 1.0) * t;

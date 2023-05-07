@@ -22,8 +22,9 @@ void RayTracer::Raytracer::run()
     const int imageHeight = static_cast<int>(std::get<1>(resolution) / _camera.getAspectRatio());
 
     const int samplesPerPixel = 100;
+    const int maxDepth = 50;
 
-    const bool antiAliasing = false; // TODO: add anti-aliasing if needed
+    const bool antiAliasing = true; // TODO: add anti-aliasing if needed
 
     std::cout << imageWidth << " " << imageHeight << std::endl;
     std::cout << "255" << std::endl;
@@ -38,7 +39,8 @@ void RayTracer::Raytracer::run()
                 for (int s = 0; s < samplesPerPixel; s++) {
                     double u = (x + randomDouble()) / (imageWidth - 1);
                     double v = (y + randomDouble()) / (imageHeight - 1);
-                    pixelColor +=  _camera.ray(u, v).rayColor(_world);
+                    RayTracer::Ray ray = _camera.ray(u, v);
+                    pixelColor += ray.rayColor(ray, _world, maxDepth);
                 }
                 pixelColor.writeColor(std::cout, samplesPerPixel, antiAliasing);
             } else {
@@ -46,7 +48,9 @@ void RayTracer::Raytracer::run()
 
                 double u = double(x) / (imageWidth - 1);
                 double v = double(y) / (imageHeight - 1);
-                _camera.ray(u, v).rayColor(_world).writeColor(std::cout, samplesPerPixel, antiAliasing);
+                RayTracer::Ray ray = _camera.ray(u, v);
+                RayTracer::Math::Color color = ray.rayColor(ray, _world, maxDepth);
+                color.writeColor(std::cout, samplesPerPixel, antiAliasing);
             }
         }
     }
