@@ -15,9 +15,15 @@
 
     #include "Error.hpp"
 
-    #include "Camera.hpp"
+    namespace RayTracer {
+        namespace Camera {
+            class Camera;
+        }
 
-    #include "FormFactory.hpp"
+        namespace Forms {
+            class FormList;
+        }
+    }
 
     namespace RayTracer {
         class Parser {
@@ -26,7 +32,7 @@
                 ~Parser() = default;
 
                 Camera::Camera getCamera(RayTracer::Camera::Camera &camera);
-                std::vector<FormPtr> getForms();
+                Forms::FormList getWorld();
 
                 class hardError : public Error {
                     public:

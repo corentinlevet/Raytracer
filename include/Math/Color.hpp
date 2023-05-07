@@ -12,6 +12,7 @@
 
     #include <cmath>
     #include <iostream>
+    #include <vector>
 
     namespace RayTracer::Math {
         class Color {

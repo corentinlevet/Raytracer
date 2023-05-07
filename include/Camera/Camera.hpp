@@ -10,9 +10,11 @@
 #ifndef CAMERA_HPP_
     #define CAMERA_HPP_
 
-    #include "Ray.hpp"
-
     #include "Rectangle.hpp"
+
+    namespace RayTracer {
+        class Ray;
+    }
 
     namespace RayTracer::Camera {
         class Camera {

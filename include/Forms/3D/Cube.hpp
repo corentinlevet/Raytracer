@@ -36,8 +36,8 @@
                     (void)center;
                 }
 
-                bool hits(const RayTracer::Ray &ray) const override {
-                    (void)ray;
+                bool hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const override {
+                    (void)ray; (void)t_min; (void)t_max; (void)hitRecord;
                     return false;
                 }
         };
@@ -45,7 +45,7 @@
 
     extern "C"
     {
-        std::unique_ptr<RayTracer::Forms::IForm> entryPoint();
+        std::shared_ptr<RayTracer::Forms::IForm> entryPoint();
     }
 
 #endif /* !CUBE_HPP_ */

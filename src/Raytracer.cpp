@@ -7,6 +7,9 @@
 
 #include "Raytracer.hpp"
 
+#include "Parser.hpp"
+#include "Ray.hpp"
+
 /* Public methods */
 
 void RayTracer::Raytracer::run()
@@ -17,28 +20,15 @@ void RayTracer::Raytracer::run()
     const int imageWidth = std::get<0>(resolution);
     const int imageHeight = static_cast<int>(std::get<1>(resolution) / _camera.getAspectRatio());
 
-
     std::cout << imageWidth << " " << imageHeight << std::endl;
     std::cout << "255" << std::endl;
 
     for (int y = imageHeight - 1; y >= 0; y--) {
         std::cerr << "\rScanlines remaining: " << y << std::flush;
         for (int x = 0; x < imageWidth; x++) {
-            bool hasHit = false;
             double u = double(x) / (imageWidth - 1);
             double v = double(y) / (imageHeight - 1);
-            RayTracer::Ray ray = _camera.ray(u, v);
-            RayTracer::Math::Color color;
-            for (const auto &form : _forms) {
-                if (form->hits(ray)) {
-                    color = Math::Color(1, 0, 0);
-                    hasHit = true;
-                    break;
-                }
-            }
-            if (!hasHit)
-                color = ray.rayColor();
-            color.writeColor(std::cout);
+            _camera.ray(u, v).rayColor(_world).writeColor(std::cout);
         }
     }
 
@@ -53,7 +43,7 @@ RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
 
     try {
         _camera = parser.getCamera(_camera);
-        _forms = parser.getForms();
+        _world = parser.getWorld();
     } catch (...) {
         throw RayTracer::Raytracer::hardError("Raytracer", "Error while parsing the scene file");
     }

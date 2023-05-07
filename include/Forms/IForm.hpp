@@ -13,7 +13,14 @@
     #include <memory>
     #include <string>
 
-    #include "Ray.hpp"
+    #include "Point3D.hpp"
+
+    namespace RayTracer {
+        class Ray;
+        namespace Forms {
+            class HitRecord;
+        }
+    }
 
     namespace RayTracer::Forms {
         class IForm {
@@ -54,7 +61,7 @@
                  * @return true If the Ray hits the Form
                  * @return false If the Ray doesn't hit the Form
                 **/
-                virtual bool hits(const RayTracer::Ray &ray) const = 0;
+                virtual bool hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const = 0;
         };
     }
 

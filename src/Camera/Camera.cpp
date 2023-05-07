@@ -7,6 +7,8 @@
 
 #include "Camera.hpp"
 
+#include "Ray.hpp"
+
 #include <iostream>
 
 /* Constructors and destructors */

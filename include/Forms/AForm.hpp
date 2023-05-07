@@ -35,7 +35,7 @@
                 virtual void setRadius(double radius) = 0;
                 virtual void setCenter(const RayTracer::Math::Point3D &center) = 0;
 
-                virtual bool hits(const RayTracer::Ray &ray) const = 0;
+                virtual bool hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const = 0;
 
             protected:
                 std::string _type;

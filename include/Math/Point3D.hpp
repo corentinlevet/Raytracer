@@ -10,9 +10,6 @@
 #ifndef POINT3D_HPP_
     #define POINT3D_HPP_
 
-    #include <cmath>
-    #include <iostream>
-
     #include "Vector3D.hpp"
 
     namespace RayTracer::Math {

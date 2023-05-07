@@ -10,9 +10,6 @@
 #ifndef VECTOR3D_HPP_
     #define VECTOR3D_HPP_
 
-    #include <cmath>
-    #include <iostream>
-
     #include "Color.hpp"
 
     namespace RayTracer::Math {

@@ -23,13 +23,18 @@ RM			=	rm -rf
 #                                    SOURCES                                  #
 ###############################################################################
 
+SRC			=	HitRecord.cpp
+SRC			+=	../Ray.cpp
+
 SRC_CUBE	=	3D/Cube.cpp
+SRC_CUBE	+=	$(SRC)
 
 OBJ_CUBE	=	$(SRC_CUBE:.cpp=.o)
 
 NAME_CUBE	=	../../libs/Forms/3D/Cube.so
 
 SRC_SPHERE	=	3D/Sphere.cpp
+SRC_SPHERE	+=	$(SRC)
 
 OBJ_SPHERE	=	$(SRC_SPHERE:.cpp=.o)
 
@@ -123,15 +128,12 @@ all:
 	@$(CXX) $(CXXFLAGS) -o $(NAME_SPHERE) $(OBJ_SPHERE) $(INC) $(LIB)
 	@printf "%b" "$(OK_COLOR)Forms compiled !\n$(NO_COLOR)"
 
+%.o: %.cpp
+	@$(call run_and_test, $(CXX) $(CXXFLAGS) -c $< -o $@ $(INC) $(LIB))
+
 compile_cube: $(OBJ_CUBE)
 
-3D/Cube.o: 3D/Cube.cpp
-	@$(call run_and_test, $(CXX) $(CXXFLAGS) -c $< -o $@ $(INC) $(LIB))
-
 compile_sphere: $(OBJ_SPHERE)
-
-3D/Sphere.o: 3D/Sphere.cpp
-	@$(call run_and_test, $(CXX) $(CXXFLAGS) -c $< -o $@ $(INC) $(LIB))
 
 clean:
 	@$(RM) $(OBJ_CUBE) $(OBJ_SPHERE)

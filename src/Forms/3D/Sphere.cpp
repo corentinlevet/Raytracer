@@ -7,9 +7,12 @@
 
 #include "Sphere.hpp"
 
+#include "HitRecord.hpp"
+#include "Ray.hpp"
+
 extern "C"
 {
-    std::unique_ptr<RayTracer::Forms::IForm> entryPoint()
+    std::shared_ptr<RayTracer::Forms::IForm> entryPoint()
     {
         return std::make_unique<RayTracer::Forms::Sphere>();
     }
@@ -46,12 +49,29 @@ void RayTracer::Forms::Sphere::setCenter(const RayTracer::Math::Point3D &center)
 
 /* Methods */
 
-bool RayTracer::Forms::Sphere::hits(const RayTracer::Ray &ray) const
+bool RayTracer::Forms::Sphere::hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const
 {
     Math::Vector3D oc(ray.getOrigin().getX() - _center.getX(), ray.getOrigin().getY() - _center.getY(), ray.getOrigin().getZ() - _center.getZ());
-    double a = dot(ray.getDirection(), ray.getDirection());
-    double b = 2.0 * dot(oc, ray.getDirection());
-    double c = dot(oc, oc) - _radius * _radius;
-    double delta = b * b - 4 * a * c;
-    return (delta > 0);
+    double a = ray.getDirection().lengthSquared();
+    double half_b = dot(oc, ray.getDirection());
+    double c = oc.lengthSquared() - _radius * _radius;
+    double delta = half_b * half_b - a * c;
+
+    if (delta < 0)
+        return false;
+    double sqrtd = sqrt(delta);
+    double root = (-half_b - sqrtd) / a;
+    if (root < t_min || t_max < root) {
+        root = (-half_b + sqrtd) / a;
+        if (root < t_min || t_max < root)
+            return false;
+    }
+
+    hitRecord.setT(root);
+    hitRecord.setPoint(ray.pointAt(hitRecord.getT()));
+    Math::Point3D outwardNormal = (hitRecord.getPoint() - _center) / _radius;
+    Math::Vector3D outwardNormalVector(outwardNormal.getX(), outwardNormal.getY(), outwardNormal.getZ());
+    hitRecord.setFaceNormal(ray, outwardNormalVector);
+
+    return true;
 }

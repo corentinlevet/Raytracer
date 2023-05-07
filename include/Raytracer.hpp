@@ -10,9 +10,10 @@
 #ifndef RAYTRACER_HPP_
     #define RAYTRACER_HPP_
 
-    #include "Parser.hpp"
-
     #include <iostream>
+
+    #include "Camera.hpp"
+    #include "FormList.hpp"
 
     namespace RayTracer {
         class Raytracer {
@@ -35,9 +36,9 @@
                 };
 
             private:
-                std::vector<FormPtr> _forms;
-
                 RayTracer::Camera::Camera _camera;
+
+                RayTracer::Forms::FormList _world;
         };
     }
 

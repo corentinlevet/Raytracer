@@ -28,7 +28,7 @@
 
                 /* Methods */
 
-                bool hits(const RayTracer::Ray &ray) const override;
+                bool hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const override;
 
             private:
                 double _radius;
@@ -38,7 +38,7 @@
 
     extern "C"
     {
-        std::unique_ptr<RayTracer::Forms::IForm> entryPoint();
+        std::shared_ptr<RayTracer::Forms::IForm> entryPoint();
     }
 
 #endif /* !SPHERE_HPP_ */

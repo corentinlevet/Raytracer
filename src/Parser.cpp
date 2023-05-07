@@ -7,6 +7,10 @@
 
 #include "Parser.hpp"
 
+#include "Camera.hpp"
+#include "FormList.hpp"
+#include "FormFactory.hpp"
+
 #include <iostream>
 
 /* Constructors and destructors */
@@ -48,9 +52,9 @@ RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera
     return camera;
 }
 
-std::vector<FormPtr> RayTracer::Parser::getForms()
+RayTracer::Forms::FormList RayTracer::Parser::getWorld()
 {
-    std::vector<FormPtr> forms = {};
+    RayTracer::Forms::FormList world;
     FormPtr form = nullptr;
 
     for (auto &p : _config.lookup("primitives")) {
@@ -59,19 +63,22 @@ std::vector<FormPtr> RayTracer::Parser::getForms()
             if (name == "spheres") {
                 libconfig::Setting &s = f;
                 int sphereColorR = s.lookup("color.r"), sphereColorG = s.lookup("color.g"), sphereColorB = s.lookup("color.b");
-                int sphereX = s.lookup("x"), sphereY = s.lookup("y"), sphereZ = s.lookup("z");
-                int sphereRadius = s.lookup("r");
+                float sphereX = 0, sphereY = 0, sphereZ = 0, sphereRadius = 0;
+                s.lookupValue("x", sphereX);
+                s.lookupValue("y", sphereY);
+                s.lookupValue("z", sphereZ);
+                s.lookupValue("r", sphereRadius);
                 form = FormFactory::createForm("Sphere");
                 form->setCenter(Math::Point3D(sphereX, sphereY, sphereZ));
                 form->setRadius((double) sphereRadius);
                 form->setColor(std::make_tuple(sphereColorR, sphereColorG, sphereColorB));
             }
             if (form != nullptr) {
-                forms.push_back(std::move(form));
+                world.add(form);
                 form = nullptr;
             }
         }
     }
 
-    return forms;
+    return world;
 }

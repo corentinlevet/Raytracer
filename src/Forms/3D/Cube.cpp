@@ -9,7 +9,7 @@
 
 extern "C"
 {
-    std::unique_ptr<RayTracer::Forms::IForm> entryPoint()
+    std::shared_ptr<RayTracer::Forms::IForm> entryPoint()
     {
         return std::make_unique<RayTracer::Forms::Cube>();
     }

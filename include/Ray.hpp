@@ -11,6 +11,7 @@
     #define RAY_HPP_
 
     #include "Point3D.hpp"
+    #include "FormList.hpp"
 
     namespace RayTracer {
         class Ray {
@@ -82,9 +83,10 @@
                 /**
                  * @brief Computes the color of the ray
                  *
+                 * @param world The world
                  * @return The color of the ray
                 **/
-                Math::Color rayColor(void) const;
+                Math::Color rayColor(const RayTracer::Forms::FormList &world) const;
 
             private:
                 Math::Point3D _origin;
