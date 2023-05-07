@@ -110,7 +110,26 @@ double RayTracer::Math::Color::lengthSquared() const
     return _x * _x + _y * _y + _z * _z;
 }
 
-void RayTracer::Math::Color::writeColor(std::ostream &out) const
+void RayTracer::Math::Color::writeColor(std::ostream &out, int samplesPerPixel, bool antiAliasing) const
 {
-    out << static_cast<int>(255.999 * _x) << ' ' << static_cast<int>(255.999 * _y) << ' ' << static_cast<int>(255.999 * _z) << '\n';
+    if (antiAliasing) {
+        // ANTI-ALIASING
+
+        auto r = _x;
+        auto g = _y;
+        auto b = _z;
+
+        auto scale = 1.0 / samplesPerPixel;
+        r *= scale;
+        g *= scale;
+        b *= scale;
+
+        out << static_cast<int>(256 * clamp(r, 0.0, 0.999)) << ' '
+            << static_cast<int>(256 * clamp(g, 0.0, 0.999)) << ' '
+            << static_cast<int>(256 * clamp(b, 0.0, 0.999)) << '\n';
+    } else {
+        // NO ANTI-ALIASING
+
+        out << static_cast<int>(255.999 * _x) << ' ' << static_cast<int>(255.999 * _y) << ' ' << static_cast<int>(255.999 * _z) << '\n';
+    }
 }

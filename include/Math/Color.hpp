@@ -109,7 +109,7 @@
                  * @param out The output stream
                  * @return void
                 **/
-                void writeColor(std::ostream &out) const;
+                void writeColor(std::ostream &out, int samplesPerPixel, bool antiAliasing) const;
 
             private:
                 double _x;
@@ -160,6 +160,14 @@
 
     inline RayTracer::Math::Color unitVector(const RayTracer::Math::Color &vector) {
         return vector / vector.length();
+    }
+
+    inline double clamp(double value, double min, double max) {
+        if (value < min)
+            return min;
+        if (value > max)
+            return max;
+        return value;
     }
 
 #endif /* !COLOR_HPP_ */

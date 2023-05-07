@@ -122,6 +122,5 @@ RayTracer::Ray RayTracer::Camera::Camera::ray(double u, double v) const
     screenPoint += v * _screen.getVertical();
     screenPoint -= _origin;
     RayTracer::Math::Vector3D screenVector(screenPoint.getX(), screenPoint.getY(), screenPoint.getZ());
-    // std::cout << "Lower left corner: " << _screen.getOrigin() << " | " << "u * horizontal: " << u * _screen.getHorizontal() << " | " << "v * vertical: " << v * _screen.getVertical() << " | direction: " << screenVector << std::endl;
     return RayTracer::Ray(_origin, screenVector);
 }
