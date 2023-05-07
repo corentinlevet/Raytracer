@@ -23,8 +23,8 @@
                 /* Getters and setters */
 
                 const Math::Point3D &getOrigin() const;
-                const Math::Vector3D &getBottomSide() const;
-                const Math::Vector3D &getLeftSide() const;
+                const Math::Vector3D &getHorizontal() const;
+                const Math::Vector3D &getVertical() const;
 
                 void setOrigin(const Math::Point3D &origin);
                 void setBottomSide(const Math::Vector3D &bottomSide);

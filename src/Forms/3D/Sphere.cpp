@@ -48,12 +48,10 @@ void RayTracer::Forms::Sphere::setCenter(const RayTracer::Math::Point3D &center)
 
 bool RayTracer::Forms::Sphere::hits(const RayTracer::Ray &ray) const
 {
-    Math::Vector3D oc(ray._origin._x - _center._x, ray._origin._y - _center._y, ray._origin._z - _center._z);
-
-    double a = ray._direction.dot(ray._direction);
-    double b = 2 * ray._direction.dot(oc);
-    double c = oc.dot(oc) - _radius * _radius;
+    Math::Vector3D oc(ray.getOrigin().getX() - _center.getX(), ray.getOrigin().getY() - _center.getY(), ray.getOrigin().getZ() - _center.getZ());
+    double a = dot(ray.getDirection(), ray.getDirection());
+    double b = 2.0 * dot(oc, ray.getDirection());
+    double c = dot(oc, oc) - _radius * _radius;
     double delta = b * b - 4 * a * c;
-
-    return delta >= 0;
+    return (delta > 0);
 }

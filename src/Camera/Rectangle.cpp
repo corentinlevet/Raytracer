@@ -18,12 +18,12 @@ const RayTracer::Math::Point3D &RayTracer::Camera::Rectangle::getOrigin() const
     return _origin;
 }
 
-const RayTracer::Math::Vector3D &RayTracer::Camera::Rectangle::getBottomSide() const
+const RayTracer::Math::Vector3D &RayTracer::Camera::Rectangle::getHorizontal() const
 {
     return _bottomSide;
 }
 
-const RayTracer::Math::Vector3D &RayTracer::Camera::Rectangle::getLeftSide() const
+const RayTracer::Math::Vector3D &RayTracer::Camera::Rectangle::getVertical() const
 {
     return _leftSide;
 }

@@ -30,3 +30,19 @@ RayTracer::Ray &RayTracer::Ray::operator=(RayTracer::Ray &&other)
     _direction = other._direction;
     return *this;
 }
+
+/* Public methods */
+
+RayTracer::Math::Point3D RayTracer::Ray::pointAt(double t) const
+{
+    RayTracer::Math::Point3D point(_origin);
+    point += _direction * t;
+    return point;
+}
+
+RayTracer::Math::Color RayTracer::Ray::rayColor(void) const
+{
+    Math::Vector3D unitDirection = unitVector(_direction);
+    double t = 0.5 * (unitDirection.getY() + 1.0);
+    return Math::Color(1.0, 1.0, 1.0) * (1.0 - t) + Math::Color(0.5, 0.7, 1.0) * t;
+}

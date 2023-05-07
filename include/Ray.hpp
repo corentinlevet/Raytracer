@@ -15,11 +15,6 @@
     namespace RayTracer {
         class Ray {
             public:
-                /* Public attributes */
-
-                Math::Point3D _origin;
-                Math::Vector3D _direction;
-
                 /* Constructors and destructors */
 
                 /**
@@ -51,10 +46,49 @@
                 **/
                 ~Ray() = default;
 
+                /* Getters and setters */
+
+                const Math::Point3D &getOrigin() const {
+                    return _origin;
+                }
+
+                const Math::Vector3D &getDirection() const {
+                    return _direction;
+                }
+
+                void setOrigin(const Math::Point3D &origin) {
+                    _origin = origin;
+                }
+
+                void setDirection(const Math::Vector3D &direction) {
+                    _direction = direction;
+                }
+
                 /* Operators */
 
                 Ray &operator=(const Ray &other);
                 Ray &operator=(Ray &&other);
+
+                /* Methods */
+
+                /**
+                 * @brief Computes the point at a given distance from the origin
+                 *
+                 * @param distance The distance from the origin
+                 * @return The point at the given distance from the origin
+                **/
+                Math::Point3D pointAt(double distance) const;
+
+                /**
+                 * @brief Computes the color of the ray
+                 *
+                 * @return The color of the ray
+                **/
+                Math::Color rayColor(void) const;
+
+            private:
+                Math::Point3D _origin;
+                Math::Vector3D _direction;
         };
     }
 

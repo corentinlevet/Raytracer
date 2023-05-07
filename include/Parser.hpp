@@ -25,7 +25,7 @@
                 Parser(const std::string &path);
                 ~Parser() = default;
 
-                Camera::Camera getCamera();
+                Camera::Camera getCamera(RayTracer::Camera::Camera &camera);
                 std::vector<FormPtr> getForms();
 
                 class hardError : public Error {

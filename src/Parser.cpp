@@ -24,19 +24,25 @@ RayTracer::Parser::Parser(const std::string &path)
 
 /* Public methods */
 
-RayTracer::Camera::Camera RayTracer::Parser::getCamera()
+RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera &cam)
 {
     int width = _config.lookup("camera.resolution.width"), height = _config.lookup("camera.resolution.height");
     int positionX = _config.lookup("camera.position.x"), positionY = _config.lookup("camera.position.y"), positionZ = _config.lookup("camera.position.z");
     int rotationX = _config.lookup("camera.rotation.x"), rotationY = _config.lookup("camera.rotation.y"), rotationZ = _config.lookup("camera.rotation.z");
     double fov = _config.lookup("camera.fieldOfView");
 
+    RayTracer::Math::Point3D origin(positionX, positionY, positionZ);
+    RayTracer::Math::Vector3D horizontal(cam.getViewportWidth(), 0, 0);
+    RayTracer::Math::Vector3D vertical(0, cam.getViewportHeight(), 0);
+    RayTracer::Math::Vector3D orig(origin.getX(), origin.getY(), origin.getZ());
+    RayTracer::Math::Vector3D lowerLeftCorner = orig - horizontal / 2 - vertical / 2 - RayTracer::Math::Vector3D(0, 0, cam.getFocalLength());
+
     RayTracer::Camera::Camera camera(
-        RayTracer::Math::Point3D(positionX, positionY, positionZ),
-        RayTracer::Camera::Rectangle(Math::Point3D(), Math::Vector3D(1, 0), Math::Vector3D(0, 1)),
+        fov,
         std::tuple<int, int>(width, height),
         std::tuple<int, int, int>(rotationX, rotationY, rotationZ),
-        fov
+        RayTracer::Math::Point3D(positionX, positionY, positionZ),
+        RayTracer::Camera::Rectangle(Math::Point3D(lowerLeftCorner.getX(), lowerLeftCorner.getY(), lowerLeftCorner.getZ()), horizontal, vertical)
     );
 
     return camera;
