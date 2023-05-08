@@ -33,7 +33,7 @@ RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera
 {
     int width = _config.lookup("camera.resolution.width"), height = _config.lookup("camera.resolution.height");
     int positionX = _config.lookup("camera.position.x"), positionY = _config.lookup("camera.position.y"), positionZ = _config.lookup("camera.position.z");
-    int rotationX = _config.lookup("camera.rotation.x"), rotationY = _config.lookup("camera.rotation.y"), rotationZ = _config.lookup("camera.rotation.z");
+    int directionX = _config.lookup("camera.direction.x"), directionY = _config.lookup("camera.direction.y"), directionZ = _config.lookup("camera.direction.z");
     double fov = _config.lookup("camera.fieldOfView");
 
     double theta = degreesToRadians(fov);
@@ -42,16 +42,22 @@ RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera
     double viewportWidth = cam.getAspectRatio() * viewportHeight;
 
     RayTracer::Math::Point3D origin(positionX, positionY, positionZ);
-    RayTracer::Math::Vector3D horizontal(viewportWidth, 0, 0);
-    RayTracer::Math::Vector3D vertical(0, viewportHeight, 0);
     RayTracer::Math::Vector3D orig(origin.getX(), origin.getY(), origin.getZ());
-    RayTracer::Math::Vector3D lowerLeftCorner = orig - horizontal / 2 - vertical / 2 - RayTracer::Math::Vector3D(0, 0, cam.getFocalLength());
+    RayTracer::Math::Vector3D lookAt(directionX, directionY, directionZ);
+
+    auto w = unitVector(orig - lookAt);
+    auto u = unitVector(cross(RayTracer::Math::Vector3D(0, 1, 0), w));
+    auto v = cross(w, u);
+
+    RayTracer::Math::Vector3D horizontal(viewportWidth * u.getX(), viewportWidth * u.getY(), viewportWidth * u.getZ());
+    RayTracer::Math::Vector3D vertical(viewportHeight * v.getX(), viewportHeight * v.getY(), viewportHeight * v.getZ());
+    RayTracer::Math::Vector3D lowerLeftCorner = orig - horizontal / 2 - vertical / 2 - w;
 
     RayTracer::Camera::Camera camera(
         fov,
         std::tuple<int, int>(width, height),
-        std::tuple<int, int, int>(rotationX, rotationY, rotationZ),
-        RayTracer::Math::Point3D(positionX, positionY, positionZ),
+        std::tuple<int, int, int>(directionX, directionY, directionZ),
+        origin,
         RayTracer::Camera::Rectangle(Math::Point3D(lowerLeftCorner.getX(), lowerLeftCorner.getY(), lowerLeftCorner.getZ()), horizontal, vertical)
     );
 
