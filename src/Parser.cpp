@@ -36,9 +36,14 @@ RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera
     int rotationX = _config.lookup("camera.rotation.x"), rotationY = _config.lookup("camera.rotation.y"), rotationZ = _config.lookup("camera.rotation.z");
     double fov = _config.lookup("camera.fieldOfView");
 
+    double theta = degreesToRadians(fov);
+    double h = tan(theta / 2);
+    double viewportHeight = 2.0 * h;
+    double viewportWidth = cam.getAspectRatio() * viewportHeight;
+
     RayTracer::Math::Point3D origin(positionX, positionY, positionZ);
-    RayTracer::Math::Vector3D horizontal(cam.getViewportWidth(), 0, 0);
-    RayTracer::Math::Vector3D vertical(0, cam.getViewportHeight(), 0);
+    RayTracer::Math::Vector3D horizontal(viewportWidth, 0, 0);
+    RayTracer::Math::Vector3D vertical(0, viewportHeight, 0);
     RayTracer::Math::Vector3D orig(origin.getX(), origin.getY(), origin.getZ());
     RayTracer::Math::Vector3D lowerLeftCorner = orig - horizontal / 2 - vertical / 2 - RayTracer::Math::Vector3D(0, 0, cam.getFocalLength());
 
@@ -49,6 +54,9 @@ RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera
         RayTracer::Math::Point3D(positionX, positionY, positionZ),
         RayTracer::Camera::Rectangle(Math::Point3D(lowerLeftCorner.getX(), lowerLeftCorner.getY(), lowerLeftCorner.getZ()), horizontal, vertical)
     );
+
+    camera.setViewportHeight(viewportHeight);
+    camera.setViewportWidth(viewportWidth);
 
     return camera;
 }
