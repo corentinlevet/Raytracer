@@ -148,11 +148,11 @@ compile_lambertian: $(OBJ_LAMBERTIAN)
 compile_metal: $(OBJ_METAL)
 
 clean:
-	@$(RM) $(OBJ_LAMBERTIAN) $(OBJ_METAL)
+	@$(RM) $(OBJ_LAMBERTIAN) $(OBJ_METAL) $(OBJ_DIELECTRIC)
 	@printf "%-95b%b" "$(CLEAN_COLOR)Materials cleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 fclean: clean
-	@$(RM) $(NAME_LAMBERTIAN) $(NAME_METAL)
+	@$(RM) $(NAME_LAMBERTIAN) $(NAME_METAL) $(NAME_DIELECTRIC)
 	@printf "%-95b%b" "$(FCLEAN_COLOR)Materials fcleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 re: fclean all
