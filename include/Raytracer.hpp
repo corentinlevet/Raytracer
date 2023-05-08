@@ -23,6 +23,8 @@
 
                 void run();
 
+                RayTracer::Forms::FormList randomScene();
+
                 class softError : public Error {
                     public:
                         softError(const std::string &where, const std::string &what) : Error("RayTracer::Raytracer::" + where, what) {}
