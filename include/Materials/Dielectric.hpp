@@ -18,6 +18,8 @@
                 Dielectric(const RayTracer::Math::Color &albedo = {0, 0, 0});
                 ~Dielectric() = default;
 
+                static double reflectance(double cosine, double refractionRatio);
+
                 bool scatter(const RayTracer::Ray &ray, const RayTracer::Forms::HitRecord &record, RayTracer::Math::Color &attenuation, RayTracer::Ray &scattered) const override;
         };
     }
