@@ -20,9 +20,11 @@
         class Camera {
             public:
                 Camera(
-                    double aperture = 0.0,
-                    double aspectRatio = 16.0 / 9.0,
-                    double fov = 90.0,
+                    const double aperture = 0.0,
+                    const double aspectRatio = 16.0 / 9.0,
+                    const double fov = 90.0,
+                    const double time0 = 0.0,
+                    const double time1 = 0.0,
                     std::tuple<int, int> resolution = std::tuple<int, int>(1920, 1080),
                     std::tuple<int, int, int> rotation = std::tuple<int, int, int>(0, 0, 0),
                     const Math::Point3D &origin = Math::Point3D(),
@@ -64,6 +66,8 @@
                 double _focalLength;
                 double _fov;
                 double _lensRadius;
+                double _time0;
+                double _time1;
                 double _viewportHeight;
                 double _viewportWidth;
 

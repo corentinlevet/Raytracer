@@ -36,6 +36,22 @@
                     (void)center;
                 }
 
+                void setCenter0(const RayTracer::Math::Point3D &center0) override {
+                    (void)center0;
+                }
+
+                void setCenter1(const RayTracer::Math::Point3D &center1) override {
+                    (void)center1;
+                }
+
+                void setTime0(double time0) override {
+                    (void)time0;
+                }
+
+                void setTime1(double time1) override {
+                    (void)time1;
+                }
+
                 bool hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const override {
                     (void)ray; (void)t_min; (void)t_max; (void)hitRecord;
                     return false;
