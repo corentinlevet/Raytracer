@@ -53,6 +53,46 @@ RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera
     return camera;
 }
 
+MaterialPtr RayTracer::Parser::getMaterial(const libconfig::Setting &material)
+{
+    MaterialPtr newMaterial = nullptr;
+    std::string materialName = material.lookup("name");
+    newMaterial = MaterialFactory::createMaterial(materialName);
+    float materialR = 0, materialG = 0, materialB = 0, fuzziness = 0;
+    libconfig::Setting &albedo = material.lookup("albedo");
+    albedo.lookupValue("r", materialR);
+    albedo.lookupValue("g", materialG);
+    albedo.lookupValue("b", materialB);
+    material.lookupValue("fuzziness", fuzziness);
+    newMaterial->setAlbedo(Math::Color(materialR, materialG, materialB));
+    newMaterial->setFuzziness(fuzziness);
+    return newMaterial;
+}
+
+FormPtr RayTracer::Parser::getForm(const std::string &name, const libconfig::Setting &form)
+{
+    FormPtr newForm = nullptr;
+    int colorR = 0, colorG = 0, colorB = 0;
+    form.lookupValue("color.r", colorR);
+    form.lookupValue("color.g", colorG);
+    form.lookupValue("color.b", colorB);
+    if (name == "spheres") {
+        float sphereX = 0, sphereY = 0, sphereZ = 0, sphereRadius = 0;
+        form.lookupValue("x", sphereX);
+        form.lookupValue("y", sphereY);
+        form.lookupValue("z", sphereZ);
+        form.lookupValue("r", sphereRadius);
+        newForm = FormFactory::createForm("Sphere");
+        newForm->setCenter(Math::Point3D(sphereX, sphereY, sphereZ));
+        newForm->setRadius((double) sphereRadius);
+        newForm->setColor(Math::Color(colorR, colorG, colorB));
+        if (form.exists("material"))
+            newForm->setMaterial(getMaterial(form.lookup("material")));
+    }
+
+    return newForm;
+}
+
 RayTracer::Forms::FormList RayTracer::Parser::getWorld()
 {
     RayTracer::Forms::FormList world;
@@ -62,22 +102,7 @@ RayTracer::Forms::FormList RayTracer::Parser::getWorld()
     for (auto &p : _config.lookup("primitives")) {
         std::string name = p.getName();
         for (auto &f : _config.lookup("primitives." + name)) {
-            if (name == "spheres") {
-                libconfig::Setting &s = f;
-                int sphereColorR = s.lookup("color.r"), sphereColorG = s.lookup("color.g"), sphereColorB = s.lookup("color.b");
-                float sphereX = 0, sphereY = 0, sphereZ = 0, sphereRadius = 0;
-                s.lookupValue("x", sphereX);
-                s.lookupValue("y", sphereY);
-                s.lookupValue("z", sphereZ);
-                s.lookupValue("r", sphereRadius);
-                form = FormFactory::createForm("Sphere");
-                form->setCenter(Math::Point3D(sphereX, sphereY, sphereZ));
-                form->setRadius((double) sphereRadius);
-                form->setColor(std::make_tuple(sphereColorR, sphereColorG, sphereColorB));
-                material = MaterialFactory::createMaterial("Metal");
-                material->setAlbedo(Math::Color(0.8, 0.6, 0.2));
-                form->setMaterial(material);
-            }
+            form = getForm(name, f);
             if (form != nullptr) {
                 world.add(form);
                 form = nullptr;

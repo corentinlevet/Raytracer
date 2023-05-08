@@ -20,9 +20,10 @@ extern "C"
 
 /* Constructor */
 
-RayTracer::Materials::Metal::Metal(const RayTracer::Math::Color &albedo)
+RayTracer::Materials::Metal::Metal(const RayTracer::Math::Color &albedo, const double fuzz)
 {
     _albedo = albedo;
+    _fuzz = fuzz < 0 ? 0 : fuzz > 1 ? 1 : fuzz;
     _name = "Metal";
 }
 
@@ -31,7 +32,7 @@ RayTracer::Materials::Metal::Metal(const RayTracer::Math::Color &albedo)
 bool RayTracer::Materials::Metal::scatter(const RayTracer::Ray &ray, const RayTracer::Forms::HitRecord &record, RayTracer::Math::Color &attenuation, RayTracer::Ray &scattered) const
 {
     RayTracer::Math::Vector3D reflected = RayTracer::Math::Vector3D::reflect(unitVector(ray.getDirection()), record.getNormal());
-    scattered = RayTracer::Ray(record.getPoint(), reflected);
+    scattered = RayTracer::Ray(record.getPoint(), reflected + _fuzz * RayTracer::Math::Vector3D::randomInUnitSphere());
     attenuation = _albedo;
 
     return (dot(scattered.getDirection(), record.getNormal()) > 0);

@@ -62,9 +62,8 @@ void RayTracer::Raytracer::run()
 
 RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
 {
-    RayTracer::Parser parser(sceneFile);
-
     try {
+        RayTracer::Parser parser(sceneFile);
         _camera = parser.getCamera(_camera);
         _world = parser.getWorld();
     } catch (...) {

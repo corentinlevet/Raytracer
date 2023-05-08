@@ -15,7 +15,7 @@
     namespace RayTracer::Materials {
         class Metal : public AMaterial {
             public:
-                Metal(const RayTracer::Math::Color &albedo = {0, 0, 0});
+                Metal(const RayTracer::Math::Color &albedo = {0, 0, 0}, const double fuzz = 0);
                 ~Metal() = default;
 
                 bool scatter(const RayTracer::Ray &ray, const RayTracer::Forms::HitRecord &record, RayTracer::Math::Color &attenuation, RayTracer::Ray &scattered) const override;

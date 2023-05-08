@@ -21,11 +21,11 @@
                     return _name;
                 }
 
-                std::tuple<short int, short int, short int> getColor() const override final {
+                RayTracer::Math::Color getColor() const override final {
                     return _color;
                 }
 
-                void setColor(const std::tuple<short int, short int, short int> &color) override final {
+                void setColor(const RayTracer::Math::Color &color) override final {
                     _color = color;
                 }
 
@@ -44,7 +44,7 @@
             protected:
                 std::string _name;
 
-                std::tuple<short int, short int, short int> _color;
+                RayTracer::Math::Color _color;
 
                 MaterialPtr _material;
         };

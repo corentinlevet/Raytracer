@@ -11,6 +11,7 @@
     #define PARSER_HPP_
 
     #include <libconfig.h++>
+    #include <memory>
     #include <vector>
 
     #include "Error.hpp"
@@ -22,8 +23,16 @@
 
         namespace Forms {
             class FormList;
+            class IForm;
+        }
+
+        namespace Materials {
+            class IMaterial;
         }
     }
+
+    typedef std::shared_ptr<RayTracer::Forms::IForm> FormPtr;
+    typedef std::shared_ptr<RayTracer::Materials::IMaterial> MaterialPtr;
 
     namespace RayTracer {
         class Parser {
@@ -33,6 +42,8 @@
 
                 Camera::Camera getCamera(RayTracer::Camera::Camera &camera);
                 Forms::FormList getWorld();
+                FormPtr getForm(const std::string &name, const libconfig::Setting &form);
+                MaterialPtr getMaterial(const libconfig::Setting &material);
 
                 class hardError : public Error {
                     public:

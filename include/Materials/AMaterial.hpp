@@ -27,7 +27,13 @@
                     _albedo = albedo;
                 }
 
+                void setFuzziness(const double fuzz) override final {
+                    _fuzz = fuzz < 0 ? 0 : fuzz > 1 ? 1 : fuzz;
+                }
+
             protected:
+                double _fuzz;
+
                 std::string _name;
 
                 RayTracer::Math::Color _albedo;

@@ -39,16 +39,16 @@
                 /**
                  * @brief Get the Color of the Form
                  *
-                 * @return std::tuple<short int, short int, short int> The color of the Form
+                 * @return RayTracer::Math::Color The color of the Form
                 **/
-                virtual std::tuple<short int, short int, short int> getColor() const = 0;
+                virtual RayTracer::Math::Color getColor() const = 0;
 
                 /**
                  * @brief Set the Color of the Form
                  *
                  * @param color The new color of the Form
                 **/
-                virtual void setColor(const std::tuple<short int, short int, short int> &color) = 0;
+                virtual void setColor(const RayTracer::Math::Color &color) = 0;
 
                 /**
                  * @brief Get the Material of the Form
