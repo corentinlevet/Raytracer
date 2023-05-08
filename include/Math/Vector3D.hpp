@@ -148,6 +148,15 @@
                 **/
                 static Vector3D reflect(const Vector3D &vector, const Vector3D &normal);
 
+                /**
+                 * @brief Refracts the vector
+                 * @param unitVector The unit vector
+                 * @param normal The normal
+                 * @param etaiOverEtat The ratio of the refraction indices
+                 * @return The refracted vector
+                **/
+                static Vector3D refract(const Vector3D &unitVector, const Vector3D &normal, double etaiOverEtat);
+
             private:
                 double _x;
                 double _y;

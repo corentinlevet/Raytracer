@@ -49,6 +49,8 @@
                 virtual void setAlbedo(const RayTracer::Math::Color &albedo) = 0;
 
                 virtual void setFuzziness(const double fuzz) = 0;
+
+                virtual void setRefractionIndex(const double refractionIndex) = 0;
         };
     }
 

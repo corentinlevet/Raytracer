@@ -58,14 +58,16 @@ MaterialPtr RayTracer::Parser::getMaterial(const libconfig::Setting &material)
     MaterialPtr newMaterial = nullptr;
     std::string materialName = material.lookup("name");
     newMaterial = MaterialFactory::createMaterial(materialName);
-    float materialR = 0, materialG = 0, materialB = 0, fuzziness = 0;
+    float materialR = 0, materialG = 0, materialB = 0, fuzziness = 0, refractionIndex = 0;
     libconfig::Setting &albedo = material.lookup("albedo");
     albedo.lookupValue("r", materialR);
     albedo.lookupValue("g", materialG);
     albedo.lookupValue("b", materialB);
     material.lookupValue("fuzziness", fuzziness);
+    material.lookupValue("refractionIndex", refractionIndex);
     newMaterial->setAlbedo(Math::Color(materialR, materialG, materialB));
     newMaterial->setFuzziness(fuzziness);
+    newMaterial->setRefractionIndex(refractionIndex);
     return newMaterial;
 }
 

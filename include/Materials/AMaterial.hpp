@@ -31,8 +31,13 @@
                     _fuzz = fuzz < 0 ? 0 : fuzz > 1 ? 1 : fuzz;
                 }
 
+                void setRefractionIndex(const double refractionIndex) override final {
+                    _refractionIndex = refractionIndex;
+                }
+
             protected:
                 double _fuzz;
+                double _refractionIndex;
 
                 std::string _name;
 

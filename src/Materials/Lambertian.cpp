@@ -23,6 +23,8 @@ extern "C"
 RayTracer::Materials::Lambertian::Lambertian(const RayTracer::Math::Color &albedo)
 {
     _albedo = albedo;
+    _fuzz = 0.0;
+    _refractionIndex = 0.0;
     _name = "Lambertian";
 }
 

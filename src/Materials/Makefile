@@ -26,6 +26,13 @@ RM			=	rm -rf
 SRC			=	../Forms/HitRecord.cpp
 SRC			+=	../Ray.cpp
 
+SRC_DIELECTRIC	=	Dielectric.cpp
+SRC_DIELECTRIC	+=	$(SRC)
+
+OBJ_DIELECTRIC	=	$(SRC_DIELECTRIC:.cpp=.o)
+
+NAME_DIELECTRIC	=	../../libs/Materials/Dielectric.so
+
 SRC_LAMBERTIAN	=	Lambertian.cpp
 SRC_LAMBERTIAN	+=	$(SRC)
 
@@ -120,6 +127,9 @@ endef
 all:
 	@$(call check_math)
 	@printf "%b" "$(ERROR_COLOR)Compiling Materials...\n$(NO_COLOR)"
+	@printf "%b" "$(ERROR_COLOR)\tCompiling Dielectric...\n$(NO_COLOR)"
+	@make compile_dielectric -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_DIELECTRIC) $(OBJ_DIELECTRIC) $(INC) $(LIB)
 	@printf "%b" "$(ERROR_COLOR)\tCompiling Lambertian...\n$(NO_COLOR)"
 	@make compile_lambertian -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_LAMBERTIAN) $(OBJ_LAMBERTIAN) $(INC) $(LIB)
@@ -130,6 +140,8 @@ all:
 
 %.o: %.cpp
 	@$(call run_and_test, $(CXX) $(CXXFLAGS) -c $< -o $@ $(INC) $(LIB))
+
+compile_dielectric: $(OBJ_DIELECTRIC)
 
 compile_lambertian: $(OBJ_LAMBERTIAN)
 

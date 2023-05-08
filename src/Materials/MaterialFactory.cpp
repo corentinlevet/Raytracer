@@ -10,6 +10,7 @@
 MaterialPtr RayTracer::Materials::MaterialFactory::createMaterial(const std::string &name)
 {
     std::map<std::string, std::string> paths = {
+        {"Dielectric", "libs/Materials/Dielectric.so"},
         {"Lambertian", "libs/Materials/Lambertian.so"},
         {"Metal", "libs/Materials/Metal.so"}
     };

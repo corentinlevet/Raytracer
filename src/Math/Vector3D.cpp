@@ -135,3 +135,11 @@ RayTracer::Math::Vector3D RayTracer::Math::Vector3D::reflect(const RayTracer::Ma
 {
     return vector - 2 * dot(vector, normal) * normal;
 }
+
+RayTracer::Math::Vector3D RayTracer::Math::Vector3D::refract(const RayTracer::Math::Vector3D &uv, const RayTracer::Math::Vector3D &normal, double etaiOverEtat)
+{
+    auto cosTheta = fmin(dot(-uv, normal), 1.0);
+    RayTracer::Math::Vector3D rOutPerp = etaiOverEtat * (uv + cosTheta * normal);
+    RayTracer::Math::Vector3D rOutParallel = -sqrt(fabs(1.0 - rOutPerp.lengthSquared())) * normal;
+    return rOutPerp + rOutParallel;
+}
