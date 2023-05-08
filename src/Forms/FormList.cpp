@@ -12,7 +12,7 @@
 
 /* Constructors and destructors */
 
-RayTracer::Forms::FormList::FormList(const std::shared_ptr<RayTracer::Forms::IForm> &form)
+RayTracer::Forms::FormList::FormList(const FormPtr &form)
 {
     add(form);
 }
@@ -24,7 +24,7 @@ void RayTracer::Forms::FormList::clear()
     _forms.clear();
 }
 
-void RayTracer::Forms::FormList::add(const std::shared_ptr<RayTracer::Forms::IForm> &form)
+void RayTracer::Forms::FormList::add(const FormPtr &form)
 {
     _forms.push_back(std::move(form));
 }

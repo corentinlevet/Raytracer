@@ -44,6 +44,7 @@ INC			=	-I../../include/
 INC			+=	-I../../include/Forms
 INC			+=	-I../../include/Forms/3D
 INC			+=	-I../../include/Math
+INC			+=	-I../../include/Materials
 
 LIB         =   -L../../libs/Math -l:Math.a
 

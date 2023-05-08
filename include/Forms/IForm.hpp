@@ -13,7 +13,9 @@
     #include <memory>
     #include <string>
 
+    #include "IMaterial.hpp"
     #include "Point3D.hpp"
+    #include "Utils.hpp"
 
     namespace RayTracer {
         class Ray;
@@ -32,7 +34,7 @@
                  *
                  * @return std::string The type of the Form
                 **/
-                virtual std::string getType() const = 0;
+                virtual std::string getName() const = 0;
 
                 /**
                  * @brief Get the Color of the Form
@@ -47,6 +49,13 @@
                  * @param color The new color of the Form
                 **/
                 virtual void setColor(const std::tuple<short int, short int, short int> &color) = 0;
+
+                /**
+                 * @brief Get the Material of the Form
+                 *
+                 * @return RayTracer::Materials::IMaterial& The material of the Form
+                **/
+                virtual void setMaterial(const MaterialPtr &material) = 0;
 
                 virtual double getRadius() const = 0;
                 virtual RayTracer::Math::Point3D getCenter() const = 0;
@@ -64,5 +73,7 @@
                 virtual bool hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const = 0;
         };
     }
+
+    typedef std::shared_ptr<RayTracer::Forms::IForm> FormPtr;
 
 #endif /* !IFORM_HPP_ */

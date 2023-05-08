@@ -15,6 +15,7 @@
     #include <dlfcn.h>
     #include <string>
     #include <memory>
+    #include <iostream>
 
     class DLLoader {
         public:
@@ -29,13 +30,13 @@
              * @return std::unique_ptr<T> A pointer to the library
             **/
             template<typename T>
-            static std::unique_ptr<T> loadLibrary(const std::string &path) {
+            static std::unique_ptr<T> loadLibrary(const std::string &path, const std::string &type) {
                 void *handle = dlopen(path.c_str(), RTLD_LAZY);
 
                 if (!handle)
                     throw DLLoader::hardError("loadLibrary", "Failed to load library: " + std::string(dlerror()));
 
-                std::unique_ptr<T> (*entryPoint)() = reinterpret_cast<std::unique_ptr<T>(*)()>(dlsym(handle, "entryPoint"));
+                std::unique_ptr<T> (*entryPoint)() = reinterpret_cast<std::unique_ptr<T>(*)()>(dlsym(handle, ("entryPoint" + type).c_str()));
 
                 if (!entryPoint)
                     throw DLLoader::hardError("loadLibrary", "Failed to load entry point: " + std::string(dlerror()));

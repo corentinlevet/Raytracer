@@ -2,7 +2,7 @@
 ## EPITECH PROJECT, 2022
 ## Makefile
 ## File description:
-## Makefile for the Raytracer project
+## Makefile for the Materials of the Raytracer project
 ##
 
 ###############################################################################
@@ -11,8 +11,8 @@
 
 CXX			=	g++
 
-CXXFLAGS	=	-Wall -Wextra -std=c++20 -pedantic	\
-				-fPIC -fno-gnu-unique -ldl -lconfig++		\
+CXXFLAGS	=	-Wall -Wextra -Werror -std=c++20 -pedantic	\
+				-fPIC -fno-gnu-unique -shared
 
 AUTHOR		=	Corentin LEVET - Benjamin COTTONE - Hugo GRISEL\
 				- Jeremy CALOSSO-MERLINO
@@ -23,22 +23,29 @@ RM			=	rm -rf
 #                                    SOURCES                                  #
 ###############################################################################
 
-SRC		=	$(wildcard src/*.cpp)				\
-			$(wildcard src/Camera/*.cpp)		\
-			$(wildcard src/Forms/*.cpp)			\
-			src/Materials/MaterialFactory.cpp	\
+SRC			=	../Forms/HitRecord.cpp
+SRC			+=	../Ray.cpp
 
-OBJ		=	$(SRC:.cpp=.o)
+SRC_LAMBERTIAN	=	Lambertian.cpp
+SRC_LAMBERTIAN	+=	$(SRC)
 
-NAME	=	raytracer
+OBJ_LAMBERTIAN	=	$(SRC_LAMBERTIAN:.cpp=.o)
 
-INC		=	-I./include
-INC		+=	-I./include/Camera
-INC		+=	-I./include/Math
-INC		+=	-I./include/Materials
-INC		+=	-I./include/Forms
+NAME_LAMBERTIAN	=	../../libs/Materials/Lambertian.so
 
-LIB 	=	-L./libs/Math -l:Math.a
+SRC_METAL       =   Metal.cpp
+SRC_METAL       +=  $(SRC)
+
+OBJ_METAL       =   $(SRC_METAL:.cpp=.o)
+
+NAME_METAL      =   ../../libs/Materials/Metal.so
+
+INC			=	-I../../include/
+INC			+=	-I../../include/Forms
+INC			+=	-I../../include/Math
+INC			+=	-I../../include/Materials
+
+LIB         =   -L../../libs/Math -l:Math.a
 
 ###############################################################################
 #                                MAKEFILE LOGIC                               #
@@ -80,7 +87,7 @@ ifeq ($(shell git rev-parse HEAD &>/dev/null; echo $$?),0)
 endif
 
 define run_and_test
-	printf "%b%-88b" "$(COM_COLOR)$(COM_STRING) "						\
+	printf "\t%b%-80b" "$(COM_COLOR)$(COM_STRING) "						\
 		"$(OBJ_COLOR)$(@F)$(NO_COLOR)"; 								\
 	$(RUN_CMD);															\
 	if [ $$RESULT -ne 0 ]; then											\
@@ -99,52 +106,43 @@ define run_and_test
 	exit $$RESULT
 endef
 
+define check_math
+	if [ ! -f ../../libs/Math/Math.a ]; then							\
+		make -s -C ../Math;												\
+		printf "\n";													\
+	fi;
+endef
+
 ###############################################################################
 #                                 Makefile rules                              #
 ###############################################################################
 
-all:	header $(OBJ) math forms materials
-	@$(CXX) $(OBJ) -o $(NAME) $(CXXFLAGS) $(INC) $(LIB)
-	@printf "\n%b" "$(OK_COLOR)Compilation done !\n$(NO_COLOR)"
+all:
+	@$(call check_math)
+	@printf "%b" "$(ERROR_COLOR)Compiling Materials...\n$(NO_COLOR)"
+	@printf "%b" "$(ERROR_COLOR)\tCompiling Lambertian...\n$(NO_COLOR)"
+	@make compile_lambertian -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_LAMBERTIAN) $(OBJ_LAMBERTIAN) $(INC) $(LIB)
+	@printf "%b" "$(ERROR_COLOR)\tCompiling Metal...\n$(NO_COLOR)"
+	@make compile_metal -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_METAL) $(OBJ_METAL) $(INC) $(LIB)
+	@printf "%b" "$(OK_COLOR)Materials compiled !\n$(NO_COLOR)"
 
-src/%.o:	src/%.cpp
-	@$(call run_and_test, $(CXX) $(CXXFLAGS) $(INC) $(LIB) -c $< -o $@)
+%.o: %.cpp
+	@$(call run_and_test, $(CXX) $(CXXFLAGS) -c $< -o $@ $(INC) $(LIB))
 
-header:
-	@printf "\n%b" "$(OBJ_COLOR)Name\t:\t$(WARN_COLOR)$(NAME)\n"
+compile_lambertian: $(OBJ_LAMBERTIAN)
 
-	@printf "%b" "$(OBJ_COLOR)Author\t:\t$(WARN_COLOR)$(AUTHOR)\n"
-	@printf "%b" "$(OBJ_COLOR)Date\t:\t$(WARN_COLOR)$(DATE)\n\033[m"
-	@printf "%b" "$(OBJ_COLOR)CC\t:\t$(WARN_COLOR)$(CXX)\n\033[m"
-	@printf "%b" "$(OBJ_COLOR)Flags\t:\t$(WARN_COLOR)$(CXXFLAGS)\n\033[m"
-	@echo
-
-forms:
-	@printf "\n"
-	@make -s -C src/Forms
-
-math:
-	@printf "\n"
-	@make -s -C src/Math
-
-materials:
-	@printf "\n"
-	@make -s -C src/Materials
+compile_metal: $(OBJ_METAL)
 
 clean:
-	@make -s clean -C src/Forms &>/dev/null
-	@make -s clean -C src/Math &>/dev/null
-	@make -s clean -C src/Materials &>/dev/null
-	@$(RM) $(OBJ)
-	@printf "%-95b%b" "$(CLEAN_COLOR)clean" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
+	@$(RM) $(OBJ_LAMBERTIAN) $(OBJ_METAL)
+	@printf "%-95b%b" "$(CLEAN_COLOR)Materials cleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
-fclean:	clean
-	@make -s fclean -C src/Forms &>/dev/null
-	@make -s fclean -C src/Math &>/dev/null
-	@make -s fclean -C src/Materials &>/dev/null
-	@$(RM) $(NAME)
-	@printf "%-95b%b" "$(FCLEAN_COLOR)fclean" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
+fclean: clean
+	@$(RM) $(NAME_LAMBERTIAN) $(NAME_METAL)
+	@printf "%-95b%b" "$(FCLEAN_COLOR)Materials fcleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
-re:	fclean all
+re: fclean all
 
-.PHONY:	all clean fclean re
+.PHONY: all clean fclean re

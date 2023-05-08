@@ -12,7 +12,7 @@
 
 extern "C"
 {
-    std::shared_ptr<RayTracer::Forms::IForm> entryPoint()
+    FormPtr entryPointForm()
     {
         return std::make_unique<RayTracer::Forms::Sphere>();
     }
@@ -20,9 +20,10 @@ extern "C"
 
 /* Constructor */
 
-RayTracer::Forms::Sphere::Sphere(double radius, const RayTracer::Math::Point3D &center) : _radius(radius), _center(center)
+RayTracer::Forms::Sphere::Sphere(double radius, const RayTracer::Math::Point3D &center, const std::shared_ptr<RayTracer::Materials::IMaterial> &material) : _radius(radius), _center(center)
 {
-    _type = "Sphere";
+    _material = material;
+    _name = "Sphere";
 }
 
 /* Getters and setters */
@@ -72,6 +73,7 @@ bool RayTracer::Forms::Sphere::hits(const RayTracer::Ray &ray, double t_min, dou
     Math::Point3D outwardNormal = (hitRecord.getPoint() - _center) / _radius;
     Math::Vector3D outwardNormalVector(outwardNormal.getX(), outwardNormal.getY(), outwardNormal.getZ());
     hitRecord.setFaceNormal(ray, outwardNormalVector);
+    hitRecord.setMaterial(_material);
 
     return true;
 }

@@ -45,7 +45,7 @@
 
     extern "C"
     {
-        std::shared_ptr<RayTracer::Forms::IForm> entryPoint();
+        FormPtr entryPointForm();
     }
 
 #endif /* !CUBE_HPP_ */

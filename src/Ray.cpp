@@ -8,6 +8,7 @@
 #include "Ray.hpp"
 
 #include "HitRecord.hpp"
+#include "FormList.hpp"
 
 /* Constructors and destructors */
 
@@ -50,12 +51,20 @@ RayTracer::Math::Color RayTracer::Ray::rayColor(const RayTracer::Ray &ray, const
         return RayTracer::Math::Color(0, 0, 0);
 
     if (world.hit(ray, 0.001, infinity, record)) {
-        RayTracer::Math::Vector3D normal(record.getNormal());
-        RayTracer::Math::Vector3D vectorPoint(record.getPoint().getX(), record.getPoint().getY(), record.getPoint().getZ());
+        if (record.getMaterial() == nullptr) {
+            RayTracer::Math::Vector3D normal(record.getNormal());
+            RayTracer::Math::Vector3D vectorPoint(record.getPoint().getX(), record.getPoint().getY(), record.getPoint().getZ());
 
-        RayTracer::Math::Vector3D target = vectorPoint + normal + Math::Vector3D::randomUnitVector();
+            RayTracer::Math::Vector3D target = vectorPoint + normal + Math::Vector3D::randomUnitVector();
 
-        return rayColor(RayTracer::Ray(record.getPoint(), target - vectorPoint), world, depth - 1) * 0.5;
+            return rayColor(RayTracer::Ray(record.getPoint(), target - vectorPoint), world, depth - 1) * 0.5;
+        }
+        RayTracer::Ray scattered;
+        RayTracer::Math::Color attenuation;
+
+        if (record.getMaterial()->scatter(ray, record, attenuation, scattered))
+            return attenuation * rayColor(scattered, world, depth - 1);
+        return RayTracer::Math::Color(0, 0, 0);
     }
 
     RayTracer::Math::Vector3D unitDirection = unitVector(_direction);

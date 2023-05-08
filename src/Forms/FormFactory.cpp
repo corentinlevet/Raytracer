@@ -14,7 +14,7 @@ FormPtr RayTracer::Forms::FormFactory::createForm(const std::string &name)
         {"Sphere", "libs/Forms/3D/Sphere.so"}
     };
 
-    std::unique_ptr<RayTracer::Forms::IForm> library = DLLoader::loadLibrary<RayTracer::Forms::IForm>(paths.at(name));
+    FormPtr library = DLLoader::loadLibrary<RayTracer::Forms::IForm>(paths.at(name), "Form");
 
     return library;
 }

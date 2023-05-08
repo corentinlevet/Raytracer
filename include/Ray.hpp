@@ -11,7 +11,10 @@
     #define RAY_HPP_
 
     #include "Point3D.hpp"
-    #include "FormList.hpp"
+
+    namespace RayTracer::Forms {
+        class FormList;
+    }
 
     namespace RayTracer {
         class Ray {

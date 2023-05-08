@@ -124,3 +124,14 @@ RayTracer::Math::Vector3D RayTracer::Math::Vector3D::randomUnitVector()
 {
     return unitVector(randomInUnitSphere());
 }
+
+bool RayTracer::Math::Vector3D::nearZero() const
+{
+    const auto s = 1e-8;
+    return (fabs(_x) < s) && (fabs(_y) < s) && (fabs(_z) < s);
+}
+
+RayTracer::Math::Vector3D RayTracer::Math::Vector3D::reflect(const RayTracer::Math::Vector3D &vector, const RayTracer::Math::Vector3D &normal)
+{
+    return vector - 2 * dot(vector, normal) * normal;
+}

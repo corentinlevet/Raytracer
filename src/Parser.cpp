@@ -10,6 +10,7 @@
 #include "Camera.hpp"
 #include "FormList.hpp"
 #include "FormFactory.hpp"
+#include "MaterialFactory.hpp"
 
 #include <iostream>
 
@@ -56,6 +57,7 @@ RayTracer::Forms::FormList RayTracer::Parser::getWorld()
 {
     RayTracer::Forms::FormList world;
     FormPtr form = nullptr;
+    MaterialPtr material = nullptr;
 
     for (auto &p : _config.lookup("primitives")) {
         std::string name = p.getName();
@@ -72,10 +74,14 @@ RayTracer::Forms::FormList RayTracer::Parser::getWorld()
                 form->setCenter(Math::Point3D(sphereX, sphereY, sphereZ));
                 form->setRadius((double) sphereRadius);
                 form->setColor(std::make_tuple(sphereColorR, sphereColorG, sphereColorB));
+                material = MaterialFactory::createMaterial("Metal");
+                material->setAlbedo(Math::Color(0.8, 0.6, 0.2));
+                form->setMaterial(material);
             }
             if (form != nullptr) {
                 world.add(form);
                 form = nullptr;
+                material = nullptr;
             }
         }
     }

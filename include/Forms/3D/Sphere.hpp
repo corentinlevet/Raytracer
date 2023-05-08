@@ -15,7 +15,7 @@
     namespace RayTracer::Forms {
         class Sphere : public AForm {
             public:
-                Sphere(double radius = 0, const RayTracer::Math::Point3D &center = {0, 0, 0});
+                Sphere(double radius = 0, const RayTracer::Math::Point3D &center = {0, 0, 0}, const std::shared_ptr<RayTracer::Materials::IMaterial> &material = nullptr);
                 ~Sphere() = default;
 
                 /* Getters and setters */
@@ -32,13 +32,14 @@
 
             private:
                 double _radius;
+
                 RayTracer::Math::Point3D _center;
         };
     }
 
     extern "C"
     {
-        std::shared_ptr<RayTracer::Forms::IForm> entryPoint();
+        FormPtr entryPointForm();
     }
 
 #endif /* !SPHERE_HPP_ */

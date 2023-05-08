@@ -10,6 +10,8 @@
 #ifndef HITRECORD_HPP_
     #define HITRECORD_HPP_
 
+    #include "IMaterial.hpp"
+
     #include "Point3D.hpp"
 
     namespace RayTracer {
@@ -47,6 +49,10 @@
                     return _t;
                 }
 
+                std::shared_ptr<RayTracer::Materials::IMaterial> getMaterial() const {
+                    return _material;
+                }
+
                 const RayTracer::Math::Point3D &getPoint() const {
                     return _point;
                 }
@@ -61,6 +67,10 @@
 
                 void setT(double t) {
                     _t = t;
+                }
+
+                void setMaterial(const std::shared_ptr<RayTracer::Materials::IMaterial> &material) {
+                    _material = material;
                 }
 
                 void setPoint(const RayTracer::Math::Point3D &point) {
@@ -79,6 +89,8 @@
                 bool _frontFace;
 
                 double _t;
+
+                std::shared_ptr<RayTracer::Materials::IMaterial> _material;
 
                 RayTracer::Math::Point3D _point;
                 RayTracer::Math::Vector3D _normal;

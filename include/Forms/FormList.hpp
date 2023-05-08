@@ -21,17 +21,17 @@
                 FormList() = default;
                 ~FormList() = default;
 
-                FormList(const std::shared_ptr<RayTracer::Forms::IForm>& form);
+                FormList(const FormPtr& form);
 
                 /* Methods */
 
                 void clear();
-                void add(const std::shared_ptr<RayTracer::Forms::IForm>& form);
+                void add(const FormPtr& form);
 
                 bool hit(const RayTracer::Ray& ray, double t_min, double t_max, Forms::HitRecord& hitRecord) const;
 
             private:
-                std::vector<std::shared_ptr<RayTracer::Forms::IForm>> _forms;
+                std::vector<FormPtr> _forms;
         };
     }
 

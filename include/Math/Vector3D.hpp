@@ -134,6 +134,20 @@
                 **/
                 static Vector3D randomUnitVector();
 
+                /**
+                 * @brief Tells if the vector is near zero
+                 * @return True if the vector is near zero, false otherwise
+                **/
+                bool nearZero() const;
+
+                /**
+                 * @brief Reflects the vector
+                 * @param vector The vector to reflect
+                 * @param normal The normal
+                 * @return The reflected vector
+                **/
+                static Vector3D reflect(const Vector3D &vector, const Vector3D &normal);
+
             private:
                 double _x;
                 double _y;
