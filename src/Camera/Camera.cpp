@@ -13,9 +13,9 @@
 
 /* Constructors and destructors */
 
-RayTracer::Camera::Camera::Camera(double fov, std::tuple<int, int> resolution, std::tuple<int, int, int> rotation, const RayTracer::Math::Point3D &origin, const RayTracer::Camera::Rectangle &screen) : _fov(fov), _resolution(resolution), _rotation(rotation), _origin(origin), _screen(screen)
+RayTracer::Camera::Camera::Camera(double aperture, double aspectRatio, double fov, std::tuple<int, int> resolution, std::tuple<int, int, int> rotation, const RayTracer::Math::Point3D &origin, const RayTracer::Camera::Rectangle &screen, const RayTracer::Math::Vector3D u, const RayTracer::Math::Vector3D v, const RayTracer::Math::Vector3D w) : _aspectRatio(aspectRatio), _fov(fov), _resolution(resolution), _rotation(rotation), _origin(origin), _screen(screen), _u(u), _v(v), _w(w)
 {
-    _aspectRatio = 16.0 / 9.0;
+    _lensRadius = aperture / 2.0;
     _focalLength = 1.0;
     _viewportHeight = 2.0;
     _viewportWidth = _aspectRatio * _viewportHeight;
@@ -117,10 +117,19 @@ void RayTracer::Camera::Camera::setScreen(const RayTracer::Camera::Rectangle &re
 
 RayTracer::Ray RayTracer::Camera::Camera::ray(double u, double v) const
 {
+    RayTracer::Math::Vector3D rd = _lensRadius * RayTracer::Math::Vector3D::randomInUnitDisk();
+    RayTracer::Math::Vector3D offset = _u * rd.getX() + _v * rd.getY();
+
+    RayTracer::Math::Point3D off(offset.getX(), offset.getY(), offset.getZ());
+
     RayTracer::Math::Point3D screenPoint(_screen.getOrigin());
     screenPoint += u * _screen.getHorizontal();
     screenPoint += v * _screen.getVertical();
     screenPoint -= _origin;
+    screenPoint -= off;
+
     RayTracer::Math::Vector3D screenVector(screenPoint.getX(), screenPoint.getY(), screenPoint.getZ());
-    return RayTracer::Ray(_origin, screenVector);
+
+    return RayTracer::Ray(_origin + off, screenVector);
+
 }

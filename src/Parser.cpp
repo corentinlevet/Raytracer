@@ -35,6 +35,9 @@ RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera
     int positionX = _config.lookup("camera.position.x"), positionY = _config.lookup("camera.position.y"), positionZ = _config.lookup("camera.position.z");
     int directionX = _config.lookup("camera.direction.x"), directionY = _config.lookup("camera.direction.y"), directionZ = _config.lookup("camera.direction.z");
     double fov = _config.lookup("camera.fieldOfView");
+    double aspectRatioX = _config.lookup("camera.aspectRatio.width"), aspectRatioY = _config.lookup("camera.aspectRatio.height");
+    double aspectRatio = aspectRatioX / aspectRatioY;
+    double aperture = _config.lookup("camera.aperture");
 
     double theta = degreesToRadians(fov);
     double h = tan(theta / 2);
@@ -45,20 +48,27 @@ RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera
     RayTracer::Math::Vector3D orig(origin.getX(), origin.getY(), origin.getZ());
     RayTracer::Math::Vector3D lookAt(directionX, directionY, directionZ);
 
+    auto focusDist = (orig - lookAt).length();
+
     auto w = unitVector(orig - lookAt);
     auto u = unitVector(cross(RayTracer::Math::Vector3D(0, 1, 0), w));
     auto v = cross(w, u);
 
-    RayTracer::Math::Vector3D horizontal(viewportWidth * u.getX(), viewportWidth * u.getY(), viewportWidth * u.getZ());
-    RayTracer::Math::Vector3D vertical(viewportHeight * v.getX(), viewportHeight * v.getY(), viewportHeight * v.getZ());
-    RayTracer::Math::Vector3D lowerLeftCorner = orig - horizontal / 2 - vertical / 2 - w;
+    RayTracer::Math::Vector3D horizontal(focusDist * viewportWidth * u.getX(), focusDist * viewportWidth * u.getY(), focusDist * viewportWidth * u.getZ());
+    RayTracer::Math::Vector3D vertical(focusDist * viewportHeight * v.getX(), focusDist * viewportHeight * v.getY(), focusDist * viewportHeight * v.getZ());
+    RayTracer::Math::Vector3D lowerLeftCorner = orig - horizontal / 2 - vertical / 2 - focusDist * w;
 
     RayTracer::Camera::Camera camera(
+        aperture,
+        aspectRatio,
         fov,
         std::tuple<int, int>(width, height),
         std::tuple<int, int, int>(directionX, directionY, directionZ),
         origin,
-        RayTracer::Camera::Rectangle(Math::Point3D(lowerLeftCorner.getX(), lowerLeftCorner.getY(), lowerLeftCorner.getZ()), horizontal, vertical)
+        RayTracer::Camera::Rectangle(Math::Point3D(lowerLeftCorner.getX(), lowerLeftCorner.getY(), lowerLeftCorner.getZ()), horizontal, vertical),
+        u,
+        v,
+        w
     );
 
     camera.setViewportHeight(viewportHeight);

@@ -129,6 +129,12 @@
                 static Vector3D randomInUnitSphere();
 
                 /**
+                 * @brief Gives a random vector in a unit disk
+                 * @return A random vector in a unit disk
+                **/
+                static Vector3D randomInUnitDisk();
+
+                /**
                  * @brief Gives a random unit vector
                  * @return A random unit vector
                 **/

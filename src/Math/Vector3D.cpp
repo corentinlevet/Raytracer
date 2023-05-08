@@ -120,6 +120,16 @@ RayTracer::Math::Vector3D RayTracer::Math::Vector3D::randomInUnitSphere()
     }
 }
 
+RayTracer::Math::Vector3D RayTracer::Math::Vector3D::randomInUnitDisk()
+{
+    while (true) {
+        auto p = Vector3D(randomDouble(-1, 1), randomDouble(-1, 1), 0);
+        if (p.lengthSquared() >= 1)
+            continue;
+        return p;
+    }
+}
+
 RayTracer::Math::Vector3D RayTracer::Math::Vector3D::randomUnitVector()
 {
     return unitVector(randomInUnitSphere());
