@@ -12,11 +12,11 @@
 
 /* Constructors and destructors */
 
-RayTracer::Ray::Ray(const RayTracer::Math::Point3D &origin, const RayTracer::Math::Vector3D &direction) : _origin(origin), _direction(direction) {}
+RayTracer::Ray::Ray(const RayTracer::Math::Point3D &origin, const RayTracer::Math::Vector3D &direction, const double time) : _origin(origin), _direction(direction), _time(time) {}
 
-RayTracer::Ray::Ray(const RayTracer::Ray &other) : _origin(other._origin), _direction(other._direction) {}
+RayTracer::Ray::Ray(const RayTracer::Ray &other) : _origin(other._origin), _direction(other._direction), _time(other._time) {}
 
-RayTracer::Ray::Ray(RayTracer::Ray &&other) : _origin(other._origin), _direction(other._direction) {}
+RayTracer::Ray::Ray(RayTracer::Ray &&other) : _origin(other._origin), _direction(other._direction), _time(other._time) {}
 
 /* Operators */
 

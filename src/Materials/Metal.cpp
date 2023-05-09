@@ -33,7 +33,7 @@ RayTracer::Materials::Metal::Metal(const RayTracer::Math::Color &albedo, const d
 bool RayTracer::Materials::Metal::scatter(const RayTracer::Ray &ray, const RayTracer::Forms::HitRecord &record, RayTracer::Math::Color &attenuation, RayTracer::Ray &scattered) const
 {
     RayTracer::Math::Vector3D reflected = RayTracer::Math::Vector3D::reflect(unitVector(ray.getDirection()), record.getNormal());
-    scattered = RayTracer::Ray(record.getPoint(), reflected + _fuzz * RayTracer::Math::Vector3D::randomInUnitSphere());
+    scattered = RayTracer::Ray(record.getPoint(), reflected + _fuzz * RayTracer::Math::Vector3D::randomInUnitSphere(), ray.getTime());
     attenuation = _albedo;
 
     return (dot(scattered.getDirection(), record.getNormal()) > 0);

@@ -55,7 +55,7 @@ bool RayTracer::Materials::Dielectric::scatter(const RayTracer::Ray &ray, const 
     else
         direction = Math::Vector3D::refract(unitDirection, record.getNormal(), refractionRatio);
 
-    scattered = RayTracer::Ray(record.getPoint(), direction);
+    scattered = RayTracer::Ray(record.getPoint(), direction, ray.getTime());
 
     return true;
 }

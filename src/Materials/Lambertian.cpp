@@ -38,7 +38,7 @@ bool RayTracer::Materials::Lambertian::scatter(const RayTracer::Ray &ray, const 
     if (scatterDirection.nearZero())
         scatterDirection = record.getNormal();
 
-    scattered = RayTracer::Ray(record.getPoint(), scatterDirection);
+    scattered = RayTracer::Ray(record.getPoint(), scatterDirection, ray.getTime());
     attenuation = _albedo;
 
     return true;

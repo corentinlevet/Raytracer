@@ -62,6 +62,8 @@ RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera
         aperture,
         aspectRatio,
         fov,
+        0,
+        0,
         std::tuple<int, int>(width, height),
         std::tuple<int, int, int>(directionX, directionY, directionZ),
         origin,

@@ -63,6 +63,12 @@
                 virtual void setRadius(double radius) = 0;
                 virtual void setCenter(const RayTracer::Math::Point3D &center) = 0;
 
+                virtual void setCenter0(const RayTracer::Math::Point3D &center0) = 0;
+                virtual void setCenter1(const RayTracer::Math::Point3D &center1) = 0;
+
+                virtual void setTime0(double time0) = 0;
+                virtual void setTime1(double time1) = 0;
+
                 /**
                  * @brief Checks if the Ray hits the Form
                  *

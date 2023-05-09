@@ -27,7 +27,7 @@
                  * @param origin The origin of the ray
                  * @param direction The direction of the ray
                 **/
-                Ray(const Math::Point3D &origin = Math::Point3D(), const Math::Vector3D &direction = Math::Vector3D());
+                Ray(const Math::Point3D &origin = Math::Point3D(), const Math::Vector3D &direction = Math::Vector3D(), double time = 0.0);
 
                 /**
                  * @brief Constructs a new Ray object by giving another Ray object
@@ -58,6 +58,10 @@
 
                 const Math::Vector3D &getDirection() const {
                     return _direction;
+                }
+
+                const double &getTime() const {
+                    return _time;
                 }
 
                 void setOrigin(const Math::Point3D &origin) {
@@ -94,6 +98,8 @@
             private:
                 Math::Point3D _origin;
                 Math::Vector3D _direction;
+
+                double _time;
         };
     }
 

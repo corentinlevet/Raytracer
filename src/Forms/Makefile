@@ -23,22 +23,29 @@ RM			=	rm -rf
 #                                    SOURCES                                  #
 ###############################################################################
 
-SRC			=	HitRecord.cpp
-SRC			+=	../Ray.cpp
+SRC					=	HitRecord.cpp
+SRC					+=	../Ray.cpp
 
-SRC_CUBE	=	3D/Cube.cpp
-SRC_CUBE	+=	$(SRC)
+SRC_CUBE			=	3D/Cube.cpp
+SRC_CUBE			+=	$(SRC)
 
-OBJ_CUBE	=	$(SRC_CUBE:.cpp=.o)
+OBJ_CUBE			=	$(SRC_CUBE:.cpp=.o)
 
-NAME_CUBE	=	../../libs/Forms/3D/Cube.so
+NAME_CUBE			=	../../libs/Forms/3D/Cube.so
 
-SRC_SPHERE	=	3D/Sphere.cpp
-SRC_SPHERE	+=	$(SRC)
+SRC_MOVING_SPHERE	=	3D/MovingSphere.cpp
+SRC_MOVING_SPHERE	+=	$(SRC)
 
-OBJ_SPHERE	=	$(SRC_SPHERE:.cpp=.o)
+OBJ_MOVING_SPHERE	=	$(SRC_MOVING_SPHERE:.cpp=.o)
 
-NAME_SPHERE	=	../../libs/Forms/3D/Sphere.so
+NAME_MOVING_SPHERE	=	../../libs/Forms/3D/MovingSphere.so
+
+SRC_SPHERE			=	3D/Sphere.cpp
+SRC_SPHERE			+=	$(SRC)
+
+OBJ_SPHERE			=	$(SRC_SPHERE:.cpp=.o)
+
+NAME_SPHERE			=	../../libs/Forms/3D/Sphere.so
 
 INC			=	-I../../include/
 INC			+=	-I../../include/Forms
@@ -124,6 +131,9 @@ all:
 	@printf "%b" "$(ERROR_COLOR)\tCompiling Cube...\n$(NO_COLOR)"
 	@make compile_cube -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_CUBE) $(OBJ_CUBE) $(INC) $(LIB)
+	@printf "%b" "$(ERROR_COLOR)\tCompiling MovingSphere...\n$(NO_COLOR)"
+	@make compile_movingsphere -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_MOVING_SPHERE) $(OBJ_MOVING_SPHERE) $(INC) $(LIB)
 	@printf "%b" "$(ERROR_COLOR)\tCompiling Sphere...\n$(NO_COLOR)"
 	@make compile_sphere -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_SPHERE) $(OBJ_SPHERE) $(INC) $(LIB)
@@ -134,14 +144,16 @@ all:
 
 compile_cube: $(OBJ_CUBE)
 
+compile_movingsphere: $(OBJ_MOVING_SPHERE)
+
 compile_sphere: $(OBJ_SPHERE)
 
 clean:
-	@$(RM) $(OBJ_CUBE) $(OBJ_SPHERE)
+	@$(RM) $(OBJ_CUBE) $(OBJ_MOVING_SPHERE) $(OBJ_SPHERE)
 	@printf "%-95b%b" "$(CLEAN_COLOR)Forms cleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 fclean: clean
-	@$(RM) $(NAME_CUBE) $(NAME_SPHERE)
+	@$(RM) $(NAME_CUBE) $(NAME_MOVING_SPHERE) $(NAME_SPHERE)
 	@printf "%-95b%b" "$(FCLEAN_COLOR)Forms fcleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 re: fclean all

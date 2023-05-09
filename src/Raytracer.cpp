@@ -37,18 +37,29 @@ RayTracer::Forms::FormList RayTracer::Raytracer::randomScene()
 
             if ((center - RayTracer::Math::Point3D(4, 0.2, 0)).length() > 0.9) {
                 MaterialPtr sphereMaterial;
-                FormPtr sphere = FormFactory::createForm("Sphere");
-                sphere->setCenter(center);
-                sphere->setRadius(0.2);
+                FormPtr sphere;
 
                 if (chooseMat < 0.8) {
                     // Diffuse
+
+                    auto center2 = center + RayTracer::Math::Point3D(0, randomDouble(0, 0.5), 0);
+
+                    sphere = FormFactory::createForm("MovingSphere");
+                    sphere->setCenter0(center);
+                    sphere->setCenter1(center2);
+                    sphere->setTime0(0.0);
+                    sphere->setTime1(1.0);
+                    sphere->setRadius(0.2);
 
                     auto albedo = RayTracer::Math::Color(randomDouble(), randomDouble(), randomDouble()) * RayTracer::Math::Color(randomDouble(), randomDouble(), randomDouble());
                     sphereMaterial = MaterialFactory::createMaterial("Lambertian");
                     sphereMaterial->setAlbedo(albedo);
                 } else if (chooseMat < 0.95) {
                     // Metal
+
+                    sphere = FormFactory::createForm("Sphere");
+                    sphere->setCenter(center);
+                    sphere->setRadius(0.2);
 
                     auto albedo = RayTracer::Math::Color(randomDouble(0.5, 1), randomDouble(0.5, 1), randomDouble(0.5, 1));
                     auto fuzziness = randomDouble(0, 0.5);
@@ -57,6 +68,10 @@ RayTracer::Forms::FormList RayTracer::Raytracer::randomScene()
                     sphereMaterial->setFuzziness(fuzziness);
                 } else {
                     // Glass
+
+                    sphere = FormFactory::createForm("Sphere");
+                    sphere->setCenter(center);
+                    sphere->setRadius(0.2);
 
                     sphereMaterial = MaterialFactory::createMaterial("Dielectric");
                     sphereMaterial->setRefractionIndex(1.5);
@@ -155,8 +170,8 @@ RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
     try {
         RayTracer::Parser parser(sceneFile);
         _camera = parser.getCamera(_camera);
-        _world = parser.getWorld();
-        // _world = randomScene();
+        // _world = parser.getWorld();
+        _world = randomScene();
     } catch (...) {
         throw RayTracer::Raytracer::hardError("Raytracer", "Error while parsing the scene file");
     }
