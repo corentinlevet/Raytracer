@@ -120,7 +120,7 @@ void RayTracer::Raytracer::run()
     std::cout << "255" << std::endl;
 
     for (int y = imageHeight - 1; y >= 0; y--) {
-        std::cerr << "\rScanlines remaining: " << y << std::flush;
+        std::cerr << "\rScanlines remaining: " << y << " " << std::flush;
         for (int x = 0; x < imageWidth; x++) {
             if (antiAliasing) {
                 // ANTI-ALIASING
