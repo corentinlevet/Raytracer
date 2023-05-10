@@ -194,38 +194,32 @@ void RayTracer::Raytracer::run()
     const int imageWidth = std::get<0>(resolution);
     const int imageHeight = static_cast<int>(std::get<1>(resolution) / _camera.getAspectRatio());
 
-    const int samplesPerPixel = 250;
-    const int maxDepth = 50;
+    _sfml.initWindow(imageWidth, imageHeight);
 
-    const bool antiAliasing = true; // TODO: add anti-aliasing if needed
+    const int samplesPerPixel = 100;
+    const int maxDepth = 50;
 
     std::cout << imageWidth << " " << imageHeight << std::endl;
     std::cout << "255" << std::endl;
 
+    std::vector<RayTracer::Math::Color> pixelColors(imageWidth);
+
     for (int y = imageHeight - 1; y >= 0; y--) {
         std::cerr << "\rScanlines remaining: " << y << " " << std::flush;
         for (int x = 0; x < imageWidth; x++) {
-            if (antiAliasing) {
-                // ANTI-ALIASING
-
-                RayTracer::Math::Color pixelColor(0, 0, 0);
-                for (int s = 0; s < samplesPerPixel; s++) {
-                    double u = (x + randomDouble()) / (imageWidth - 1);
-                    double v = (y + randomDouble()) / (imageHeight - 1);
-                    RayTracer::Ray ray = _camera.ray(u, v);
-                    pixelColor += ray.rayColor(ray, _world, maxDepth);
-                }
-                pixelColor.writeColor(std::cout, samplesPerPixel, antiAliasing);
-            } else {
-                // NO ANTI-ALIASING
-
-                double u = double(x) / (imageWidth - 1);
-                double v = double(y) / (imageHeight - 1);
+            RayTracer::Math::Color pixelColor(0, 0, 0);
+            for (int s = 0; s < samplesPerPixel; s++) {
+                double u = (x + randomDouble()) / (imageWidth - 1);
+                double v = (y + randomDouble()) / (imageHeight - 1);
                 RayTracer::Ray ray = _camera.ray(u, v);
-                RayTracer::Math::Color color = ray.rayColor(ray, _world, maxDepth);
-                color.writeColor(std::cout, samplesPerPixel, antiAliasing);
+                pixelColor += ray.rayColor(ray, _world, maxDepth);
             }
+            pixelColor.writeColor(std::cout, samplesPerPixel);
+            pixelColors.push_back(pixelColor);
         }
+        if (_sfml.isWindowOpen())
+            _sfml.printPixels(pixelColors, imageWidth, imageHeight - y - 1, samplesPerPixel);
+        pixelColors.clear();
     }
 
     std::cerr << "\nDone." << std::endl;

@@ -14,6 +14,7 @@
 
     #include "Camera.hpp"
     #include "FormList.hpp"
+    #include "SFML.hpp"
 
     namespace RayTracer {
         class Raytracer {
@@ -43,6 +44,8 @@
                 RayTracer::Camera::Camera _camera;
 
                 RayTracer::Forms::FormList _world;
+
+                RayTracer::SFML _sfml;
         };
     }
 
