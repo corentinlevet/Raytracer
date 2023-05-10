@@ -26,6 +26,7 @@ RayTracer::Materials::Metal::Metal(const RayTracer::Math::Color &albedo, const d
     _fuzz = fuzz < 0 ? 0 : fuzz > 1 ? 1 : fuzz;
     _refractionIndex = 0.0;
     _name = "Metal";
+    _texture = nullptr;
 }
 
 /* Public Methods */

@@ -30,7 +30,7 @@
                  * @param point The hit point
                  * @param normal The normal vector of the hit point
                 **/
-                HitRecord(double t = 0.0, const RayTracer::Math::Point3D &point = RayTracer::Math::Point3D(), const RayTracer::Math::Vector3D &normal = RayTracer::Math::Vector3D());
+                HitRecord(double t = 0.0, double u = 0.0, double v = 0.0, const RayTracer::Math::Point3D &point = RayTracer::Math::Point3D(), const RayTracer::Math::Vector3D &normal = RayTracer::Math::Vector3D());
 
                 /**
                  * @brief Destroys the HitRecord object
@@ -47,6 +47,14 @@
 
                 double getT() const {
                     return _t;
+                }
+
+                double getU() const {
+                    return _u;
+                }
+
+                double getV() const {
+                    return _v;
                 }
 
                 std::shared_ptr<RayTracer::Materials::IMaterial> getMaterial() const {
@@ -69,6 +77,14 @@
                     _t = t;
                 }
 
+                void setU(double u) {
+                    _u = u;
+                }
+
+                void setV(double v) {
+                    _v = v;
+                }
+
                 void setMaterial(const std::shared_ptr<RayTracer::Materials::IMaterial> &material) {
                     _material = material;
                 }
@@ -89,6 +105,8 @@
                 bool _frontFace;
 
                 double _t;
+                double _u;
+                double _v;
 
                 std::shared_ptr<RayTracer::Materials::IMaterial> _material;
 

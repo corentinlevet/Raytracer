@@ -34,6 +34,7 @@ OBJ_DIELECTRIC	=	$(SRC_DIELECTRIC:.cpp=.o)
 NAME_DIELECTRIC	=	../../libs/Materials/Dielectric.so
 
 SRC_LAMBERTIAN	=	Lambertian.cpp
+SRC_LAMBERTIAN	+=	../Textures/TextureFactory.cpp
 SRC_LAMBERTIAN	+=	$(SRC)
 
 OBJ_LAMBERTIAN	=	$(SRC_LAMBERTIAN:.cpp=.o)
@@ -51,6 +52,7 @@ INC			=	-I../../include/
 INC			+=	-I../../include/Forms
 INC			+=	-I../../include/Math
 INC			+=	-I../../include/Materials
+INC			+=	-I../../include/Textures
 
 LIB         =   -L../../libs/Math -l:Math.a
 

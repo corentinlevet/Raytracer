@@ -26,6 +26,7 @@ RayTracer::Materials::Dielectric::Dielectric(const RayTracer::Math::Color &albed
     _fuzz = 0.0;
     _refractionIndex = 0.0;
     _name = "Dielectric";
+    _texture = nullptr;
 }
 
 /* Public Methods */

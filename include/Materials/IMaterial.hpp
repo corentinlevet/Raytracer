@@ -15,6 +15,8 @@
 
     #include "Point3D.hpp"
 
+    #include "TextureFactory.hpp"
+
     namespace RayTracer {
         class Ray;
         namespace Forms {
@@ -51,6 +53,8 @@
                 virtual void setFuzziness(const double fuzz) = 0;
 
                 virtual void setRefractionIndex(const double refractionIndex) = 0;
+
+                virtual void setTexture(const TexturePtr texture) = 0;
         };
     }
 

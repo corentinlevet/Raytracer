@@ -16,6 +16,7 @@
         class Lambertian : public AMaterial {
             public:
                 Lambertian(const RayTracer::Math::Color &albedo = {0, 0, 0});
+                Lambertian(const TexturePtr &texture);
                 ~Lambertian() = default;
 
                 bool scatter(const RayTracer::Ray &ray, const RayTracer::Forms::HitRecord &record, RayTracer::Math::Color &attenuation, RayTracer::Ray &scattered) const override;

@@ -13,6 +13,7 @@
 
 #include "FormFactory.hpp"
 #include "MaterialFactory.hpp"
+#include "TextureFactory.hpp"
 
 /* Public methods */
 
@@ -20,7 +21,16 @@ RayTracer::Forms::FormList RayTracer::Raytracer::randomScene()
 {
     RayTracer::Forms::FormList world;
 
+    auto checker = TextureFactory::createTexture("Checker");
+    auto solidcolor1 = TextureFactory::createTexture("SolidColor");
+    solidcolor1->setColor(RayTracer::Math::Color(0.0, 0.0, 0.0));
+    auto solidcolor2 = TextureFactory::createTexture("SolidColor");
+    solidcolor2->setColor(RayTracer::Math::Color(0.9, 0.9, 0.9));
+    checker->setTextureOdd(solidcolor1);
+    checker->setTextureEven(solidcolor2);
+
     auto groundMaterial = MaterialFactory::createMaterial("Lambertian");
+    groundMaterial->setTexture(checker);
     groundMaterial->setAlbedo(RayTracer::Math::Color(0.5, 0.5, 0.5));
 
     auto sphere = FormFactory::createForm("Sphere");
@@ -54,6 +64,7 @@ RayTracer::Forms::FormList RayTracer::Raytracer::randomScene()
                     auto albedo = RayTracer::Math::Color(randomDouble(), randomDouble(), randomDouble()) * RayTracer::Math::Color(randomDouble(), randomDouble(), randomDouble());
                     sphereMaterial = MaterialFactory::createMaterial("Lambertian");
                     sphereMaterial->setAlbedo(albedo);
+                    sphereMaterial->setTexture(nullptr);
                 } else if (chooseMat < 0.95) {
                     // Metal
 
@@ -96,6 +107,7 @@ RayTracer::Forms::FormList RayTracer::Raytracer::randomScene()
 
     auto lambertian = MaterialFactory::createMaterial("Lambertian");
     lambertian->setAlbedo(RayTracer::Math::Color(0.4, 0.2, 0.1));
+    lambertian->setTexture(nullptr);
 
     auto sphere2 = FormFactory::createForm("Sphere");
     sphere2->setCenter(RayTracer::Math::Point3D(-4, 1, 0));
@@ -118,6 +130,37 @@ RayTracer::Forms::FormList RayTracer::Raytracer::randomScene()
     return world;
 }
 
+RayTracer::Forms::FormList RayTracer::Raytracer::twoSpheres()
+{
+    auto checker = TextureFactory::createTexture("Checker");
+    auto solidcolor1 = TextureFactory::createTexture("SolidColor");
+    solidcolor1->setColor(RayTracer::Math::Color(0.0, 0.0, 0.0));
+    auto solidcolor2 = TextureFactory::createTexture("SolidColor");
+    solidcolor2->setColor(RayTracer::Math::Color(0.9, 0.9, 0.9));
+    checker->setTextureOdd(solidcolor1);
+    checker->setTextureEven(solidcolor2);
+
+    auto sphereMaterial = MaterialFactory::createMaterial("Lambertian");
+    sphereMaterial->setTexture(checker);
+    sphereMaterial->setAlbedo(RayTracer::Math::Color(0.5, 0.5, 0.5));
+
+    auto sphere1 = FormFactory::createForm("Sphere");
+    sphere1->setCenter(RayTracer::Math::Point3D(0, -10, 0));
+    sphere1->setRadius(10);
+    sphere1->setMaterial(sphereMaterial);
+
+    auto sphere2 = FormFactory::createForm("Sphere");
+    sphere2->setCenter(RayTracer::Math::Point3D(0, 10, 0));
+    sphere2->setRadius(10);
+    sphere2->setMaterial(sphereMaterial);
+
+    RayTracer::Forms::FormList world;
+    world.add(sphere1);
+    world.add(sphere2);
+
+    return world;
+}
+
 void RayTracer::Raytracer::run()
 {
     std::cout << "P3" << std::endl;
@@ -126,7 +169,7 @@ void RayTracer::Raytracer::run()
     const int imageWidth = std::get<0>(resolution);
     const int imageHeight = static_cast<int>(std::get<1>(resolution) / _camera.getAspectRatio());
 
-    const int samplesPerPixel = 100;
+    const int samplesPerPixel = 25;
     const int maxDepth = 50;
 
     const bool antiAliasing = true; // TODO: add anti-aliasing if needed
@@ -171,7 +214,15 @@ RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
         RayTracer::Parser parser(sceneFile);
         _camera = parser.getCamera(_camera);
         // _world = parser.getWorld();
-        _world = randomScene();
+        switch (0) {
+            case 1:
+                _world = randomScene();
+                break;
+            default:
+            case 2:
+                _world = twoSpheres();
+                break;
+        }
     } catch (...) {
         throw RayTracer::Raytracer::hardError("Raytracer", "Error while parsing the scene file");
     }

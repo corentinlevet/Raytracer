@@ -24,6 +24,7 @@
                 void run();
 
                 RayTracer::Forms::FormList randomScene();
+                RayTracer::Forms::FormList twoSpheres();
 
                 class softError : public Error {
                     public:

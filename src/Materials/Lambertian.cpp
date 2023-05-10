@@ -26,6 +26,17 @@ RayTracer::Materials::Lambertian::Lambertian(const RayTracer::Math::Color &albed
     _fuzz = 0.0;
     _refractionIndex = 0.0;
     _name = "Lambertian";
+    _texture = TextureFactory::createTexture("SolidColor");
+    _texture->setColor(albedo);
+}
+
+RayTracer::Materials::Lambertian::Lambertian(const TexturePtr &texture)
+{
+    _albedo = {0, 0, 0};
+    _fuzz = 0.0;
+    _refractionIndex = 0.0;
+    _name = "Lambertian";
+    _texture = texture;
 }
 
 /* Public Methods */
@@ -39,7 +50,10 @@ bool RayTracer::Materials::Lambertian::scatter(const RayTracer::Ray &ray, const 
         scatterDirection = record.getNormal();
 
     scattered = RayTracer::Ray(record.getPoint(), scatterDirection, ray.getTime());
-    attenuation = _albedo;
+    if (_texture != nullptr)
+        attenuation = _texture->value(record.getU(), record.getV(), record.getPoint());
+    else
+        attenuation = _albedo;
 
     return true;
 }

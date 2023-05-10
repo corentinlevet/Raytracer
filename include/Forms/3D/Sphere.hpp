@@ -74,6 +74,8 @@
 
                 bool boundingBox(double t0, double t1, AxisAlignedBoundingBox &boundingBox) const override;
 
+                static void getSphereUV(const RayTracer::Math::Point3D &point, double &u, double &v);
+
             private:
                 double _radius;
 

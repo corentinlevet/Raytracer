@@ -12,6 +12,8 @@
 
     #include "IMaterial.hpp"
 
+    #include "TextureFactory.hpp"
+
     namespace RayTracer::Materials {
         class AMaterial : public IMaterial {
             public:
@@ -35,6 +37,10 @@
                     _refractionIndex = refractionIndex;
                 }
 
+                void setTexture(const TexturePtr texture) override final {
+                    _texture = texture;
+                }
+
             protected:
                 double _fuzz;
                 double _refractionIndex;
@@ -42,6 +48,8 @@
                 std::string _name;
 
                 RayTracer::Math::Color _albedo;
+
+                TexturePtr _texture;
         };
     }
 

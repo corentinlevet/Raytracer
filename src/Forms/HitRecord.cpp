@@ -10,7 +10,7 @@
 
 /* Constructors and destructors */
 
-RayTracer::Forms::HitRecord::HitRecord(double t, const RayTracer::Math::Point3D &point, const RayTracer::Math::Vector3D &normal) : _t(t), _point(point), _normal(normal)
+RayTracer::Forms::HitRecord::HitRecord(double t, double u, double v, const RayTracer::Math::Point3D &point, const RayTracer::Math::Vector3D &normal) : _t(t), _u(u), _v(v), _point(point), _normal(normal)
 {
     _frontFace = false;
 }
