@@ -21,16 +21,19 @@
                 double noise(const RayTracer::Math::Point3D &p) const;
 
             private:
-                static const int pointCount = 256;
+                static const int _pointCount = 256;
 
-                std::vector<double> ranFloat;
-                std::vector<int> permX;
-                std::vector<int> permY;
-                std::vector<int> permZ;
+                std::vector<int> _permX;
+                std::vector<int> _permY;
+                std::vector<int> _permZ;
+
+                std::vector<RayTracer::Math::Vector3D> _ranVector;
 
                 static std::vector<int> perlinGeneratePerm();
 
                 static void permute(std::vector<int> &p, int n);
+
+                static double trilinearInterpolation(std::vector<std::vector<std::vector<RayTracer::Math::Vector3D>>> c, double u, double v, double w);
         };
 
         class Perlin : public ATexture {
@@ -60,11 +63,17 @@
                     (void)texture;
                 }
 
+                void setScale(double scale) {
+                    _scale = scale;
+                }
+
                 /* Methods */
 
                 RayTracer::Math::Color value(double u, double v, const RayTracer::Math::Point3D &p) const override;
 
             private:
+                double _scale;
+
                 RayTracer::Textures::Noise _noise;
         };
     }

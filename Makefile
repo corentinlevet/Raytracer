@@ -11,8 +11,9 @@
 
 CXX			=	g++
 
-CXXFLAGS	=	-Wall -Wextra -std=c++20 -pedantic	\
-				-fPIC -fno-gnu-unique -ldl -lconfig++ -lsfml-graphics -lsfml-window -lsfml-system		\
+CXXFLAGS	=	-Wall -Wextra -std=c++20 -pedantic -fPIC -fno-gnu-unique
+
+LDFLAGS		=	-ldl -lconfig++ -lsfml-graphics -lsfml-window -lsfml-system
 
 AUTHOR		=	Corentin LEVET - Benjamin COTTONE - Hugo GRISEL\
 				- Jeremy CALOSSO-MERLINO
@@ -106,11 +107,11 @@ endef
 ###############################################################################
 
 all:	header $(OBJ) math forms materials textures
-	@$(CXX) $(OBJ) -o $(NAME) $(CXXFLAGS) $(INC) $(LIB)
+	@$(CXX) $(OBJ) -o $(NAME) $(CXXFLAGS) $(INC) $(LIB) $(LDFLAGS)
 	@printf "\n%b" "$(OK_COLOR)Compilation done !\n$(NO_COLOR)"
 
 src/%.o:	src/%.cpp
-	@$(call run_and_test, $(CXX) $(CXXFLAGS) $(INC) $(LIB) -c $< -o $@)
+	@$(call run_and_test, $(CXX) $(CXXFLAGS) $(INC) $(LIB) $(LDFLAGS) -c $< -o $@)
 
 header:
 	@printf "\n%b" "$(OBJ_COLOR)Name\t:\t$(WARN_COLOR)$(NAME)\n"
@@ -119,6 +120,7 @@ header:
 	@printf "%b" "$(OBJ_COLOR)Date\t:\t$(WARN_COLOR)$(DATE)\n\033[m"
 	@printf "%b" "$(OBJ_COLOR)CC\t:\t$(WARN_COLOR)$(CXX)\n\033[m"
 	@printf "%b" "$(OBJ_COLOR)Flags\t:\t$(WARN_COLOR)$(CXXFLAGS)\n\033[m"
+	@printf "%b" "$(OBJ_COLOR)Libs\t:\t$(WARN_COLOR)$(LDFLAGS)\n\033[m"
 	@echo
 
 forms:

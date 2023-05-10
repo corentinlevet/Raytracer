@@ -164,6 +164,7 @@ RayTracer::Forms::FormList RayTracer::Raytracer::twoSpheres()
 RayTracer::Forms::FormList RayTracer::Raytracer::twoPerlinSpheres()
 {
     auto perlin = TextureFactory::createTexture("Perlin");
+    perlin->setScale(4.0);
 
     auto sphereMaterial = MaterialFactory::createMaterial("Lambertian");
     sphereMaterial->setTexture(perlin);

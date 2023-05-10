@@ -37,6 +37,10 @@
                     (void)texture;
                 }
 
+                void setScale(double scale) {
+                    (void)scale;
+                }
+
                 /* Methods */
 
                 RayTracer::Math::Color value(double u, double v, const RayTracer::Math::Point3D &p) const override;

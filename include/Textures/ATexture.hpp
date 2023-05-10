@@ -28,6 +28,8 @@
                 virtual void setTextureOdd(const std::shared_ptr<ITexture> &texture) = 0;
                 virtual void setTextureEven(const std::shared_ptr<ITexture> &texture) = 0;
 
+                virtual void setScale(double scale) = 0;
+
                 virtual RayTracer::Math::Color value(double u, double v, const RayTracer::Math::Point3D &p) const = 0;
 
             protected:
