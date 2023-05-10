@@ -29,10 +29,15 @@
         namespace Materials {
             class IMaterial;
         }
+
+        namespace Textures {
+            class ITexture;
+        }
     }
 
     typedef std::shared_ptr<RayTracer::Forms::IForm> FormPtr;
     typedef std::shared_ptr<RayTracer::Materials::IMaterial> MaterialPtr;
+    typedef std::shared_ptr<RayTracer::Textures::ITexture> TexturePtr;
 
     namespace RayTracer {
         class Parser {
@@ -44,6 +49,7 @@
                 Forms::FormList getWorld();
                 FormPtr getForm(const std::string &name, const libconfig::Setting &form);
                 MaterialPtr getMaterial(const libconfig::Setting &material);
+                TexturePtr getTexture(const libconfig::Setting &texture);
 
                 class hardError : public Error {
                     public:

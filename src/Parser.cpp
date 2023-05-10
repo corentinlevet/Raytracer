@@ -11,6 +11,7 @@
 #include "FormList.hpp"
 #include "FormFactory.hpp"
 #include "MaterialFactory.hpp"
+#include "TextureFactory.hpp"
 
 #include <iostream>
 
@@ -79,6 +80,12 @@ RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera
     return camera;
 }
 
+TexturePtr RayTracer::Parser::getTexture(const libconfig::Setting &texture)
+{
+    (void)texture;
+    return nullptr;
+}
+
 MaterialPtr RayTracer::Parser::getMaterial(const libconfig::Setting &material)
 {
     MaterialPtr newMaterial = nullptr;
@@ -94,6 +101,10 @@ MaterialPtr RayTracer::Parser::getMaterial(const libconfig::Setting &material)
     newMaterial->setAlbedo(Math::Color(materialR, materialG, materialB));
     newMaterial->setFuzziness(fuzziness);
     newMaterial->setRefractionIndex(refractionIndex);
+    if (material.exists("texture"))
+        newMaterial->setTexture(getTexture(material.lookup("texture")));
+    else
+        newMaterial->setTexture(nullptr);
     return newMaterial;
 }
 
