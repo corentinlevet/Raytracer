@@ -25,6 +25,7 @@
 
                 RayTracer::Forms::FormList randomScene();
                 RayTracer::Forms::FormList twoSpheres();
+                RayTracer::Forms::FormList twoPerlinSpheres();
 
                 class softError : public Error {
                     public:

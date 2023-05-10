@@ -33,6 +33,13 @@ OBJ_CHECKER	 	=   $(SRC_CHECKER:.cpp=.o)
 
 NAME_CHECKER	=	../../libs/Textures/Checker.so
 
+SRC_PERLIN		=	Perlin.cpp
+SRC_PERLIN		+=	$(SRC)
+
+OBJ_PERLIN		=	$(SRC_PERLIN:.cpp=.o)
+
+NAME_PERLIN		=	../../libs/Textures/Perlin.so
+
 SRC_SOLIDCOLOR	=	SolidColor.cpp
 SRC_SOLIDCOLOR	+=	$(SRC)
 
@@ -124,6 +131,9 @@ all:
 	@printf "%b" "$(ERROR_COLOR)\tCompiling Checker...\n$(NO_COLOR)"
 	@make compile_checker -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_CHECKER) $(OBJ_CHECKER) $(INC) $(LIB)
+	@printf "%b" "$(ERROR_COLOR)\tCompiling Perlin...\n$(NO_COLOR)"
+	@make compile_perlin -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_PERLIN) $(OBJ_PERLIN) $(INC) $(LIB)
 	@printf "%b" "$(ERROR_COLOR)\tCompiling SolidColor...\n$(NO_COLOR)"
 	@make compile_solidcolor -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_SOLIDCOLOR) $(OBJ_SOLIDCOLOR) $(INC) $(LIB)
@@ -134,14 +144,16 @@ all:
 
 compile_checker: $(OBJ_CHECKER)
 
+compile_perlin: $(OBJ_PERLIN)
+
 compile_solidcolor: $(OBJ_SOLIDCOLOR)
 
 clean:
-	@$(RM) $(OBJ_CHECKER) $(OBJ_SOLIDCOLOR)
+	@$(RM) $(OBJ_CHECKER) $(OBJ_PERLIN) $(OBJ_SOLIDCOLOR)
 	@printf "%-95b%b" "$(CLEAN_COLOR)Materials cleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 fclean: clean
-	@$(RM) $(NAME_CHECKER) $(NAME_SOLIDCOLOR)
+	@$(RM) $(NAME_CHECKER) $(NAME_PERLIN) $(NAME_SOLIDCOLOR)
 	@printf "%-95b%b" "$(FCLEAN_COLOR)Materials fcleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 re: fclean all

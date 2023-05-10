@@ -161,6 +161,31 @@ RayTracer::Forms::FormList RayTracer::Raytracer::twoSpheres()
     return world;
 }
 
+RayTracer::Forms::FormList RayTracer::Raytracer::twoPerlinSpheres()
+{
+    auto perlin = TextureFactory::createTexture("Perlin");
+
+    auto sphereMaterial = MaterialFactory::createMaterial("Lambertian");
+    sphereMaterial->setTexture(perlin);
+    sphereMaterial->setAlbedo(RayTracer::Math::Color(0.5, 0.5, 0.5));
+
+    auto sphere1 = FormFactory::createForm("Sphere");
+    sphere1->setCenter(RayTracer::Math::Point3D(0, -1000, 0));
+    sphere1->setRadius(1000);
+    sphere1->setMaterial(sphereMaterial);
+
+    auto sphere2 = FormFactory::createForm("Sphere");
+    sphere2->setCenter(RayTracer::Math::Point3D(0, 2, 0));
+    sphere2->setRadius(2);
+    sphere2->setMaterial(sphereMaterial);
+
+    RayTracer::Forms::FormList world;
+    world.add(sphere1);
+    world.add(sphere2);
+
+    return world;
+}
+
 void RayTracer::Raytracer::run()
 {
     std::cout << "P3" << std::endl;
@@ -169,7 +194,7 @@ void RayTracer::Raytracer::run()
     const int imageWidth = std::get<0>(resolution);
     const int imageHeight = static_cast<int>(std::get<1>(resolution) / _camera.getAspectRatio());
 
-    const int samplesPerPixel = 25;
+    const int samplesPerPixel = 250;
     const int maxDepth = 50;
 
     const bool antiAliasing = true; // TODO: add anti-aliasing if needed
@@ -218,9 +243,12 @@ RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
             case 1:
                 _world = randomScene();
                 break;
-            default:
             case 2:
                 _world = twoSpheres();
+                break;
+            default:
+            case 3:
+                _world = twoPerlinSpheres();
                 break;
         }
     } catch (...) {

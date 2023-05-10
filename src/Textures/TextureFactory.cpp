@@ -11,6 +11,7 @@ TexturePtr RayTracer::Textures::TextureFactory::createTexture(const std::string 
 {
     std::map<std::string, std::string> paths = {
         {"Checker", "libs/Textures/Checker.so"},
+        {"Perlin", "libs/Textures/Perlin.so"},
         {"SolidColor", "libs/Textures/SolidColor.so"},
     };
 
