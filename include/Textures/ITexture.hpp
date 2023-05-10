@@ -37,6 +37,8 @@
                 virtual void setScale(double scale) = 0;
 
                 virtual RayTracer::Math::Color value(double u, double v, const RayTracer::Math::Point3D &p) const = 0;
+
+                virtual void setPath(const std::string &path) = 0;
         };
     }
 

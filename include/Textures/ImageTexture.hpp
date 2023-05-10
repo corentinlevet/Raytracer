@@ -1,32 +1,35 @@
 /*
 ** EPITECH PROJECT, 2022
-** SolidColor.hpp
+** ImageTexture.hpp
 ** File description:
-** Header file for the SolidColor class
+** Header file for the ImageTexture class
 */
 
 #pragma once
 
-#ifndef SOLIDCOLOR_HPP_
-    #define SOLIDCOLOR_HPP_
+#ifndef IMAGETEXTURE_HPP_
+    #define IMAGETEXTURE_HPP_
 
     #include "ATexture.hpp"
 
+    #define STB_IMAGE_IMPLEMENTATION
+    #include <stb_image.h>
+
     namespace RayTracer::Textures {
-        class SolidColor : public ATexture {
+        class ImageTexture : public ATexture {
             public:
-                SolidColor(const RayTracer::Math::Color &color = {0, 0, 0});
-                SolidColor(double red, double green, double blue);
-                ~SolidColor() = default;
+                ImageTexture();
+                ImageTexture(const std::string &path);
+                ~ImageTexture() = default;
 
                 /* Getters and setters */
 
                 RayTracer::Math::Color getColor() const {
-                    return _color;
+                    return RayTracer::Math::Color();
                 }
 
                 void setColor(const RayTracer::Math::Color &color) {
-                    _color = color;
+                    (void)color;
                 }
 
                 void setTextureOdd(const std::shared_ptr<ITexture> &texture) {
@@ -41,15 +44,18 @@
                     (void)scale;
                 }
 
-                void setPath(const std::string &path) {
-                    (void)path;
-                }
                 /* Methods */
 
-                RayTracer::Math::Color value(double u, double v, const RayTracer::Math::Point3D &p) const override;
+                void setPath(const std::string &path);
+
+                RayTracer::Math::Color value(double u, double v, const RayTracer::Math::Point3D &p) const;
 
             private:
-                RayTracer::Math::Color _color;
+                unsigned char *_data;
+
+                int _bytesPerScanline;
+                int _height;
+                int _width;
         };
     }
 
@@ -58,4 +64,4 @@
         TexturePtr entryPointTexture();
     }
 
-#endif /* !SOLIDCOLOR_HPP_ */
+#endif /* !IMAGETEXTURE_HPP_ */

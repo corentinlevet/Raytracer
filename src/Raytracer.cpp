@@ -187,6 +187,25 @@ RayTracer::Forms::FormList RayTracer::Raytracer::twoPerlinSpheres()
     return world;
 }
 
+RayTracer::Forms::FormList RayTracer::Raytracer::earth()
+{
+    auto earthTexture = TextureFactory::createTexture("Image");
+    earthTexture->setPath("assets/earth.jpg");
+
+    auto earthSurface = MaterialFactory::createMaterial("Lambertian");
+    earthSurface->setTexture(earthTexture);
+
+    auto globe = FormFactory::createForm("Sphere");
+    globe->setCenter(RayTracer::Math::Point3D(0, 0, 0));
+    globe->setRadius(2);
+    globe->setMaterial(earthSurface);
+
+    RayTracer::Forms::FormList world;
+    world.add(globe);
+
+    return world;
+}
+
 void RayTracer::Raytracer::run()
 {
     std::cout << "P3" << std::endl;
@@ -245,9 +264,12 @@ RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
             case 2:
                 _world = twoSpheres();
                 break;
-            default:
             case 3:
                 _world = twoPerlinSpheres();
+                break;
+            default:
+            case 4:
+                _world = earth();
                 break;
         }
     } catch (...) {

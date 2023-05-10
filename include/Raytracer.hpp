@@ -24,9 +24,11 @@
 
                 void run();
 
+                /* Scenes */
                 RayTracer::Forms::FormList randomScene();
                 RayTracer::Forms::FormList twoSpheres();
                 RayTracer::Forms::FormList twoPerlinSpheres();
+                RayTracer::Forms::FormList earth();
 
                 class softError : public Error {
                     public:

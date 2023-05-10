@@ -42,6 +42,10 @@
                     (void)scale;
                 }
 
+                void setPath(const std::string &path) {
+                    (void)path;
+                }
+
                 /* Methods */
 
                 RayTracer::Math::Color value(double u, double v, const RayTracer::Math::Point3D &p) const override;
