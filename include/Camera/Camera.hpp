@@ -11,6 +11,7 @@
     #define CAMERA_HPP_
 
     #include "Rectangle.hpp"
+    #include <tuple>
 
     namespace RayTracer {
         class Ray;
