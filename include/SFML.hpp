@@ -35,6 +35,7 @@
 
                 void printPixels(std::vector<RayTracer::Math::Color> pixelColors, int width, int y, int samplesPerPixel);
 
+                void checkEventClose();
                 void waitWindowClose();
 
             private:

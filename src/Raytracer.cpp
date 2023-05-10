@@ -217,6 +217,8 @@ void RayTracer::Raytracer::run()
             }
             pixelColor.writeColor(std::cout, samplesPerPixel);
             pixelColors.push_back(pixelColor);
+            if (_sfml.isWindowOpen())
+                _sfml.checkEventClose();
         }
         if (_sfml.isWindowOpen())
             _sfml.printPixels(pixelColors, imageWidth, imageHeight - y - 1, samplesPerPixel);

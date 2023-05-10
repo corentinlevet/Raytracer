@@ -64,15 +64,19 @@ void RayTracer::SFML::printPixels(std::vector<RayTracer::Math::Color> pixelColor
     _window.display();
 }
 
-void RayTracer::SFML::waitWindowClose()
+void RayTracer::SFML::checkEventClose()
 {
-    while (_window.isOpen()) {
-        sf::Event event;
-        while (_window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-                _window.close();
-                _isWindowOpen = false;
-            }
+    sf::Event event;
+    while (_window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+            _window.close();
+            _isWindowOpen = false;
         }
     }
+}
+
+void RayTracer::SFML::waitWindowClose()
+{
+    while (_window.isOpen())
+        checkEventClose();
 }
