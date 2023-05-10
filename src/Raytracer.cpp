@@ -222,6 +222,8 @@ void RayTracer::Raytracer::run()
         pixelColors.clear();
     }
 
+    _sfml.waitWindowClose();
+
     std::cerr << "\nDone." << std::endl;
 }
 
