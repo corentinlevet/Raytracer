@@ -20,6 +20,8 @@
 
                 double noise(const RayTracer::Math::Point3D &p) const;
 
+                double turbulence(const RayTracer::Math::Point3D &p, int depth = 7) const;
+
             private:
                 static const int _pointCount = 256;
 

@@ -63,10 +63,25 @@ double RayTracer::Textures::Noise::noise(const RayTracer::Math::Point3D &p) cons
     return trilinearInterpolation(c, u, v, w);
 }
 
+double RayTracer::Textures::Noise::turbulence(const RayTracer::Math::Point3D &p, int depth) const
+{
+    auto accum = 0.0;
+    auto tempP = p;
+    auto weight = 1.0;
+
+    for (int i = 0; i < depth; i++) {
+        accum += weight * noise(tempP);
+        weight *= 0.5;
+        tempP *= 2;
+    }
+
+    return fabs(accum);
+}
+
 RayTracer::Math::Color RayTracer::Textures::Perlin::value(double u, double v, const RayTracer::Math::Point3D &p) const
 {
     (void)u; (void)v;
-    return RayTracer::Math::Color(1, 1, 1) * 0.5 * (1.0 + _noise.noise(p * _scale));
+    return RayTracer::Math::Color(1, 1, 1) * 0.5 * (1.0 + sin(_scale * p.getZ() + 10 * _noise.turbulence(p)));
 }
 
 /* Private methods */
