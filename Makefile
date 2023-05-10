@@ -12,7 +12,7 @@
 CXX			=	g++
 
 CXXFLAGS	=	-Wall -Wextra -std=c++20 -pedantic	\
-				-fPIC -fno-gnu-unique -ldl -lconfig++		\
+				-fPIC -fno-gnu-unique -ldl -lconfig++ -lsfml-graphics -lsfml-window -lsfml-system		\
 
 AUTHOR		=	Corentin LEVET - Benjamin COTTONE - Hugo GRISEL\
 				- Jeremy CALOSSO-MERLINO
