@@ -7,6 +7,7 @@
 
 #include "MovingSphere.hpp"
 
+#include "AxisAlignedBoundingBox.hpp"
 #include "HitRecord.hpp"
 #include "Ray.hpp"
 
@@ -104,6 +105,19 @@ bool RayTracer::Forms::MovingSphere::hits(const RayTracer::Ray &ray, double t_mi
     Math::Vector3D outwardNormalVector(outwardNormal.getX(), outwardNormal.getY(), outwardNormal.getZ());
     hitRecord.setFaceNormal(ray, outwardNormalVector);
     hitRecord.setMaterial(_material);
+
+    return true;
+}
+
+bool RayTracer::Forms::MovingSphere::boundingBox(double t0, double t1, AxisAlignedBoundingBox &boundingBox) const
+{
+    RayTracer::Math::Point3D center0 = center(t0);
+    RayTracer::Math::Point3D center1 = center(t1);
+
+    AxisAlignedBoundingBox box0(center0 - RayTracer::Math::Point3D(_radius, _radius, _radius), center0 + RayTracer::Math::Point3D(_radius, _radius, _radius));
+    AxisAlignedBoundingBox box1(center1 - RayTracer::Math::Point3D(_radius, _radius, _radius), center1 + RayTracer::Math::Point3D(_radius, _radius, _radius));
+
+    boundingBox = surroundingBox(box0, box1);
 
     return true;
 }

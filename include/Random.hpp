@@ -18,4 +18,8 @@
         return distribution(generator);
     }
 
+    inline int randomInt(int min = 0, int max = 1) {
+        return static_cast<int>(randomDouble(min, max + 1));
+    }
+
 #endif /* !RANDOM_HPP_ */

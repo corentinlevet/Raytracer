@@ -47,6 +47,8 @@
 
                 virtual bool hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const = 0;
 
+                virtual bool boundingBox(double t0, double t1, AxisAlignedBoundingBox &boundingBox) const = 0;
+
             protected:
                 std::string _name;
 

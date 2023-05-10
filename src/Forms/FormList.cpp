@@ -7,6 +7,7 @@
 
 #include "FormList.hpp"
 
+#include "AxisAlignedBoundingBox.hpp"
 #include "HitRecord.hpp"
 #include "Ray.hpp"
 
@@ -43,4 +44,20 @@ bool RayTracer::Forms::FormList::hit(const RayTracer::Ray &ray, double t_min, do
         }
     }
     return hitAnything;
+}
+
+bool RayTracer::Forms::FormList::boundingBox(double t0, double t1, AxisAlignedBoundingBox &boundingBox) const
+{
+    if (_forms.empty())
+        return false;
+    AxisAlignedBoundingBox tempBox;
+    bool firstBox = true;
+
+    for (const auto &form : _forms) {
+        if (!form->boundingBox(t0, t1, tempBox))
+            return false;
+        boundingBox = firstBox ? tempBox : surroundingBox(boundingBox, tempBox);
+        firstBox = false;
+    }
+    return true;
 }

@@ -7,6 +7,7 @@
 
 #include "Sphere.hpp"
 
+#include "AxisAlignedBoundingBox.hpp"
 #include "HitRecord.hpp"
 #include "Ray.hpp"
 
@@ -74,6 +75,18 @@ bool RayTracer::Forms::Sphere::hits(const RayTracer::Ray &ray, double t_min, dou
     Math::Vector3D outwardNormalVector(outwardNormal.getX(), outwardNormal.getY(), outwardNormal.getZ());
     hitRecord.setFaceNormal(ray, outwardNormalVector);
     hitRecord.setMaterial(_material);
+
+    return true;
+}
+
+bool RayTracer::Forms::Sphere::boundingBox(double t0, double t1, AxisAlignedBoundingBox &boundingBox) const
+{
+    (void)t0; (void)t1;
+
+    RayTracer::Math::Point3D min(_center.getX() - _radius, _center.getY() - _radius, _center.getZ() - _radius);
+    RayTracer::Math::Point3D max(_center.getX() + _radius, _center.getY() + _radius, _center.getZ() + _radius);
+
+    boundingBox = AxisAlignedBoundingBox(min, max);
 
     return true;
 }

@@ -20,6 +20,7 @@
     namespace RayTracer {
         class Ray;
         namespace Forms {
+            class AxisAlignedBoundingBox;
             class HitRecord;
         }
     }
@@ -60,6 +61,11 @@
                 virtual double getRadius() const = 0;
                 virtual RayTracer::Math::Point3D getCenter() const = 0;
 
+                virtual AxisAlignedBoundingBox getBoundingBox() const = 0;
+
+                virtual std::shared_ptr<RayTracer::Forms::IForm> getLeft() const = 0;
+                virtual std::shared_ptr<RayTracer::Forms::IForm> getRight() const = 0;
+
                 virtual void setRadius(double radius) = 0;
                 virtual void setCenter(const RayTracer::Math::Point3D &center) = 0;
 
@@ -69,6 +75,11 @@
                 virtual void setTime0(double time0) = 0;
                 virtual void setTime1(double time1) = 0;
 
+                virtual void setBoundingBox(const AxisAlignedBoundingBox &boundingBox) = 0;
+
+                virtual void setLeft(const std::shared_ptr<RayTracer::Forms::IForm> &left) = 0;
+                virtual void setRight(const std::shared_ptr<RayTracer::Forms::IForm> &right) = 0;
+
                 /**
                  * @brief Checks if the Ray hits the Form
                  *
@@ -77,6 +88,17 @@
                  * @return false If the Ray doesn't hit the Form
                 **/
                 virtual bool hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const = 0;
+
+                /**
+                 * @brief Get the Bounding Box of the Form
+                 *
+                 * @param t0 The minimum time
+                 * @param t1 The maximum time
+                 * @param boundingBox The bounding box
+                 * @return true If the Ray hits the Form
+                 * @return false If the Ray doesn't hit the Form
+                **/
+                virtual bool boundingBox(double t0, double t1, AxisAlignedBoundingBox &boundingBox) const = 0;
         };
     }
 

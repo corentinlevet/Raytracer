@@ -12,6 +12,8 @@
 
     #include "AForm.hpp"
 
+    #include "AxisAlignedBoundingBox.hpp"
+
     namespace RayTracer::Forms {
         class Sphere : public AForm {
             public:
@@ -22,6 +24,18 @@
 
                 double getRadius() const;
                 RayTracer::Math::Point3D getCenter() const;
+
+                AxisAlignedBoundingBox getBoundingBox() const override {
+                    return AxisAlignedBoundingBox();
+                }
+
+                FormPtr getLeft() const override {
+                    return nullptr;
+                }
+
+                FormPtr getRight() const override {
+                    return nullptr;
+                }
 
                 void setRadius(double radius);
                 void setCenter(const RayTracer::Math::Point3D &center);
@@ -42,9 +56,23 @@
                     (void)time1;
                 }
 
+                void setBoundingBox(const AxisAlignedBoundingBox &boundingBox) override {
+                    (void)boundingBox;
+                }
+
+                void setLeft(const FormPtr &left) override {
+                    (void)left;
+                }
+
+                void setRight(const FormPtr &right) override {
+                    (void)right;
+                }
+
                 /* Methods */
 
                 bool hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const override;
+
+                bool boundingBox(double t0, double t1, AxisAlignedBoundingBox &boundingBox) const override;
 
             private:
                 double _radius;
