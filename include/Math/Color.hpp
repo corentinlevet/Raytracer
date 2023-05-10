@@ -107,9 +107,10 @@
                 /**
                  * @brief Writes the vector in the given output stream
                  * @param out The output stream
+                 * @param samplesPerPixel The number of samples per pixel
                  * @return void
                 **/
-                void writeColor(std::ostream &out, int samplesPerPixel, bool antiAliasing) const;
+                void writeColor(std::ostream &out, int samplesPerPixel) const;
 
             private:
                 double _x;
