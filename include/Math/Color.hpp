@@ -11,6 +11,7 @@
     #define COLOR_HPP_
 
     #include <cmath>
+    #include <fstream>
     #include <iostream>
     #include <vector>
 
@@ -105,12 +106,12 @@
                 double lengthSquared() const;
 
                 /**
-                 * @brief Writes the vector in the given output stream
-                 * @param out The output stream
+                 * @brief Writes the vector in the given file
+                 * @param file The file to write in
                  * @param samplesPerPixel The number of samples per pixel
                  * @return void
                 **/
-                void writeColor(std::ostream &out, int samplesPerPixel) const;
+                void writeColor(std::ofstream &file, int samplesPerPixel) const;
 
             private:
                 double _x;

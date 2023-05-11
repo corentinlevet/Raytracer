@@ -110,7 +110,7 @@ double RayTracer::Math::Color::lengthSquared() const
     return _x * _x + _y * _y + _z * _z;
 }
 
-void RayTracer::Math::Color::writeColor(std::ostream &out, int samplesPerPixel) const
+void RayTracer::Math::Color::writeColor(std::ofstream &file, int samplesPerPixel) const
 {
         auto r = _x;
         auto g = _y;
@@ -121,7 +121,7 @@ void RayTracer::Math::Color::writeColor(std::ostream &out, int samplesPerPixel) 
         g = sqrt(scale * g);
         b = sqrt(scale * b);
 
-        out << static_cast<int>(256 * clamp(r, 0.0, 0.999)) << ' '
+        file << static_cast<int>(256 * clamp(r, 0.0, 0.999)) << ' '
             << static_cast<int>(256 * clamp(g, 0.0, 0.999)) << ' '
             << static_cast<int>(256 * clamp(b, 0.0, 0.999)) << '\n';
 }

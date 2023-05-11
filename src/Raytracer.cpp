@@ -254,7 +254,17 @@ RayTracer::Forms::FormList RayTracer::Raytracer::simpleLight()
 
 void RayTracer::Raytracer::run()
 {
-    std::cout << "P3" << std::endl;
+    std::string fileName = _sceneFile.substr(_sceneFile.find_last_of('/') + 1);
+    fileName = fileName.substr(0, fileName.find_last_of('.'));
+    fileName = "screenshots/" + fileName + ".ppm";
+
+    std::ofstream file(fileName, std::ios::out | std::ios::trunc);
+
+    if (!file.is_open()) {
+        std::cerr << "Error: could not open file " << fileName << std::endl;
+        exit(84);
+    }
+
     std::tuple resolution = _camera.getResolution();
 
     const int imageWidth = std::get<0>(resolution);
@@ -262,13 +272,14 @@ void RayTracer::Raytracer::run()
 
     _sfml.initWindow(imageWidth, imageHeight);
 
-    const int samplesPerPixel = 100;
+    const int samplesPerPixel = 200;
     const int maxDepth = 50;
 
-    std::cout << imageWidth << " " << imageHeight << std::endl;
-    std::cout << "255" << std::endl;
-
     std::vector<RayTracer::Math::Color> pixelColors(imageWidth);
+
+    file << "P3" << std::endl;
+    file << imageWidth << " " << imageHeight << std::endl;
+    file << "255" << std::endl;
 
     for (int y = imageHeight - 1; y >= 0; y--) {
         std::cerr << "\rScanlines remaining: " << y << " " << std::flush;
@@ -280,7 +291,7 @@ void RayTracer::Raytracer::run()
                 RayTracer::Ray ray = _camera.ray(u, v);
                 pixelColor += ray.rayColor(ray, _background, _world, maxDepth);
             }
-            pixelColor.writeColor(std::cout, samplesPerPixel);
+            pixelColor.writeColor(file, samplesPerPixel);
             pixelColors.push_back(pixelColor);
             if (_sfml.isWindowOpen())
                 _sfml.checkEventClose();
@@ -292,6 +303,8 @@ void RayTracer::Raytracer::run()
 
     _sfml.waitWindowClose();
 
+    file.close();
+
     std::cerr << "\nDone." << std::endl;
 }
 
@@ -300,6 +313,7 @@ void RayTracer::Raytracer::run()
 RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
 {
     try {
+        _sceneFile = sceneFile;
         RayTracer::Parser parser(sceneFile);
         _background = RayTracer::Math::Color(0.70, 0.80, 1.00);
         _camera = parser.getCamera(_camera);

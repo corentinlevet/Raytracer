@@ -10,6 +10,7 @@
 #ifndef RAYTRACER_HPP_
     #define RAYTRACER_HPP_
 
+    #include <fstream>
     #include <iostream>
 
     #include "Camera.hpp"
@@ -44,6 +45,8 @@
                 };
 
             private:
+                std::string _sceneFile;
+
                 RayTracer::Camera::Camera _camera;
 
                 RayTracer::Math::Color _background;
