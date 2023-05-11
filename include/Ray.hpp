@@ -90,10 +90,13 @@
                 /**
                  * @brief Computes the color of the ray
                  *
+                 * @param ray The ray
+                 * @param background The background color
                  * @param world The world
+                 * @param depth The depth
                  * @return The color of the ray
                 **/
-                Math::Color rayColor(const RayTracer::Ray &ray, const RayTracer::Forms::FormList &world, int depth) const;
+                Math::Color rayColor(const RayTracer::Ray &ray, const RayTracer::Math::Color &background, const RayTracer::Forms::FormList &world, int depth) const;
 
             private:
                 Math::Point3D _origin;

@@ -2,7 +2,7 @@
 ## EPITECH PROJECT, 2022
 ## Makefile
 ## File description:
-## Makefile for the Raytracer project
+## Makefile for the Lights of the Raytracer project
 ##
 
 ###############################################################################
@@ -11,9 +11,8 @@
 
 CXX			=	g++
 
-CXXFLAGS	=	-Wall -Wextra -Werror -std=c++20 -pedantic -fPIC -fno-gnu-unique
-
-LDFLAGS		=	-ldl -lconfig++ -lsfml-graphics -lsfml-window -lsfml-system
+CXXFLAGS	=	-Wall -Wextra -Werror -std=c++20 -pedantic	\
+				-fPIC -fno-gnu-unique -shared
 
 AUTHOR		=	Corentin LEVET - Benjamin COTTONE - Hugo GRISEL\
 				- Jeremy CALOSSO-MERLINO
@@ -24,26 +23,25 @@ RM			=	rm -rf
 #                                    SOURCES                                  #
 ###############################################################################
 
-SRC		=	$(wildcard src/*.cpp)				\
-			$(wildcard src/Camera/*.cpp)		\
-			$(wildcard src/Forms/*.cpp)			\
-			src/Lights/LightFactory.cpp			\
-			src/Materials/MaterialFactory.cpp	\
-			src/Textures/TextureFactory.cpp		\
+SRC			=	../Forms/HitRecord.cpp
+SRC			+=	../Ray.cpp
 
-OBJ		=	$(SRC:.cpp=.o)
+SRC_DIFFUSE		=	DiffuseLight.cpp
+SRC_DIFFUSE		+= 	../Textures/TextureFactory.cpp
+SRC_DIFFUSE		+= 	$(SRC)
 
-NAME	=	raytracer
+OBJ_DIFFUSE		=	$(SRC_DIFFUSE:.cpp=.o)
 
-INC		=	-I./include
-INC		+=	-I./include/Camera
-INC		+=	-I./include/Forms
-INC		+=	-I./include/Lights
-INC		+=	-I./include/Math
-INC		+=	-I./include/Materials
-INC		+=	-I./include/Textures
+NAME_DIFFUSE	=	../../libs/Lights/DiffuseLight.so
 
-LIB 	=	-L./libs/Math -l:Math.a
+INC			=	-I../../include/
+INC			+=	-I../../include/Forms
+INC			+=	-I../../include/Lights
+INC			+=	-I../../include/Math
+INC			+=	-I../../include/Materials
+INC			+=	-I../../include/Textures
+
+LIB         =   -L../../libs/Math -l:Math.a
 
 ###############################################################################
 #                                MAKEFILE LOGIC                               #
@@ -85,7 +83,7 @@ ifeq ($(shell git rev-parse HEAD &>/dev/null; echo $$?),0)
 endif
 
 define run_and_test
-	printf "%b%-88b" "$(COM_COLOR)$(COM_STRING) "						\
+	printf "\t%b%-80b" "$(COM_COLOR)$(COM_STRING) "						\
 		"$(OBJ_COLOR)$(@F)$(NO_COLOR)"; 								\
 	$(RUN_CMD);															\
 	if [ $$RESULT -ne 0 ]; then											\
@@ -104,65 +102,38 @@ define run_and_test
 	exit $$RESULT
 endef
 
+define check_math
+	if [ ! -f ../../libs/Math/Math.a ]; then							\
+		make -s -C ../Math;												\
+		printf "\n";													\
+	fi;
+endef
+
 ###############################################################################
 #                                 Makefile rules                              #
 ###############################################################################
 
-all:	header $(OBJ) math forms materials textures lights
-	@$(CXX) $(OBJ) -o $(NAME) $(CXXFLAGS) $(INC) $(LIB) $(LDFLAGS)
-	@printf "\n%b" "$(OK_COLOR)Compilation done !\n$(NO_COLOR)"
+all:
+	@$(call check_math)
+	@printf "%b" "$(ERROR_COLOR)Compiling Lights...\n$(NO_COLOR)"
+	@printf "%b" "$(ERROR_COLOR)\tCompiling DiffuseLight...\n$(NO_COLOR)"
+	@make compile_diffuse -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_DIFFUSE) $(OBJ_DIFFUSE) $(INC) $(LIB)
+	@printf "%b" "$(OK_COLOR)Lights compiled !\n$(NO_COLOR)"
 
-src/%.o:	src/%.cpp
-	@$(call run_and_test, $(CXX) $(CXXFLAGS) $(INC) $(LIB) $(LDFLAGS) -c $< -o $@)
+%.o: %.cpp
+	@$(call run_and_test, $(CXX) $(CXXFLAGS) -c $< -o $@ $(INC) $(LIB))
 
-header:
-	@printf "\n%b" "$(OBJ_COLOR)Name\t:\t$(WARN_COLOR)$(NAME)\n"
-
-	@printf "%b" "$(OBJ_COLOR)Author\t:\t$(WARN_COLOR)$(AUTHOR)\n"
-	@printf "%b" "$(OBJ_COLOR)Date\t:\t$(WARN_COLOR)$(DATE)\n\033[m"
-	@printf "%b" "$(OBJ_COLOR)CC\t:\t$(WARN_COLOR)$(CXX)\n\033[m"
-	@printf "%b" "$(OBJ_COLOR)Flags\t:\t$(WARN_COLOR)$(CXXFLAGS)\n\033[m"
-	@printf "%b" "$(OBJ_COLOR)Libs\t:\t$(WARN_COLOR)$(LDFLAGS)\n\033[m"
-	@echo
-
-forms:
-	@printf "\n"
-	@make -s -C src/Forms
-
-lights:
-	@printf "\n"
-	@make -s -C src/Lights
-
-math:
-	@printf "\n"
-	@make -s -C src/Math
-
-materials:
-	@printf "\n"
-	@make -s -C src/Materials
-
-textures:
-	@printf "\n"
-	@make -s -C src/Textures
+compile_diffuse: $(OBJ_DIFFUSE)
 
 clean:
-	@make -s clean -C src/Forms &>/dev/null
-	@make -s clean -C src/Lights &>/dev/null
-	@make -s clean -C src/Math &>/dev/null
-	@make -s clean -C src/Materials &>/dev/null
-	@make -s clean -C src/Textures &>/dev/null
-	@$(RM) $(OBJ)
-	@printf "%-95b%b" "$(CLEAN_COLOR)clean" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
+	@$(RM) $(OBJ_DIFFUSE)
+	@printf "%-95b%b" "$(CLEAN_COLOR)Lights cleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
-fclean:	clean
-	@make -s fclean -C src/Forms &>/dev/null
-	@make -s fclean -C src/Lights &>/dev/null
-	@make -s fclean -C src/Math &>/dev/null
-	@make -s fclean -C src/Materials &>/dev/null
-	@make -s fclean -C src/Textures &>/dev/null
-	@$(RM) $(NAME)
-	@printf "%-95b%b" "$(FCLEAN_COLOR)fclean" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
+fclean: clean
+	@$(RM) $(NAME_DIFFUSE)
+	@printf "%-95b%b" "$(FCLEAN_COLOR)Lights fcleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
-re:	fclean all
+re: fclean all
 
-.PHONY:	all clean fclean re
+.PHONY: all clean fclean re

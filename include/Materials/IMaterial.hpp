@@ -48,6 +48,8 @@
                 **/
                 virtual bool scatter(const RayTracer::Ray &ray, const RayTracer::Forms::HitRecord &record, RayTracer::Math::Color &attenuation, RayTracer::Ray &scattered) const = 0;
 
+                virtual RayTracer::Math::Color emitted(double u, double v, const RayTracer::Math::Point3D &point) const = 0;
+
                 virtual void setAlbedo(const RayTracer::Math::Color &albedo) = 0;
 
                 virtual void setFuzziness(const double fuzz) = 0;

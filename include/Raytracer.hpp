@@ -45,6 +45,8 @@
             private:
                 RayTracer::Camera::Camera _camera;
 
+                RayTracer::Math::Color _background;
+
                 RayTracer::Forms::FormList _world;
 
                 RayTracer::SFML _sfml;

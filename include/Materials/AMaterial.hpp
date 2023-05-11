@@ -25,6 +25,11 @@
 
                 virtual bool scatter(const RayTracer::Ray &ray, const RayTracer::Forms::HitRecord &record, RayTracer::Math::Color &attenuation, RayTracer::Ray &scattered) const = 0;
 
+                virtual RayTracer::Math::Color emitted(double u, double v, const RayTracer::Math::Point3D &point) const override final {
+                    (void)u; (void)v; (void)point;
+                    return RayTracer::Math::Color(0, 0, 0);
+                }
+
                 void setAlbedo(const RayTracer::Math::Color &albedo) override final {
                     _albedo = albedo;
                 }

@@ -12,6 +12,7 @@
 #include "Ray.hpp"
 
 #include "FormFactory.hpp"
+#include "LightFactory.hpp"
 #include "MaterialFactory.hpp"
 #include "TextureFactory.hpp"
 
@@ -232,7 +233,7 @@ void RayTracer::Raytracer::run()
                 double u = (x + randomDouble()) / (imageWidth - 1);
                 double v = (y + randomDouble()) / (imageHeight - 1);
                 RayTracer::Ray ray = _camera.ray(u, v);
-                pixelColor += ray.rayColor(ray, _world, maxDepth);
+                pixelColor += ray.rayColor(ray, _background, _world, maxDepth);
             }
             pixelColor.writeColor(std::cout, samplesPerPixel);
             pixelColors.push_back(pixelColor);
@@ -259,17 +260,25 @@ RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
         // _world = parser.getWorld();
         switch (0) {
             case 1:
+                _background = RayTracer::Math::Color(0.70, 0.80, 1.00);
                 _world = randomScene();
                 break;
             case 2:
+                _background = RayTracer::Math::Color(0.70, 0.80, 1.00);
                 _world = twoSpheres();
                 break;
             case 3:
+                _background = RayTracer::Math::Color(0.70, 0.80, 1.00);
                 _world = twoPerlinSpheres();
                 break;
             default:
             case 4:
+                _background = RayTracer::Math::Color(0.70, 0.80, 1.00);
                 _world = earth();
+                break;
+            case 5:
+                _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
+                // _world = simpleLight();
                 break;
         }
     } catch (...) {
