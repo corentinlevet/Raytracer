@@ -29,6 +29,7 @@
                 RayTracer::Forms::FormList twoSpheres();
                 RayTracer::Forms::FormList twoPerlinSpheres();
                 RayTracer::Forms::FormList earth();
+                RayTracer::Forms::FormList simpleLight();
 
                 class softError : public Error {
                     public:

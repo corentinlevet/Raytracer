@@ -13,7 +13,7 @@
 
 /* Constructors and destructors */
 
-RayTracer::Camera::Camera::Camera(const double aperture, const double aspectRatio, const double fov, const double time0, const double time1, std::tuple<int, int> resolution, std::tuple<int, int, int> rotation, const RayTracer::Math::Point3D &origin, const RayTracer::Camera::Rectangle &screen, const RayTracer::Math::Vector3D u, const RayTracer::Math::Vector3D v, const RayTracer::Math::Vector3D w) : _aspectRatio(aspectRatio), _fov(fov), _time0(time0), _time1(time1), _resolution(resolution), _rotation(rotation), _origin(origin), _screen(screen), _u(u), _v(v), _w(w)
+RayTracer::Camera::Camera::Camera(const double aperture, const double aspectRatio, const double fov, const double time0, const double time1, std::tuple<int, int> resolution, std::tuple<int, int, int> rotation, const RayTracer::Math::Point3D &origin, const RayTracer::Camera::Screen &screen, const RayTracer::Math::Vector3D u, const RayTracer::Math::Vector3D v, const RayTracer::Math::Vector3D w) : _aspectRatio(aspectRatio), _fov(fov), _time0(time0), _time1(time1), _resolution(resolution), _rotation(rotation), _origin(origin), _screen(screen), _u(u), _v(v), _w(w)
 {
     _lensRadius = aperture / 2.0;
     _focalLength = 1.0;
@@ -63,7 +63,7 @@ const RayTracer::Math::Point3D &RayTracer::Camera::Camera::getOrigin() const
     return _origin;
 }
 
-const RayTracer::Camera::Rectangle &RayTracer::Camera::Camera::getScreen() const
+const RayTracer::Camera::Screen &RayTracer::Camera::Camera::getScreen() const
 {
     return _screen;
 }
@@ -108,9 +108,9 @@ void RayTracer::Camera::Camera::setOrigin(const RayTracer::Math::Point3D &origin
     _origin = origin;
 }
 
-void RayTracer::Camera::Camera::setScreen(const RayTracer::Camera::Rectangle &rectangle)
+void RayTracer::Camera::Camera::setScreen(const RayTracer::Camera::Screen &screen)
 {
-    _screen = rectangle;
+    _screen = screen;
 }
 
 /* Methods */

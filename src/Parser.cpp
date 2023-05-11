@@ -68,7 +68,7 @@ RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera
         std::tuple<int, int>(width, height),
         std::tuple<int, int, int>(directionX, directionY, directionZ),
         origin,
-        RayTracer::Camera::Rectangle(Math::Point3D(lowerLeftCorner.getX(), lowerLeftCorner.getY(), lowerLeftCorner.getZ()), horizontal, vertical),
+        RayTracer::Camera::Screen(Math::Point3D(lowerLeftCorner.getX(), lowerLeftCorner.getY(), lowerLeftCorner.getZ()), horizontal, vertical),
         u,
         v,
         w

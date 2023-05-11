@@ -207,6 +207,51 @@ RayTracer::Forms::FormList RayTracer::Raytracer::earth()
     return world;
 }
 
+RayTracer::Forms::FormList RayTracer::Raytracer::simpleLight()
+{
+    auto perlinTexture = TextureFactory::createTexture("Perlin");
+    perlinTexture->setScale(4.0);
+
+    auto sphereMaterial = MaterialFactory::createMaterial("Lambertian");
+    sphereMaterial->setTexture(perlinTexture);
+    sphereMaterial->setAlbedo(RayTracer::Math::Color(0.5, 0.5, 0.5));
+
+    auto sphere1 = FormFactory::createForm("Sphere");
+    auto sphere2 = FormFactory::createForm("Sphere");
+
+    sphere1->setCenter(RayTracer::Math::Point3D(0, -1000, 0));
+    sphere1->setRadius(1000);
+    sphere1->setMaterial(sphereMaterial);
+
+    sphere2->setCenter(RayTracer::Math::Point3D(0, 2, 0));
+    sphere2->setRadius(2);
+    sphere2->setMaterial(sphereMaterial);
+
+    auto lightTexture = TextureFactory::createTexture("SolidColor");
+    lightTexture->setColor(RayTracer::Math::Color(4, 4, 4));
+
+    auto diffuseLight = LightFactory::createLight("Diffuse");
+    diffuseLight->setTexture(lightTexture);
+
+    auto rectangle = FormFactory::createForm("Rectangle");
+
+    rectangle->setX0(3);
+    rectangle->setX1(5);
+    rectangle->setY0(1);
+    rectangle->setY1(3);
+    rectangle->setK(-2);
+    rectangle->setMaterial(diffuseLight);
+
+    RayTracer::Forms::FormList world;
+
+    world.add(sphere1);
+    world.add(sphere2);
+
+    world.add(rectangle);
+
+    return world;
+}
+
 void RayTracer::Raytracer::run()
 {
     std::cout << "P3" << std::endl;
@@ -258,26 +303,26 @@ RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
         RayTracer::Parser parser(sceneFile);
         _background = RayTracer::Math::Color(0.70, 0.80, 1.00);
         _camera = parser.getCamera(_camera);
-        _world = parser.getWorld();
-        // switch (0) {
-        //     default:
-        //     case 1:
-        //         _world = randomScene();
-        //         break;
-        //     case 2:
-        //         _world = twoSpheres();
-        //         break;
-        //     case 3:
-        //         _world = twoPerlinSpheres();
-        //         break;
-        //     case 4:
-        //         _world = earth();
-        //         break;
-        //     case 5:
-        //         _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
-        //         // _world = simpleLight();
-        //         break;
-        // }
+        // _world = parser.getWorld();
+        switch (0) {
+            case 1:
+                _world = randomScene();
+                break;
+            case 2:
+                _world = twoSpheres();
+                break;
+            case 3:
+                _world = twoPerlinSpheres();
+                break;
+            case 4:
+                _world = earth();
+                break;
+            default:
+            case 5:
+                _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
+                _world = simpleLight();
+                break;
+        }
     } catch (...) {
         throw RayTracer::Raytracer::hardError("Raytracer", "Error while parsing the scene file");
     }

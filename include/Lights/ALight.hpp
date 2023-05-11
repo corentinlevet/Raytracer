@@ -21,6 +21,10 @@
                     return _name;
                 }
 
+                void setTexture(const TexturePtr texture) override final {
+                    _emit = texture;
+                }
+
                 virtual RayTracer::Math::Color emitted(double u, double v, const RayTracer::Math::Point3D &point) const = 0;
 
             protected:

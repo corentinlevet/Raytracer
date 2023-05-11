@@ -40,6 +40,13 @@ OBJ_MOVING_SPHERE	=	$(SRC_MOVING_SPHERE:.cpp=.o)
 
 NAME_MOVING_SPHERE	=	../../libs/Forms/3D/MovingSphere.so
 
+SRC_RECTANGLE		=	2D/Rectangle.cpp
+SRC_RECTANGLE		+=	$(SRC)
+
+OBJ_RECTANGLE		=	$(SRC_RECTANGLE:.cpp=.o)
+
+NAME_RECTANGLE		=	../../libs/Forms/2D/Rectangle.so
+
 SRC_SPHERE			=	3D/Sphere.cpp
 SRC_SPHERE			+=	$(SRC)
 
@@ -49,6 +56,7 @@ NAME_SPHERE			=	../../libs/Forms/3D/Sphere.so
 
 INC			=	-I../../include/
 INC			+=	-I../../include/Forms
+INC			+=	-I../../include/Forms/2D
 INC			+=	-I../../include/Forms/3D
 INC			+=	-I../../include/Math
 INC			+=	-I../../include/Materials
@@ -135,6 +143,9 @@ all:
 	@printf "%b" "$(ERROR_COLOR)\tCompiling MovingSphere...\n$(NO_COLOR)"
 	@make compile_movingsphere -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_MOVING_SPHERE) $(OBJ_MOVING_SPHERE) $(INC) $(LIB)
+	@printf "%b" "$(ERROR_COLOR)\tCompiling Rectangle...\n$(NO_COLOR)"
+	@make compile_rectangle -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_RECTANGLE) $(OBJ_RECTANGLE) $(INC) $(LIB)
 	@printf "%b" "$(ERROR_COLOR)\tCompiling Sphere...\n$(NO_COLOR)"
 	@make compile_sphere -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_SPHERE) $(OBJ_SPHERE) $(INC) $(LIB)
@@ -147,14 +158,16 @@ compile_cube: $(OBJ_CUBE)
 
 compile_movingsphere: $(OBJ_MOVING_SPHERE)
 
+compile_rectangle: $(OBJ_RECTANGLE)
+
 compile_sphere: $(OBJ_SPHERE)
 
 clean:
-	@$(RM) $(OBJ_CUBE) $(OBJ_MOVING_SPHERE) $(OBJ_SPHERE)
+	@$(RM) $(OBJ_CUBE) $(OBJ_MOVING_SPHERE) $(OBJ_RECTANGLE) $(OBJ_SPHERE)
 	@printf "%-95b%b" "$(CLEAN_COLOR)Forms cleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 fclean: clean
-	@$(RM) $(NAME_CUBE) $(NAME_MOVING_SPHERE) $(NAME_SPHERE)
+	@$(RM) $(NAME_CUBE) $(NAME_MOVING_SPHERE) $(NAME_RECTANGLE) $(NAME_SPHERE)
 	@printf "%-95b%b" "$(FCLEAN_COLOR)Forms fcleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 re: fclean all

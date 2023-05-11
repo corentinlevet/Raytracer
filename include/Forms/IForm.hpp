@@ -77,6 +77,12 @@
                 virtual void setLeft(const std::shared_ptr<RayTracer::Forms::IForm> &left) = 0;
                 virtual void setRight(const std::shared_ptr<RayTracer::Forms::IForm> &right) = 0;
 
+                virtual void setX0(double x0) = 0;
+                virtual void setX1(double x1) = 0;
+                virtual void setY0(double y0) = 0;
+                virtual void setY1(double y1) = 0;
+                virtual void setK(double k) = 0;
+
                 /**
                  * @brief Checks if the Ray hits the Form
                  *
