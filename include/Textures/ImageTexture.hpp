@@ -22,28 +22,6 @@
                 ImageTexture(const std::string &path);
                 ~ImageTexture() = default;
 
-                /* Getters and setters */
-
-                RayTracer::Math::Color getColor() const {
-                    return RayTracer::Math::Color();
-                }
-
-                void setColor(const RayTracer::Math::Color &color) {
-                    (void)color;
-                }
-
-                void setTextureOdd(const std::shared_ptr<ITexture> &texture) {
-                    (void)texture;
-                }
-
-                void setTextureEven(const std::shared_ptr<ITexture> &texture) {
-                    (void)texture;
-                }
-
-                void setScale(double scale) {
-                    (void)scale;
-                }
-
                 /* Methods */
 
                 void setPath(const std::string &path);

@@ -21,18 +21,31 @@
                     return _name;
                 }
 
-                virtual RayTracer::Math::Color getColor() const = 0;
+                virtual RayTracer::Math::Color getColor() const {
+                    return RayTracer::Math::Color();
+                }
 
-                virtual void setColor(const RayTracer::Math::Color &color) = 0;
+                virtual void setColor(const RayTracer::Math::Color &color) {
+                    (void)color;
+                }
 
-                virtual void setTextureOdd(const std::shared_ptr<ITexture> &texture) = 0;
-                virtual void setTextureEven(const std::shared_ptr<ITexture> &texture) = 0;
+                virtual void setTextureOdd(const std::shared_ptr<ITexture> &texture) {
+                    (void)texture;
+                }
 
-                virtual void setScale(double scale) = 0;
+                virtual void setTextureEven(const std::shared_ptr<ITexture> &texture) {
+                    (void)texture;
+                }
+
+                virtual void setScale(double scale) {
+                    (void)scale;
+                }
 
                 virtual RayTracer::Math::Color value(double u, double v, const RayTracer::Math::Point3D &p) const = 0;
 
-                virtual void setPath(const std::string &path) = 0;
+                virtual void setPath(const std::string &path) {
+                    (void)path;
+                }
 
             protected:
                 std::string _name;

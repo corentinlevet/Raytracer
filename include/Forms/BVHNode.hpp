@@ -12,7 +12,6 @@
 
     #include <algorithm>
 
-    #include "AxisAlignedBoundingBox.hpp"
     #include "FormList.hpp"
 
     namespace RayTracer::Forms {
@@ -24,38 +23,6 @@
                 ~BVHNode() = default;
 
                 /* Getters and setters */
-
-                double getRadius() const override {
-                    return 0;
-                }
-
-                RayTracer::Math::Point3D getCenter() const override {
-                    return {0, 0, 0};
-                }
-
-                void setRadius(double radius) override {
-                    (void)radius;
-                }
-
-                void setCenter(const RayTracer::Math::Point3D &center) override {
-                    (void)center;
-                }
-
-                void setCenter0(const RayTracer::Math::Point3D &center0) override {
-                    (void)center0;
-                }
-
-                void setCenter1(const RayTracer::Math::Point3D &center1) override {
-                    (void)center1;
-                }
-
-                void setTime0(double time0) override {
-                    (void)time0;
-                }
-
-                void setTime1(double time1) override {
-                    (void)time1;
-                }
 
                 AxisAlignedBoundingBox getBoundingBox() const override {
                     return _boundingBox;

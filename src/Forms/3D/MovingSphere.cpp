@@ -27,58 +27,6 @@ RayTracer::Forms::MovingSphere::MovingSphere(const double radius, const double t
     _name = "MovingSphere";
 }
 
-/* Getters and setters */
-
-double RayTracer::Forms::MovingSphere::getRadius() const
-{
-    return _radius;
-}
-
-double RayTracer::Forms::MovingSphere::getTime0() const
-{
-    return _time0;
-}
-
-double RayTracer::Forms::MovingSphere::getTime1() const
-{
-    return _time1;
-}
-
-RayTracer::Math::Point3D RayTracer::Forms::MovingSphere::getCenter0() const
-{
-    return _center0;
-}
-
-RayTracer::Math::Point3D RayTracer::Forms::MovingSphere::getCenter1() const
-{
-    return _center1;
-}
-
-void RayTracer::Forms::MovingSphere::setRadius(double radius)
-{
-    _radius = radius;
-}
-
-void RayTracer::Forms::MovingSphere::setTime0(double time0)
-{
-    _time0 = time0;
-}
-
-void RayTracer::Forms::MovingSphere::setTime1(double time1)
-{
-    _time1 = time1;
-}
-
-void RayTracer::Forms::MovingSphere::setCenter0(const RayTracer::Math::Point3D &center0)
-{
-    _center0 = center0;
-}
-
-void RayTracer::Forms::MovingSphere::setCenter1(const RayTracer::Math::Point3D &center1)
-{
-    _center1 = center1;
-}
-
 /* Methods */
 
 bool RayTracer::Forms::MovingSphere::hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const

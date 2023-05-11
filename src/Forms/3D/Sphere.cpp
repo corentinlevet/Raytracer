@@ -28,28 +28,6 @@ RayTracer::Forms::Sphere::Sphere(double radius, const RayTracer::Math::Point3D &
     _name = "Sphere";
 }
 
-/* Getters and setters */
-
-double RayTracer::Forms::Sphere::getRadius() const
-{
-    return _radius;
-}
-
-RayTracer::Math::Point3D RayTracer::Forms::Sphere::getCenter() const
-{
-    return _center;
-}
-
-void RayTracer::Forms::Sphere::setRadius(double radius)
-{
-    _radius = radius;
-}
-
-void RayTracer::Forms::Sphere::setCenter(const RayTracer::Math::Point3D &center)
-{
-    _center = center;
-}
-
 /* Methods */
 
 bool RayTracer::Forms::Sphere::hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const

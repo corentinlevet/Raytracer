@@ -22,50 +22,12 @@
 
                 /* Getters and setters */
 
-                double getRadius() const;
-                RayTracer::Math::Point3D getCenter() const;
-
-                AxisAlignedBoundingBox getBoundingBox() const override {
-                    return AxisAlignedBoundingBox();
+                void setRadius(double radius) override {
+                    _radius = radius;
                 }
 
-                FormPtr getLeft() const override {
-                    return nullptr;
-                }
-
-                FormPtr getRight() const override {
-                    return nullptr;
-                }
-
-                void setRadius(double radius);
-                void setCenter(const RayTracer::Math::Point3D &center);
-
-                void setCenter0(const RayTracer::Math::Point3D &center0) override {
-                    (void)center0;
-                }
-
-                void setCenter1(const RayTracer::Math::Point3D &center1) override {
-                    (void)center1;
-                }
-
-                void setTime0(double time0) override {
-                    (void)time0;
-                }
-
-                void setTime1(double time1) override {
-                    (void)time1;
-                }
-
-                void setBoundingBox(const AxisAlignedBoundingBox &boundingBox) override {
-                    (void)boundingBox;
-                }
-
-                void setLeft(const FormPtr &left) override {
-                    (void)left;
-                }
-
-                void setRight(const FormPtr &right) override {
-                    (void)right;
+                void setCenter(const RayTracer::Math::Point3D &center) override {
+                    _center = center;
                 }
 
                 /* Methods */

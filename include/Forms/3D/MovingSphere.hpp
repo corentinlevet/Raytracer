@@ -28,50 +28,24 @@
 
                 /* Getters and setters */
 
-                double getRadius() const;
-
-                RayTracer::Math::Point3D getCenter() const {
-                    return 0;
+                void setRadius(double radius) override {
+                    _radius = radius;
                 }
 
-                AxisAlignedBoundingBox getBoundingBox() const override {
-                    return AxisAlignedBoundingBox();
+                void setTime0(double time0) override {
+                    _time0 = time0;
                 }
 
-                FormPtr getLeft() const override {
-                    return nullptr;
+                void setTime1(double time1) override {
+                    _time1 = time1;
                 }
 
-                FormPtr getRight() const override {
-                    return nullptr;
+                void setCenter0(const RayTracer::Math::Point3D &center0) override {
+                    _center0 = center0;
                 }
 
-                double getTime0() const;
-                double getTime1() const;
-                RayTracer::Math::Point3D getCenter0() const;
-                RayTracer::Math::Point3D getCenter1() const;
-
-                void setRadius(double radius);
-
-                void setCenter(const RayTracer::Math::Point3D &center) override {
-                    (void)center;
-                }
-
-                void setTime0(double time0);
-                void setTime1(double time1);
-                void setCenter0(const RayTracer::Math::Point3D &center0);
-                void setCenter1(const RayTracer::Math::Point3D &center1);
-
-                void setBoundingBox(const AxisAlignedBoundingBox &boundingBox) override {
-                    (void)boundingBox;
-                }
-
-                void setLeft(const FormPtr &left) override {
-                    (void)left;
-                }
-
-                void setRight(const FormPtr &right) override {
-                    (void)right;
+                void setCenter1(const RayTracer::Math::Point3D &center1) override {
+                    _center1 = center1;
                 }
 
                 /* Methods */

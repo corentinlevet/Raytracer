@@ -45,33 +45,14 @@
 
                 /* Getters and setters */
 
-                RayTracer::Math::Color getColor() const {
-                    return RayTracer::Math::Color();
-                }
-
                 RayTracer::Textures::Noise getNoise() const {
                     return _noise;
                 }
 
-                void setColor(const RayTracer::Math::Color &color) {
-                    (void)color;
-                }
-
-                void setTextureOdd(const std::shared_ptr<ITexture> &texture) {
-                    (void)texture;
-                }
-
-                void setTextureEven(const std::shared_ptr<ITexture> &texture) {
-                    (void)texture;
-                }
-
-                void setScale(double scale) {
+                void setScale(double scale) override {
                     _scale = scale;
                 }
 
-                void setPath(const std::string &path) {
-                    (void)path;
-                }
                 /* Methods */
 
                 RayTracer::Math::Color value(double u, double v, const RayTracer::Math::Point3D &p) const override;

@@ -58,9 +58,6 @@
                 **/
                 virtual void setMaterial(const MaterialPtr &material) = 0;
 
-                virtual double getRadius() const = 0;
-                virtual RayTracer::Math::Point3D getCenter() const = 0;
-
                 virtual AxisAlignedBoundingBox getBoundingBox() const = 0;
 
                 virtual std::shared_ptr<RayTracer::Forms::IForm> getLeft() const = 0;

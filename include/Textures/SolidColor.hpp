@@ -21,29 +21,14 @@
 
                 /* Getters and setters */
 
-                RayTracer::Math::Color getColor() const {
+                RayTracer::Math::Color getColor() const override {
                     return _color;
                 }
 
-                void setColor(const RayTracer::Math::Color &color) {
+                void setColor(const RayTracer::Math::Color &color) override {
                     _color = color;
                 }
 
-                void setTextureOdd(const std::shared_ptr<ITexture> &texture) {
-                    (void)texture;
-                }
-
-                void setTextureEven(const std::shared_ptr<ITexture> &texture) {
-                    (void)texture;
-                }
-
-                void setScale(double scale) {
-                    (void)scale;
-                }
-
-                void setPath(const std::string &path) {
-                    (void)path;
-                }
                 /* Methods */
 
                 RayTracer::Math::Color value(double u, double v, const RayTracer::Math::Point3D &p) const override;

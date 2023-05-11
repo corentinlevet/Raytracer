@@ -10,6 +10,7 @@
 #ifndef AFORM_HPP_
     #define AFORM_HPP_
 
+    #include "AxisAlignedBoundingBox.hpp"
     #include "IForm.hpp"
 
     namespace RayTracer::Forms {
@@ -33,17 +34,53 @@
                     _material = material;
                 }
 
-                virtual double getRadius() const = 0;
-                virtual RayTracer::Math::Point3D getCenter() const = 0;
+                virtual AxisAlignedBoundingBox getBoundingBox() const {
+                    return AxisAlignedBoundingBox();
+                }
 
-                virtual void setRadius(double radius) = 0;
-                virtual void setCenter(const RayTracer::Math::Point3D &center) = 0;
+                virtual FormPtr getLeft() const {
+                    return nullptr;
+                }
 
-                virtual void setCenter0(const RayTracer::Math::Point3D &center0) = 0;
-                virtual void setCenter1(const RayTracer::Math::Point3D &center1) = 0;
+                virtual FormPtr getRight() const {
+                    return nullptr;
+                }
 
-                virtual void setTime0(double time0) = 0;
-                virtual void setTime1(double time1) = 0;
+                virtual void setRadius(double radius) {
+                    (void)radius;
+                }
+
+                virtual void setCenter(const RayTracer::Math::Point3D &center) {
+                    (void)center;
+                }
+
+                virtual void setCenter0(const RayTracer::Math::Point3D &center0) {
+                    (void)center0;
+                }
+
+                virtual void setCenter1(const RayTracer::Math::Point3D &center1) {
+                    (void)center1;
+                }
+
+                virtual void setTime0(double time0) {
+                    (void)time0;
+                }
+
+                virtual void setTime1(double time1) {
+                    (void)time1;
+                }
+
+                virtual void setBoundingBox(const AxisAlignedBoundingBox &boundingBox) {
+                    (void)boundingBox;
+                }
+
+                virtual void setLeft(const FormPtr &left) {
+                    (void)left;
+                }
+
+                virtual void setRight(const FormPtr &right) {
+                    (void)right;
+                }
 
                 virtual bool hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const = 0;
 

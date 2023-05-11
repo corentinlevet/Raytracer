@@ -22,28 +22,12 @@
 
                 /* Getters and setters */
 
-                RayTracer::Math::Color getColor() const {
-                    return RayTracer::Math::Color();
-                }
-
-                void setColor(const RayTracer::Math::Color &color) {
-                    (void)color;
-                }
-
-                void setTextureOdd(const std::shared_ptr<ITexture> &texture) {
+                void setTextureOdd(const std::shared_ptr<ITexture> &texture) override {
                     _odd = texture;
                 }
 
-                void setTextureEven(const std::shared_ptr<ITexture> &texture) {
+                void setTextureEven(const std::shared_ptr<ITexture> &texture) override {
                     _even = texture;
-                }
-
-                void setScale(double scale) {
-                    (void)scale;
-                }
-
-                void setPath(const std::string &path) {
-                    (void)path;
                 }
 
                 /* Methods */
