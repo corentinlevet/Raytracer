@@ -45,36 +45,49 @@ RayTracer::Math::Point3D RayTracer::Ray::pointAt(double t) const
 
 RayTracer::Math::Color RayTracer::Ray::rayColor(const RayTracer::Ray &ray, const RayTracer::Math::Color &background, const RayTracer::Forms::FormList &world, int depth) const
 {
+    // RayTracer::Forms::HitRecord record;
+
+    // if (depth <= 0)
+    //     return RayTracer::Math::Color(0, 0, 0);
+
+    // if (world.hit(ray, 0.001, infinity, record)) {
+    //     if (record.getMaterial() == nullptr) {
+    //         RayTracer::Math::Vector3D normal(record.getNormal());
+    //         RayTracer::Math::Vector3D vectorPoint(record.getPoint().getX(), record.getPoint().getY(), record.getPoint().getZ());
+
+    //         RayTracer::Math::Vector3D target = vectorPoint + normal + Math::Vector3D::randomUnitVector();
+
+    //         return rayColor(RayTracer::Ray(record.getPoint(), target - vectorPoint), background, world, depth - 1) * 0.5;
+    //     }
+    //     RayTracer::Ray scattered;
+    //     RayTracer::Math::Color attenuation;
+
+    //     if (record.getMaterial()->scatter(ray, record, attenuation, scattered))
+    //         return attenuation * rayColor(scattered, background, world, depth - 1);
+    //     return RayTracer::Math::Color(0, 0, 0);
+    // }
+
+    // RayTracer::Math::Vector3D unitDirection = unitVector(_direction);
+    // double t = 0.5 * (unitDirection.getY() + 1.0);
+    // return RayTracer::Math::Color(1.0, 1.0, 1.0) * (1.0 - t) + RayTracer::Math::Color(0.5, 0.7, 1.0) * t;
+
     RayTracer::Forms::HitRecord record;
 
     if (depth <= 0)
         return RayTracer::Math::Color(0, 0, 0);
 
-    if (world.hit(ray, 0.001, infinity, record)) {
-        // if (record.getMaterial() == nullptr) {
-        //     RayTracer::Math::Vector3D normal(record.getNormal());
-        //     RayTracer::Math::Vector3D vectorPoint(record.getPoint().getX(), record.getPoint().getY(), record.getPoint().getZ());
-
-        //     RayTracer::Math::Vector3D target = vectorPoint + normal + Math::Vector3D::randomUnitVector();
-
-        //     return rayColor(RayTracer::Ray(record.getPoint(), target - vectorPoint), world, depth - 1) * 0.5;
-        // }
-        // RayTracer::Ray scattered;
-        // RayTracer::Math::Color attenuation;
-
-        // if (record.getMaterial()->scatter(ray, record, attenuation, scattered))
-        //     return attenuation * rayColor(scattered, world, depth - 1);
-        // return RayTracer::Math::Color(0, 0, 0);
-
+    if (!world.hit(ray, 0.001, infinity, record))
         return background;
-    }
+
+    if (record.getMaterial() == nullptr)
+        return RayTracer::Math::Color(0, 0, 0);
 
     RayTracer::Ray scattered;
     RayTracer::Math::Color attenuation;
     RayTracer::Math::Color emitted = record.getMaterial()->emitted(record.getU(), record.getV(), record.getPoint());
 
-    if (record.getMaterial()->scatter(ray, record, attenuation, scattered))
-        return emitted + attenuation * rayColor(scattered, background, world, depth - 1);
+    if (!record.getMaterial()->scatter(ray, record, attenuation, scattered))
+        return emitted;
 
-    return emitted;
+    return emitted + attenuation * rayColor(scattered, background, world, depth - 1);
 }
