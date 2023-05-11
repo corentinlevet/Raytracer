@@ -190,7 +190,7 @@ RayTracer::Forms::FormList RayTracer::Raytracer::twoPerlinSpheres()
 RayTracer::Forms::FormList RayTracer::Raytracer::earth()
 {
     auto earthTexture = TextureFactory::createTexture("Image");
-    earthTexture->setPath("assets/earth.jpg");
+    earthTexture->setPath("assets/earthmap.jpg");
 
     auto earthSurface = MaterialFactory::createMaterial("Lambertian");
     earthSurface->setTexture(earthTexture);
