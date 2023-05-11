@@ -256,31 +256,28 @@ RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
 {
     try {
         RayTracer::Parser parser(sceneFile);
+        _background = RayTracer::Math::Color(0.70, 0.80, 1.00);
         _camera = parser.getCamera(_camera);
-        // _world = parser.getWorld();
-        switch (0) {
-            case 1:
-                _background = RayTracer::Math::Color(0.70, 0.80, 1.00);
-                _world = randomScene();
-                break;
-            case 2:
-                _background = RayTracer::Math::Color(0.70, 0.80, 1.00);
-                _world = twoSpheres();
-                break;
-            case 3:
-                _background = RayTracer::Math::Color(0.70, 0.80, 1.00);
-                _world = twoPerlinSpheres();
-                break;
-            default:
-            case 4:
-                _background = RayTracer::Math::Color(0.70, 0.80, 1.00);
-                _world = earth();
-                break;
-            case 5:
-                _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
-                // _world = simpleLight();
-                break;
-        }
+        _world = parser.getWorld();
+        // switch (0) {
+        //     default:
+        //     case 1:
+        //         _world = randomScene();
+        //         break;
+        //     case 2:
+        //         _world = twoSpheres();
+        //         break;
+        //     case 3:
+        //         _world = twoPerlinSpheres();
+        //         break;
+        //     case 4:
+        //         _world = earth();
+        //         break;
+        //     case 5:
+        //         _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
+        //         // _world = simpleLight();
+        //         break;
+        // }
     } catch (...) {
         throw RayTracer::Raytracer::hardError("Raytracer", "Error while parsing the scene file");
     }
