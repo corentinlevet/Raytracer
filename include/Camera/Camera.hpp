@@ -10,7 +10,7 @@
 #ifndef CAMERA_HPP_
     #define CAMERA_HPP_
 
-    #include "Rectangle.hpp"
+    #include "Screen.hpp"
     #include <tuple>
 
     namespace RayTracer {
@@ -29,7 +29,7 @@
                     std::tuple<int, int> resolution = std::tuple<int, int>(1920, 1080),
                     std::tuple<int, int, int> rotation = std::tuple<int, int, int>(0, 0, 0),
                     const Math::Point3D &origin = Math::Point3D(),
-                    const RayTracer::Camera::Rectangle &screen = RayTracer::Camera::Rectangle(Math::Point3D(), Math::Vector3D(1, 0), Math::Vector3D(0, 1)),
+                    const RayTracer::Camera::Screen &screen = RayTracer::Camera::Screen(Math::Point3D(), Math::Vector3D(1, 0), Math::Vector3D(0, 1)),
                     const RayTracer::Math::Vector3D u = Math::Vector3D(),
                     const RayTracer::Math::Vector3D v = Math::Vector3D(),
                     const RayTracer::Math::Vector3D w = Math::Vector3D()
@@ -46,7 +46,7 @@
                 const std::tuple<int, int> &getResolution() const;
                 const std::tuple<int, int, int> &getRotation() const;
                 const Math::Point3D &getOrigin() const;
-                const RayTracer::Camera::Rectangle &getScreen() const;
+                const RayTracer::Camera::Screen &getScreen() const;
 
                 void setAspectRatio(double aspectRatio);
                 void setFocalLength(double focalLength);
@@ -56,7 +56,7 @@
                 void setResolution(const std::tuple<int, int> &resolution);
                 void setRotation(const std::tuple<int, int, int> &rotation);
                 void setOrigin(const Math::Point3D &origin);
-                void setScreen(const RayTracer::Camera::Rectangle &rectangle);
+                void setScreen(const RayTracer::Camera::Screen &screen);
 
                 /* Methods */
 
@@ -76,7 +76,7 @@
                 std::tuple<int, int, int> _rotation;
 
                 RayTracer::Math::Point3D _origin;
-                RayTracer::Camera::Rectangle _screen;
+                RayTracer::Camera::Screen _screen;
 
                 RayTracer::Math::Vector3D _u;
                 RayTracer::Math::Vector3D _v;

@@ -1,24 +1,24 @@
 /*
 ** EPITECH PROJECT, 2022
-** Rectangle.hpp
+** Screen.hpp
 ** File description:
-** Header file for the Rectangle class
+** Header file for the Screen class
 */
 
 #pragma once
 
-#ifndef RECTANGLE_HPP_
-    #define RECTANGLE_HPP_
+#ifndef SCREEN_HPP_
+    #define SCREEN_HPP_
 
     #include "Error.hpp"
 
     #include "Point3D.hpp"
 
     namespace RayTracer::Camera {
-        class Rectangle {
+        class Screen {
             public:
-                Rectangle(const Math::Point3D &origin = Math::Point3D(), const Math::Vector3D &bottomSide = Math::Vector3D(), const Math::Vector3D &leftSide = Math::Vector3D());
-                ~Rectangle() = default;
+                Screen(const Math::Point3D &origin = Math::Point3D(), const Math::Vector3D &bottomSide = Math::Vector3D(), const Math::Vector3D &leftSide = Math::Vector3D());
+                ~Screen() = default;
 
                 /* Getters and setters */
 
@@ -36,7 +36,7 @@
 
                 class softError : public Error {
                     public:
-                        softError(const std::string &where, const std::string &what) : Error("RayTracer::Camera::Rectangle::" + where, what) {}
+                        softError(const std::string &where, const std::string &what) : Error("RayTracer::Camera::Screen::" + where, what) {}
                 };
 
             private:
@@ -46,4 +46,4 @@
         };
     }
 
-#endif /* !RECTANGLE_HPP_ */
+#endif /* !SCREEN_HPP_ */
