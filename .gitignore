@@ -11,6 +11,8 @@ raytracer
 *.so
 *#
 *~
+*.png
+*.ppm
 
 # IDEs
 .idea/
