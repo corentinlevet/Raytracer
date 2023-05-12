@@ -233,13 +233,9 @@ RayTracer::Forms::FormList RayTracer::Raytracer::simpleLight()
     auto diffuseLight = LightFactory::createLight("Diffuse");
     diffuseLight->setTexture(lightTexture);
 
-    auto rectangle = FormFactory::createForm("Rectangle");
+    auto rectangle = FormFactory::createForm("RectangleXY");
 
-    rectangle->setX0(3);
-    rectangle->setX1(5);
-    rectangle->setY0(1);
-    rectangle->setY1(3);
-    rectangle->setK(-2);
+    rectangle->initRectangle(3, 5, 1, 3, 0, 0, -2);
     rectangle->setMaterial(diffuseLight);
 
     RayTracer::Forms::FormList world;
@@ -248,6 +244,61 @@ RayTracer::Forms::FormList RayTracer::Raytracer::simpleLight()
     world.add(sphere2);
 
     world.add(rectangle);
+
+    return world;
+}
+
+RayTracer::Forms::FormList RayTracer::Raytracer::cornellBox()
+{
+    auto solidColor1 = TextureFactory::createTexture("SolidColor");
+    solidColor1->setColor(RayTracer::Math::Color(0.65, 0.05, 0.05));
+    auto red = MaterialFactory::createMaterial("Lambertian");
+    red->setTexture(solidColor1);
+    auto solidColor2 = TextureFactory::createTexture("SolidColor");
+    solidColor2->setColor(RayTracer::Math::Color(0.73, 0.73, 0.73));
+    auto white = MaterialFactory::createMaterial("Lambertian");
+    white->setTexture(solidColor2);
+    auto solidColor3 = TextureFactory::createTexture("SolidColor");
+    solidColor3->setColor(RayTracer::Math::Color(0.12, 0.45, 0.15));
+    auto green = MaterialFactory::createMaterial("Lambertian");
+    green->setTexture(solidColor3);
+    auto solidColor4 = TextureFactory::createTexture("SolidColor");
+    solidColor4->setColor(RayTracer::Math::Color(15, 15, 15));
+    auto light = LightFactory::createLight("Diffuse");
+    light->setTexture(solidColor4);
+
+    auto lightRect = FormFactory::createForm("RectangleXZ");
+    lightRect->initRectangle(213, 343, 0, 0, 227, 332, 554);
+    lightRect->setMaterial(light);
+
+    auto greenRect = FormFactory::createForm("RectangleYZ");
+    greenRect->initRectangle(0, 0, 0, 555, 0, 555, 555);
+    greenRect->setMaterial(green);
+
+    auto redRect = FormFactory::createForm("RectangleYZ");
+    redRect->initRectangle(0, 0, 0, 555, 0, 555, 0);
+    redRect->setMaterial(red);
+
+    auto whiteRect1 = FormFactory::createForm("RectangleXZ");
+    whiteRect1->initRectangle(0, 555, 0, 0, 0, 555, 0);
+    whiteRect1->setMaterial(white);
+
+    auto whiteRect2 = FormFactory::createForm("RectangleXZ");
+    whiteRect2->initRectangle(0, 555, 0, 0, 0, 555, 555);
+    whiteRect2->setMaterial(white);
+
+    auto whiteRect3 = FormFactory::createForm("RectangleXY");
+    whiteRect3->initRectangle(0, 555, 0, 555, 0, 0, 555);
+    whiteRect3->setMaterial(white);
+
+    RayTracer::Forms::FormList world;
+
+    world.add(lightRect);
+    world.add(greenRect);
+    world.add(redRect);
+    world.add(whiteRect1);
+    world.add(whiteRect2);
+    world.add(whiteRect3);
 
     return world;
 }
@@ -331,10 +382,14 @@ RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
             case 4:
                 _world = earth();
                 break;
-            default:
             case 5:
                 _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
                 _world = simpleLight();
+                break;
+            default:
+            case 6:
+                _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
+                _world = cornellBox();
                 break;
         }
     } catch (...) {

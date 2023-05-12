@@ -15,6 +15,7 @@
     #include "3D/Cube.hpp"
     #include "3D/Sphere.hpp"
 
+    #include <functional>
     #include <map>
 
     namespace RayTracer::Forms {

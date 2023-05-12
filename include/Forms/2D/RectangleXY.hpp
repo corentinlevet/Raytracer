@@ -1,43 +1,53 @@
 /*
 ** EPITECH PROJECT, 2022
-** Rectangle.hpp
+** RectangleXY.hpp
 ** File description:
-** Header file for the Rectangle class
+** Header file for the RectangleXY class
 */
 
 #pragma once
 
-#ifndef RECTANGLE_HPP_
-    #define RECTANGLE_HPP_
+#ifndef RECTANGLEXY_HPP_
+    #define RECTANGLEXY_HPP_
 
     #include "AForm.hpp"
 
     namespace RayTracer::Forms {
-        class Rectangle : public AForm {
+        class RectangleXY : public AForm {
             public:
-                Rectangle(double x0 = 0.0, double y0 = 0.0, double x1 = 0.0, double y1 = 0.0, double k = 0.0);
-                ~Rectangle() = default;
+                RectangleXY(double x0 = 0.0, double y0 = 0.0, double x1 = 0.0, double y1 = 0.0, double k = 0.0);
+                ~RectangleXY() = default;
 
                 /* Getters and Setters */
 
-                void setX0(double x0) override {
+                void setX0(double x0) {
                     _x0 = x0;
                 }
 
-                void setX1(double x1) override {
+                void setX1(double x1) {
                     _x1 = x1;
                 }
 
-                void setY0(double y0) override {
+                void setY0(double y0) {
                     _y0 = y0;
                 }
 
-                void setY1(double y1) override {
+                void setY1(double y1) {
                     _y1 = y1;
                 }
 
-                void setK(double k) override {
+                void setK(double k) {
                     _k = k;
+                }
+
+                void initRectangle(double x0, double x1, double y0, double y1, double z0, double z1, double k) {
+                    (void)(z0); (void)(z1);
+
+                    setX0(x0);
+                    setX1(x1);
+                    setY0(y0);
+                    setY1(y1);
+                    setK(k);
                 }
 
                 /* Methods */
@@ -60,4 +70,4 @@
         FormPtr entryPointForm();
     }
 
-#endif /* !RECTANGLE_HPP_ */
+#endif /* !RECTANGLEXY_HPP_ */

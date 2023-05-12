@@ -1,11 +1,11 @@
 /*
 ** EPITECH PROJECT, 2022
-** Rectangle.cpp
+** RectangleXY.cpp
 ** File description:
-** Source file for the Rectangle class
+** Source file for the RectangleXY class
 */
 
-#include "Rectangle.hpp"
+#include "RectangleXY.hpp"
 
 #include "AxisAlignedBoundingBox.hpp"
 #include "HitRecord.hpp"
@@ -15,21 +15,21 @@ extern "C"
 {
     FormPtr entryPointForm()
     {
-        return std::make_unique<RayTracer::Forms::Rectangle>();
+        return std::make_unique<RayTracer::Forms::RectangleXY>();
     }
 }
 
 /* Constructor */
 
-RayTracer::Forms::Rectangle::Rectangle(double x0, double y0, double x1, double y1, double k) : _x0(x0), _y0(y0), _x1(x1), _y1(y1), _k(k)
+RayTracer::Forms::RectangleXY::RectangleXY(double x0, double y0, double x1, double y1, double k) : _x0(x0), _y0(y0), _x1(x1), _y1(y1), _k(k)
 {
-    _name = "Rectangle";
+    _name = "RectangleXY";
     _material = nullptr;
 }
 
 /* Methods */
 
-bool RayTracer::Forms::Rectangle::hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const
+bool RayTracer::Forms::RectangleXY::hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const
 {
     double t = (_k - ray.getOrigin().getZ()) / ray.getDirection().getZ();
 
@@ -52,7 +52,7 @@ bool RayTracer::Forms::Rectangle::hits(const RayTracer::Ray &ray, double t_min, 
     return true;
 }
 
-bool RayTracer::Forms::Rectangle::boundingBox(double t0, double t1, AxisAlignedBoundingBox &boundingBox) const
+bool RayTracer::Forms::RectangleXY::boundingBox(double t0, double t1, AxisAlignedBoundingBox &boundingBox) const
 {
     (void)t0; (void)t1;
 

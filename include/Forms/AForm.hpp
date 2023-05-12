@@ -82,24 +82,8 @@
                     (void)right;
                 }
 
-                virtual void setX0(double x0) {
-                    (void)x0;
-                }
-
-                virtual void setX1(double x1) {
-                    (void)x1;
-                }
-
-                virtual void setY0(double y0) {
-                    (void)y0;
-                }
-
-                virtual void setY1(double y1) {
-                    (void)y1;
-                }
-
-                virtual void setK(double k) {
-                    (void)k;
+                virtual void initRectangle(double x0, double x1, double y0, double y1, double z0, double z1, double k) {
+                    (void)x0; (void)x1; (void)y0; (void)y1; (void)z0; (void)z1; (void)k;
                 }
 
                 virtual bool hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const {
