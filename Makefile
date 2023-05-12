@@ -112,6 +112,10 @@ all:	header $(OBJ) math forms materials textures lights
 	@$(CXX) $(OBJ) -o $(NAME) $(CXXFLAGS) $(INC) $(LIB) $(LDFLAGS)
 	@printf "\n%b" "$(OK_COLOR)Compilation done !\n$(NO_COLOR)"
 
+bonus: all
+	@printf "\n"
+	@make -s -C bonus
+
 src/%.o:	src/%.cpp
 	@$(call run_and_test, $(CXX) $(CXXFLAGS) $(INC) $(LIB) $(LDFLAGS) -c $< -o $@)
 
@@ -146,6 +150,7 @@ textures:
 	@make -s -C src/Textures
 
 clean:
+	@make -s clean -C bonus &>/dev/null
 	@make -s clean -C src/Forms &>/dev/null
 	@make -s clean -C src/Lights &>/dev/null
 	@make -s clean -C src/Math &>/dev/null
@@ -155,6 +160,7 @@ clean:
 	@printf "%-95b%b" "$(CLEAN_COLOR)clean" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 fclean:	clean
+	@make -s fclean -C bonus &>/dev/null
 	@make -s fclean -C src/Forms &>/dev/null
 	@make -s fclean -C src/Lights &>/dev/null
 	@make -s fclean -C src/Math &>/dev/null

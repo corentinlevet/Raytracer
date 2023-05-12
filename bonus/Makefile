@@ -70,7 +70,7 @@ ifeq ($(shell git rev-parse HEAD &>/dev/null; echo $$?),0)
 endif
 
 define run_and_test
-	printf "%b%-88b" "$(COM_COLOR)$(COM_STRING) "						\
+	printf "\t%b%-80b" "$(COM_COLOR)$(COM_STRING) "						\
 		"$(OBJ_COLOR)$(@F)$(NO_COLOR)"; 								\
 	$(RUN_CMD);															\
 	if [ $$RESULT -ne 0 ]; then											\
@@ -93,22 +93,16 @@ endef
 #                                 Makefile rules                              #
 ###############################################################################
 
-all:	header $(OBJ)
+all:
+	@printf "%b" "$(ERROR_COLOR)Compiling Bonus...\n$(NO_COLOR)"
+	@make compile_obj -s
 	@$(CXX) $(OBJ) -o $(NAME) $(CXXFLAGS) $(LDFLAGS)
-	@printf "\n%b" "$(OK_COLOR)Compilation done !\n$(NO_COLOR)"
+	@printf "%b" "$(OK_COLOR)Bonus compiled !\n$(NO_COLOR)"
+
+compile_obj:	$(OBJ)
 
 src/%.o:	src/%.cpp
 	@$(call run_and_test, $(CXX) $(CXXFLAGS) $(INC) $(LIB) $(LDFLAGS) -c $< -o $@)
-
-header:
-	@printf "\n%b" "$(OBJ_COLOR)Name\t:\t$(WARN_COLOR)$(NAME)\n"
-
-	@printf "%b" "$(OBJ_COLOR)Author\t:\t$(WARN_COLOR)$(AUTHOR)\n"
-	@printf "%b" "$(OBJ_COLOR)Date\t:\t$(WARN_COLOR)$(DATE)\n\033[m"
-	@printf "%b" "$(OBJ_COLOR)CC\t:\t$(WARN_COLOR)$(CXX)\n\033[m"
-	@printf "%b" "$(OBJ_COLOR)Flags\t:\t$(WARN_COLOR)$(CXXFLAGS)\n\033[m"
-	@printf "%b" "$(OBJ_COLOR)Libs\t:\t$(WARN_COLOR)$(LDFLAGS)\n\033[m"
-	@echo
 
 clean:
 	@$(RM) $(OBJ)
