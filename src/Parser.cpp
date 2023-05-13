@@ -7,6 +7,7 @@
 
 #include "Parser.hpp"
 
+#include "BVHNode.hpp"
 #include "Camera.hpp"
 #include "FormList.hpp"
 #include "FormFactory.hpp"
@@ -208,19 +209,44 @@ FormPtr RayTracer::Parser::getForm(const std::string &name, const libconfig::Set
 {
     FormPtr newForm = nullptr;
     if (name == "spheres") {
-        float sphereX = 0, sphereY = 0, sphereZ = 0, sphereRadius = 0;
-        int colorR = 0, colorG = 0, colorB = 0;
-        form.lookupValue("color.r", colorR);
-        form.lookupValue("color.g", colorG);
-        form.lookupValue("color.b", colorB);
-        form.lookupValue("x", sphereX);
-        form.lookupValue("y", sphereY);
-        form.lookupValue("z", sphereZ);
-        form.lookupValue("radius", sphereRadius);
         std::string formName = form.lookup("name");
         if (formName == "Sphere") {
+            float sphereX = 0, sphereY = 0, sphereZ = 0, sphereRadius = 0;
+            int colorR = 0, colorG = 0, colorB = 0;
+            form.lookupValue("color.r", colorR);
+            form.lookupValue("color.g", colorG);
+            form.lookupValue("color.b", colorB);
+            form.lookupValue("x", sphereX);
+            form.lookupValue("y", sphereY);
+            form.lookupValue("z", sphereZ);
+            form.lookupValue("radius", sphereRadius);
             newForm = FormFactory::createForm(formName);
             newForm->setCenter(Math::Point3D(sphereX, sphereY, sphereZ));
+            newForm->setRadius((double) sphereRadius);
+            newForm->setColor(Math::Color(colorR, colorG, colorB));
+            if (form.exists("material")) {
+                MaterialPtr material = getMaterial(form.lookup("material"));
+                newForm->setMaterial(material);
+            } else
+                newForm->setMaterial(nullptr);
+        } else if (formName == "MovingSphere") {
+            float sphereX0 = 0, sphereY0 = 0, sphereZ0 = 0, sphereX1 = 0, sphereY1 = 0, sphereZ1 = 0, sphereRadius = 0;
+            int colorR = 0, colorG = 0, colorB = 0;
+            form.lookupValue("color.r", colorR);
+            form.lookupValue("color.g", colorG);
+            form.lookupValue("color.b", colorB);
+            form.lookupValue("x0", sphereX0);
+            form.lookupValue("y0", sphereY0);
+            form.lookupValue("z0", sphereZ0);
+            form.lookupValue("x1", sphereX1);
+            form.lookupValue("y1", sphereY1);
+            form.lookupValue("z1", sphereZ1);
+            form.lookupValue("radius", sphereRadius);
+            newForm = FormFactory::createForm(formName);
+            newForm->setCenter0(Math::Point3D(sphereX0, sphereY0, sphereZ0));
+            newForm->setCenter1(Math::Point3D(sphereX1, sphereY1, sphereZ1));
+            newForm->setTime0(0.0);
+            newForm->setTime1(1.0);
             newForm->setRadius((double) sphereRadius);
             newForm->setColor(Math::Color(colorR, colorG, colorB));
             if (form.exists("material")) {
@@ -266,6 +292,21 @@ FormPtr RayTracer::Parser::getForm(const std::string &name, const libconfig::Set
             newForm->initBox(Math::Point3D(point0X, point0Y, point0Z), Math::Point3D(point1X, point1Y, point1Z), material);
         } else
             newForm->setMaterial(nullptr);
+    } else if (name == "bvh") {
+        RayTracer::Forms::FormList forms;
+        auto &bvh = form.lookup("primitives");
+        for (auto &f : bvh) {
+            std::string name = f.getName();
+            for (auto &p : bvh.lookup(name)) {
+                FormPtr form = getForm(name, p);
+                if (form != nullptr) {
+                    forms.add(form);
+                    form = nullptr;
+                }
+            }
+        }
+        auto bvhBox = std::make_shared<RayTracer::Forms::BVHNode>(forms, 0, 1);
+        newForm = bvhBox;
     }
 
     if (form.exists("transformations"))
