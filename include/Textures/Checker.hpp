@@ -15,7 +15,7 @@
     namespace RayTracer::Textures {
         class Checker : public ATexture {
             public:
-                Checker() = default;
+                Checker();
                 Checker(const TexturePtr &even, const TexturePtr &odd);
                 Checker(const RayTracer::Math::Color color1, const RayTracer::Math::Color color2);
                 ~Checker() = default;

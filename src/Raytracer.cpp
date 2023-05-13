@@ -581,7 +581,7 @@ void RayTracer::Raytracer::run()
 
     _sfml.initWindow(imageWidth, imageHeight);
 
-    const int samplesPerPixel = 400;
+    const int samplesPerPixel = 25;
     const int maxDepth = 50;
 
     std::vector<RayTracer::Math::Color> pixelColors(imageWidth);
@@ -626,39 +626,39 @@ RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
         RayTracer::Parser parser(sceneFile);
         _background = RayTracer::Math::Color(0.70, 0.80, 1.00);
         _camera = parser.getCamera(_camera);
-        // _world = parser.getWorld();
-        switch (0) {
-            case 1:
-                _world = randomScene();
-                break;
-            case 2:
-                _world = twoSpheres();
-                break;
-            case 3:
-                _world = twoPerlinSpheres();
-                break;
-            case 4:
-                _world = earth();
-                break;
-            case 5:
-                _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
-                _world = simpleLight();
-                break;
-            case 6:
-                _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
-                _world = cornellBox();
-                break;
-            case 7:
-                _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
-                _world = cornellSmoke();
-                break;
-            default:
-            case 8:
-                _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
-                _world = finalScene();
-                break;
-        }
-    } catch (...) {
-        throw RayTracer::Raytracer::hardError("Raytracer", "Error while parsing the scene file");
+        _world = parser.getWorld();
+        // switch (0) {
+        //     case 1:
+        //         _world = randomScene();
+        //         break;
+        //     default:
+        //     case 2:
+        //         _world = twoSpheres();
+        //         break;
+        //     case 3:
+        //         _world = twoPerlinSpheres();
+        //         break;
+        //     case 4:
+        //         _world = earth();
+        //         break;
+        //     case 5:
+        //         _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
+        //         _world = simpleLight();
+        //         break;
+        //     case 6:
+        //         _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
+        //         _world = cornellBox();
+        //         break;
+        //     case 7:
+        //         _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
+        //         _world = cornellSmoke();
+        //         break;
+        //     case 8:
+        //         _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
+        //         _world = finalScene();
+        //         break;
+        // }
+    } catch (const RayTracer::Parser::hardError &e) {
+        throw RayTracer::Raytracer::hardError("Raytracer", "Error while parsing the scene file: " + std::string(e.what()));
     }
 }

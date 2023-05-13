@@ -82,8 +82,23 @@ RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera
 
 TexturePtr RayTracer::Parser::getTexture(const libconfig::Setting &texture)
 {
-    (void)texture;
-    return nullptr;
+    TexturePtr newTexture = nullptr;
+    std::string textureName = texture.lookup("name");
+    if (textureName == "Checker") {
+        newTexture = TextureFactory::createTexture("Checker");
+        auto &color1 = texture.lookup("properties.color1");
+        auto &color2 = texture.lookup("properties.color2");
+        float color1R = 0, color1G = 0, color1B = 0, color2R = 0, color2G = 0, color2B = 0;
+        color1.lookupValue("r", color1R); color1.lookupValue("g", color1G); color1.lookupValue("b", color1B);
+        color2.lookupValue("r", color2R); color2.lookupValue("g", color2G); color2.lookupValue("b", color2B);
+        auto Color1 = TextureFactory::createTexture("SolidColor");
+        auto Color2 = TextureFactory::createTexture("SolidColor");
+        Color1->setColor(Math::Color(color1R, color1G, color1B));
+        Color2->setColor(Math::Color(color2R, color2G, color2B));
+        newTexture->setTextureOdd(Color1);
+        newTexture->setTextureEven(Color2);
+    }
+    return newTexture;
 }
 
 MaterialPtr RayTracer::Parser::getMaterial(const libconfig::Setting &material)
@@ -93,17 +108,16 @@ MaterialPtr RayTracer::Parser::getMaterial(const libconfig::Setting &material)
     newMaterial = MaterialFactory::createMaterial(materialName);
     float materialR = 0, materialG = 0, materialB = 0, fuzziness = 0, refractionIndex = 0;
     libconfig::Setting &albedo = material.lookup("albedo");
-    albedo.lookupValue("r", materialR);
-    albedo.lookupValue("g", materialG);
-    albedo.lookupValue("b", materialB);
+    albedo.lookupValue("r", materialR); albedo.lookupValue("g", materialG); albedo.lookupValue("b", materialB);
     material.lookupValue("fuzziness", fuzziness);
     material.lookupValue("refractionIndex", refractionIndex);
     newMaterial->setAlbedo(Math::Color(materialR, materialG, materialB));
     newMaterial->setFuzziness(fuzziness);
     newMaterial->setRefractionIndex(refractionIndex);
-    if (material.exists("texture"))
-        newMaterial->setTexture(getTexture(material.lookup("texture")));
-    else
+    if (material.exists("texture")) {
+        TexturePtr texture = getTexture(material.lookup("texture"));
+        newMaterial->setTexture(texture);
+    } else
         newMaterial->setTexture(nullptr);
     return newMaterial;
 }
@@ -120,13 +134,16 @@ FormPtr RayTracer::Parser::getForm(const std::string &name, const libconfig::Set
         form.lookupValue("x", sphereX);
         form.lookupValue("y", sphereY);
         form.lookupValue("z", sphereZ);
-        form.lookupValue("r", sphereRadius);
+        form.lookupValue("radius", sphereRadius);
         newForm = FormFactory::createForm("Sphere");
         newForm->setCenter(Math::Point3D(sphereX, sphereY, sphereZ));
         newForm->setRadius((double) sphereRadius);
         newForm->setColor(Math::Color(colorR, colorG, colorB));
-        if (form.exists("material"))
-            newForm->setMaterial(getMaterial(form.lookup("material")));
+        if (form.exists("material")) {
+            MaterialPtr material = getMaterial(form.lookup("material"));
+            newForm->setMaterial(material);
+        } else
+            newForm->setMaterial(nullptr);
     }
 
     return newForm;
@@ -136,7 +153,6 @@ RayTracer::Forms::FormList RayTracer::Parser::getWorld()
 {
     RayTracer::Forms::FormList world;
     FormPtr form = nullptr;
-    MaterialPtr material = nullptr;
 
     for (auto &p : _config.lookup("primitives")) {
         std::string name = p.getName();
@@ -145,7 +161,6 @@ RayTracer::Forms::FormList RayTracer::Parser::getWorld()
             if (form != nullptr) {
                 world.add(form);
                 form = nullptr;
-                material = nullptr;
             }
         }
     }

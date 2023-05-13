@@ -19,6 +19,11 @@ extern "C"
 
 /* Constructors */
 
+RayTracer::Textures::Checker::Checker()
+{
+    _name = "Checker";
+}
+
 RayTracer::Textures::Checker::Checker(const TexturePtr &even, const TexturePtr &odd) : _even(even), _odd(odd)
 {
     _name = "Checker";
