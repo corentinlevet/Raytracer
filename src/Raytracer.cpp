@@ -132,82 +132,6 @@ RayTracer::Forms::FormList RayTracer::Raytracer::randomScene()
     return world;
 }
 
-RayTracer::Forms::FormList RayTracer::Raytracer::cornellSmoke()
-{
-    auto solidColor1 = TextureFactory::createTexture("SolidColor");
-    solidColor1->setColor(RayTracer::Math::Color(0.65, 0.05, 0.05));
-    auto red = MaterialFactory::createMaterial("Lambertian");
-    red->setTexture(solidColor1);
-    auto solidColor2 = TextureFactory::createTexture("SolidColor");
-    solidColor2->setColor(RayTracer::Math::Color(0.73, 0.73, 0.73));
-    auto white = MaterialFactory::createMaterial("Lambertian");
-    white->setTexture(solidColor2);
-    auto solidColor3 = TextureFactory::createTexture("SolidColor");
-    solidColor3->setColor(RayTracer::Math::Color(0.12, 0.45, 0.15));
-    auto green = MaterialFactory::createMaterial("Lambertian");
-    green->setTexture(solidColor3);
-    auto solidColor4 = TextureFactory::createTexture("SolidColor");
-    solidColor4->setColor(RayTracer::Math::Color(7, 7, 7));
-    auto light = LightFactory::createLight("Diffuse");
-    light->setTexture(solidColor4);
-
-    auto lightRect = FormFactory::createForm("RectangleXZ");
-    lightRect->initRectangle(113, 443, 0, 0, 127, 432, 554);
-    lightRect->setMaterial(light);
-
-    auto greenRect = FormFactory::createForm("RectangleYZ");
-    greenRect->initRectangle(0, 0, 0, 555, 0, 555, 555);
-    greenRect->setMaterial(green);
-
-    auto redRect = FormFactory::createForm("RectangleYZ");
-    redRect->initRectangle(0, 0, 0, 555, 0, 555, 0);
-    redRect->setMaterial(red);
-
-    auto whiteRect1 = FormFactory::createForm("RectangleXZ");
-    whiteRect1->initRectangle(0, 555, 0, 0, 0, 555, 0);
-    whiteRect1->setMaterial(white);
-
-    auto whiteRect2 = FormFactory::createForm("RectangleXZ");
-    whiteRect2->initRectangle(0, 555, 0, 0, 0, 555, 555);
-    whiteRect2->setMaterial(white);
-
-    auto whiteRect3 = FormFactory::createForm("RectangleXY");
-    whiteRect3->initRectangle(0, 555, 0, 555, 0, 0, 555);
-    whiteRect3->setMaterial(white);
-
-    auto box1 = FormFactory::createForm("Box");
-    box1->initBox(RayTracer::Math::Point3D(0, 0, 0), RayTracer::Math::Point3D(165, 330, 165), white);
-    auto rotate1 = FormFactory::createForm("RotateY");
-    rotate1->initRotate(box1, 15);
-    auto translate1 = FormFactory::createForm("Translate");
-    translate1->initTranslate(rotate1, RayTracer::Math::Vector3D(265, 0, 295));
-
-    auto box2 = FormFactory::createForm("Box");
-    box2->initBox(RayTracer::Math::Point3D(0, 0, 0), RayTracer::Math::Point3D(165, 165, 165), white);
-    auto rotate2 = FormFactory::createForm("RotateY");
-    rotate2->initRotate(box2, -18);
-    auto translate2 = FormFactory::createForm("Translate");
-    translate2->initTranslate(rotate2, RayTracer::Math::Vector3D(130, 0, 65));
-
-    auto constantMedium1 = FormFactory::createForm("ConstantMedium");
-    constantMedium1->initConstantMedium(translate1, 0.01, RayTracer::Math::Color(0, 0, 0));
-    auto constantMedium2 = FormFactory::createForm("ConstantMedium");
-    constantMedium2->initConstantMedium(translate2, 0.01, RayTracer::Math::Color(1, 1, 1));
-
-    RayTracer::Forms::FormList world;
-
-    world.add(lightRect);
-    world.add(greenRect);
-    world.add(redRect);
-    world.add(whiteRect1);
-    world.add(whiteRect2);
-    world.add(whiteRect3);
-    world.add(constantMedium1);
-    world.add(constantMedium2);
-
-    return world;
-}
-
 RayTracer::Forms::FormList RayTracer::Raytracer::finalScene()
 {
     RayTracer::Forms::FormList boxes1;
@@ -443,9 +367,6 @@ RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
         //         _world = randomScene();
         //         break;
         //     default:
-        //     case 7:
-        //         _world = cornellSmoke();
-        //         break;
         //     case 8:
         //         _world = finalScene();
         //         break;

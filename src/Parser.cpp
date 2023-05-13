@@ -191,6 +191,16 @@ void RayTracer::Parser::getTransformations(FormPtr &form, const libconfig::Setti
             rotation->initRotate(form, angle);
             form = rotation;
         }
+        if (transformationName == "ConstantMedium") {
+            FormPtr constantMedium = FormFactory::createForm("ConstantMedium");
+            float density = 0, colorR = 0, colorG = 0, colorB = 0;
+            auto &properties = t.lookup("properties");
+            properties.lookupValue("density", density);
+            auto &color = properties.lookup("color");
+            color.lookupValue("r", colorR); color.lookupValue("g", colorG); color.lookupValue("b", colorB);
+            constantMedium->initConstantMedium(form, density, Math::Color(colorR, colorG, colorB));
+            form = constantMedium;
+        }
     }
 }
 
