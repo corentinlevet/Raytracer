@@ -132,25 +132,6 @@ RayTracer::Forms::FormList RayTracer::Raytracer::randomScene()
     return world;
 }
 
-RayTracer::Forms::FormList RayTracer::Raytracer::earth()
-{
-    auto earthTexture = TextureFactory::createTexture("Image");
-    earthTexture->setPath("assets/earthmap.jpg");
-
-    auto earthSurface = MaterialFactory::createMaterial("Lambertian");
-    earthSurface->setTexture(earthTexture);
-
-    auto globe = FormFactory::createForm("Sphere");
-    globe->setCenter(RayTracer::Math::Point3D(0, 0, 0));
-    globe->setRadius(2);
-    globe->setMaterial(earthSurface);
-
-    RayTracer::Forms::FormList world;
-    world.add(globe);
-
-    return world;
-}
-
 RayTracer::Forms::FormList RayTracer::Raytracer::simpleLight()
 {
     auto perlinTexture = TextureFactory::createTexture("Perlin");
@@ -575,9 +556,6 @@ RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
         //         _world = randomScene();
         //         break;
         //     default:
-        //     case 4:
-        //         _world = earth();
-        //         break;
         //     case 5:
         //         _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
         //         _world = simpleLight();

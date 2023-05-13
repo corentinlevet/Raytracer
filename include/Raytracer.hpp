@@ -27,7 +27,6 @@
 
                 /* Scenes */
                 RayTracer::Forms::FormList randomScene();
-                RayTracer::Forms::FormList earth();
                 RayTracer::Forms::FormList simpleLight();
                 RayTracer::Forms::FormList cornellBox();
                 RayTracer::Forms::FormList cornellSmoke();

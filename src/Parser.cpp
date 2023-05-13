@@ -103,6 +103,11 @@ TexturePtr RayTracer::Parser::getTexture(const libconfig::Setting &texture)
         float scale = 0;
         properties.lookupValue("scale", scale);
         newTexture->setScale(scale);
+    } else if (textureName == "Image") {
+        newTexture = TextureFactory::createTexture("Image");
+        auto &properties = texture.lookup("properties");
+        std::string path = properties.lookup("path");
+        newTexture->setPath(path);
     }
     return newTexture;
 }
