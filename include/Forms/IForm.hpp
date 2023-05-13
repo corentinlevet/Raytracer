@@ -80,6 +80,9 @@
                 virtual void initRectangle(double x0, double x1, double y0, double y1, double z0, double z1, double k) = 0;
                 virtual void initBox(const RayTracer::Math::Point3D &p0, const RayTracer::Math::Point3D &p1, const MaterialPtr &material) = 0;
 
+                virtual void initTranslate(const std::shared_ptr<RayTracer::Forms::IForm> &form, const RayTracer::Math::Vector3D &offset) = 0;
+                virtual void initRotate(const std::shared_ptr<RayTracer::Forms::IForm> &form, double angle) = 0;
+
                 /**
                  * @brief Checks if the Ray hits the Form
                  *

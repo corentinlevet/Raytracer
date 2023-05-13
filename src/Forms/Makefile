@@ -23,7 +23,8 @@ RM			=	rm -rf
 #                                    SOURCES                                  #
 ###############################################################################
 
-SRC					=	HitRecord.cpp
+SRC					=	AxisAlignedBoundingBox.cpp
+SRC					+=	HitRecord.cpp
 SRC					+=	../Ray.cpp
 
 SRC_BOX				=	3D/Box.cpp
@@ -70,6 +71,27 @@ OBJ_RECTANGLEYZ		=	$(SRC_RECTANGLEYZ:.cpp=.o)
 
 NAME_RECTANGLEYZ	=	../../libs/Forms/2D/RectangleYZ.so
 
+SRC_ROTATEX			=	Instances/RotateX.cpp
+SRC_ROTATEX			+=	$(SRC)
+
+OBJ_ROTATEX			=	$(SRC_ROTATEX:.cpp=.o)
+
+NAME_ROTATEX		=	../../libs/Forms/Instances/RotateX.so
+
+SRC_ROTATEY			=	Instances/RotateY.cpp
+SRC_ROTATEY			+=	$(SRC)
+
+OBJ_ROTATEY			=	$(SRC_ROTATEY:.cpp=.o)
+
+NAME_ROTATEY		=	../../libs/Forms/Instances/RotateY.so
+
+SRC_ROTATEZ			=	Instances/RotateZ.cpp
+SRC_ROTATEZ			+=	$(SRC)
+
+OBJ_ROTATEZ			=	$(SRC_ROTATEZ:.cpp=.o)
+
+NAME_ROTATEZ		=	../../libs/Forms/Instances/RotateZ.so
+
 SRC_SPHERE			=	3D/Sphere.cpp
 SRC_SPHERE			+=	$(SRC)
 
@@ -77,8 +99,16 @@ OBJ_SPHERE			=	$(SRC_SPHERE:.cpp=.o)
 
 NAME_SPHERE			=	../../libs/Forms/3D/Sphere.so
 
+SRC_TRANSLATE		=	Instances/Translate.cpp
+SRC_TRANSLATE		+=	$(SRC)
+
+OBJ_TRANSLATE		=	$(SRC_TRANSLATE:.cpp=.o)
+
+NAME_TRANSLATE		=	../../libs/Forms/Instances/Translate.so
+
 INC			=	-I../../include/
 INC			+=	-I../../include/Forms
+INC			+=	-I../../include/Forms/Instances
 INC			+=	-I../../include/Forms/2D
 INC			+=	-I../../include/Forms/3D
 INC			+=	-I../../include/Math
@@ -178,9 +208,21 @@ all:
 	@printf "%b" "$(ERROR_COLOR)\tCompiling RectangleYZ...\n$(NO_COLOR)"
 	@make compile_rectangleyz -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_RECTANGLEYZ) $(OBJ_RECTANGLEYZ) $(INC) $(LIB)
+	@printf "%b" "$(ERROR_COLOR)\tCompiling RotateX...\n$(NO_COLOR)"
+	@make compile_rotatex -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_ROTATEX) $(OBJ_ROTATEX) $(INC) $(LIB)
+	@printf "%b" "$(ERROR_COLOR)\tCompiling RotateY...\n$(NO_COLOR)"
+	@make compile_rotatey -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_ROTATEY) $(OBJ_ROTATEY) $(INC) $(LIB)
+	@printf "%b" "$(ERROR_COLOR)\tCompiling RotateZ...\n$(NO_COLOR)"
+	@make compile_rotatez -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_ROTATEZ) $(OBJ_ROTATEZ) $(INC) $(LIB)
 	@printf "%b" "$(ERROR_COLOR)\tCompiling Sphere...\n$(NO_COLOR)"
 	@make compile_sphere -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_SPHERE) $(OBJ_SPHERE) $(INC) $(LIB)
+	@printf "%b" "$(ERROR_COLOR)\tCompiling Translate...\n$(NO_COLOR)"
+	@make compile_translate -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_TRANSLATE) $(OBJ_TRANSLATE) $(INC) $(LIB)
 	@printf "%b" "$(OK_COLOR)Forms compiled !\n$(NO_COLOR)"
 
 %.o: %.cpp
@@ -198,16 +240,26 @@ compile_rectanglexz: $(OBJ_RECTANGLEXZ)
 
 compile_rectangleyz: $(OBJ_RECTANGLEYZ)
 
+compile_rotatex: $(OBJ_ROTATEX)
+
+compile_rotatey: $(OBJ_ROTATEY)
+
+compile_rotatez: $(OBJ_ROTATEZ)
+
 compile_sphere: $(OBJ_SPHERE)
+
+compile_translate: $(OBJ_TRANSLATE)
 
 clean:
 	@$(RM) $(OBJ_BOX) $(OBJ_CUBE) $(OBJ_MOVING_SPHERE) $(OBJ_RECTANGLEXY) \
-		$(OBJ_RECTANGLEXZ) $(OBJ_RECTANGLEYZ) $(OBJ_SPHERE)
+		$(OBJ_RECTANGLEXZ) $(OBJ_RECTANGLEYZ) $(OBJ_ROTATEX) $(OBJ_ROTATEY) \
+		$(OBJ_ROTATEZ) $(OBJ_SPHERE) $(OBJ_TRANSLATE)
 	@printf "%-95b%b" "$(CLEAN_COLOR)Forms cleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 fclean: clean
 	@$(RM) $(NAME_BOX) $(NAME_CUBE) $(NAME_MOVING_SPHERE) $(NAME_RECTANGLEXY) \
-		$(NAME_RECTANGLEXZ) $(NAME_RECTANGLEYZ) $(NAME_SPHERE)
+		$(NAME_RECTANGLEXZ) $(NAME_RECTANGLEYZ) $(NAME_ROTATEX) $(NAME_ROTATEY) \
+		$(NAME_ROTATEZ) $(NAME_SPHERE) $(NAME_TRANSLATE)
 	@printf "%-95b%b" "$(FCLEAN_COLOR)Forms fcleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 re: fclean all

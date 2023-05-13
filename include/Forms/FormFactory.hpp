@@ -12,6 +12,9 @@
 
     #include "DLLoader.hpp"
 
+    #include "Instances/RotateY.hpp"
+    #include "Instances/Translate.hpp"
+
     #include "2D/RectangleXY.hpp"
     #include "2D/RectangleXZ.hpp"
     #include "2D/RectangleYZ.hpp"

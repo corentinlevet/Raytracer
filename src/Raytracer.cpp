@@ -292,10 +292,18 @@ RayTracer::Forms::FormList RayTracer::Raytracer::cornellBox()
     whiteRect3->setMaterial(white);
 
     auto box1 = FormFactory::createForm("Box");
-    box1->initBox(RayTracer::Math::Point3D(130, 0, 65), RayTracer::Math::Point3D(295, 165, 230), white);
+    box1->initBox(RayTracer::Math::Point3D(0, 0, 0), RayTracer::Math::Point3D(165, 330, 165), white);
+    auto rotate1 = FormFactory::createForm("RotateY");
+    rotate1->initRotate(box1, 15);
+    auto translate1 = FormFactory::createForm("Translate");
+    translate1->initTranslate(rotate1, RayTracer::Math::Vector3D(265, 0, 295));
 
     auto box2 = FormFactory::createForm("Box");
-    box2->initBox(RayTracer::Math::Point3D(265, 0, 295), RayTracer::Math::Point3D(430, 330, 460), white);
+    box2->initBox(RayTracer::Math::Point3D(0, 0, 0), RayTracer::Math::Point3D(165, 165, 165), white);
+    auto rotate2 = FormFactory::createForm("RotateY");
+    rotate2->initRotate(box2, -18);
+    auto translate2 = FormFactory::createForm("Translate");
+    translate2->initTranslate(rotate2, RayTracer::Math::Vector3D(130, 0, 65));
 
     RayTracer::Forms::FormList world;
 
@@ -305,8 +313,8 @@ RayTracer::Forms::FormList RayTracer::Raytracer::cornellBox()
     world.add(whiteRect1);
     world.add(whiteRect2);
     world.add(whiteRect3);
-    world.add(box1);
-    world.add(box2);
+    world.add(translate1);
+    world.add(translate2);
 
     return world;
 }

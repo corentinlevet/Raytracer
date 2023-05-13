@@ -16,7 +16,11 @@ FormPtr RayTracer::Forms::FormFactory::createForm(const std::string &name)
         {"RectangleXY", "libs/Forms/2D/RectangleXY.so"},
         {"RectangleXZ", "libs/Forms/2D/RectangleXZ.so"},
         {"RectangleYZ", "libs/Forms/2D/RectangleYZ.so"},
-        {"Sphere", "libs/Forms/3D/Sphere.so"}
+        {"RotateX", "libs/Forms/Instances/RotateX.so"},
+        {"RotateY", "libs/Forms/Instances/RotateY.so"},
+        {"RotateZ", "libs/Forms/Instances/RotateZ.so"},
+        {"Sphere", "libs/Forms/3D/Sphere.so"},
+        {"Translate", "libs/Forms/Instances/Translate.so"}
     };
 
     FormPtr library = DLLoader::loadLibrary<RayTracer::Forms::IForm>(paths.at(name), "Form");

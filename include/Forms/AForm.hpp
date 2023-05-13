@@ -90,6 +90,14 @@
                     (void)p0; (void)p1; (void)material;
                 }
 
+                virtual void initTranslate(const FormPtr &form, const RayTracer::Math::Vector3D &offset) {
+                    (void)form; (void)offset;
+                }
+
+                virtual void initRotate(const FormPtr &form, double angle) {
+                    (void)form; (void)angle;
+                }
+
                 virtual bool hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const {
                     (void)ray; (void)t_min; (void)t_max; (void)hitRecord;
                     return false;
