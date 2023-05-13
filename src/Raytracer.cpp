@@ -132,63 +132,6 @@ RayTracer::Forms::FormList RayTracer::Raytracer::randomScene()
     return world;
 }
 
-RayTracer::Forms::FormList RayTracer::Raytracer::twoSpheres()
-{
-    auto checker = TextureFactory::createTexture("Checker");
-    auto solidcolor1 = TextureFactory::createTexture("SolidColor");
-    solidcolor1->setColor(RayTracer::Math::Color(0.0, 0.0, 0.0));
-    auto solidcolor2 = TextureFactory::createTexture("SolidColor");
-    solidcolor2->setColor(RayTracer::Math::Color(0.9, 0.9, 0.9));
-    checker->setTextureOdd(solidcolor1);
-    checker->setTextureEven(solidcolor2);
-
-    auto sphereMaterial = MaterialFactory::createMaterial("Lambertian");
-    sphereMaterial->setTexture(checker);
-    sphereMaterial->setAlbedo(RayTracer::Math::Color(0.5, 0.5, 0.5));
-
-    auto sphere1 = FormFactory::createForm("Sphere");
-    sphere1->setCenter(RayTracer::Math::Point3D(0, -10, 0));
-    sphere1->setRadius(10);
-    sphere1->setMaterial(sphereMaterial);
-
-    auto sphere2 = FormFactory::createForm("Sphere");
-    sphere2->setCenter(RayTracer::Math::Point3D(0, 10, 0));
-    sphere2->setRadius(10);
-    sphere2->setMaterial(sphereMaterial);
-
-    RayTracer::Forms::FormList world;
-    world.add(sphere1);
-    world.add(sphere2);
-
-    return world;
-}
-
-RayTracer::Forms::FormList RayTracer::Raytracer::twoPerlinSpheres()
-{
-    auto perlin = TextureFactory::createTexture("Perlin");
-    perlin->setScale(4.0);
-
-    auto sphereMaterial = MaterialFactory::createMaterial("Lambertian");
-    sphereMaterial->setTexture(perlin);
-    sphereMaterial->setAlbedo(RayTracer::Math::Color(0.5, 0.5, 0.5));
-
-    auto sphere1 = FormFactory::createForm("Sphere");
-    sphere1->setCenter(RayTracer::Math::Point3D(0, -1000, 0));
-    sphere1->setRadius(1000);
-    sphere1->setMaterial(sphereMaterial);
-
-    auto sphere2 = FormFactory::createForm("Sphere");
-    sphere2->setCenter(RayTracer::Math::Point3D(0, 2, 0));
-    sphere2->setRadius(2);
-    sphere2->setMaterial(sphereMaterial);
-
-    RayTracer::Forms::FormList world;
-    world.add(sphere1);
-    world.add(sphere2);
-
-    return world;
-}
-
 RayTracer::Forms::FormList RayTracer::Raytracer::earth()
 {
     auto earthTexture = TextureFactory::createTexture("Image");
@@ -632,12 +575,6 @@ RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
         //         _world = randomScene();
         //         break;
         //     default:
-        //     case 2:
-        //         _world = twoSpheres();
-        //         break;
-        //     case 3:
-        //         _world = twoPerlinSpheres();
-        //         break;
         //     case 4:
         //         _world = earth();
         //         break;

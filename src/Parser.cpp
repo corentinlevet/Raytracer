@@ -97,6 +97,12 @@ TexturePtr RayTracer::Parser::getTexture(const libconfig::Setting &texture)
         Color2->setColor(Math::Color(color2R, color2G, color2B));
         newTexture->setTextureOdd(Color1);
         newTexture->setTextureEven(Color2);
+    } else if (textureName == "Perlin") {
+        newTexture = TextureFactory::createTexture("Perlin");
+        auto &properties = texture.lookup("properties");
+        float scale = 0;
+        properties.lookupValue("scale", scale);
+        newTexture->setScale(scale);
     }
     return newTexture;
 }
