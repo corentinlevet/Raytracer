@@ -10,6 +10,7 @@
 #include "Camera.hpp"
 #include "FormList.hpp"
 #include "FormFactory.hpp"
+#include "LightFactory.hpp"
 #include "MaterialFactory.hpp"
 #include "TextureFactory.hpp"
 
@@ -110,6 +111,12 @@ TexturePtr RayTracer::Parser::getTexture(const libconfig::Setting &texture)
         auto &properties = texture.lookup("properties");
         std::string path = properties.lookup("path");
         newTexture->setPath(path);
+    } else if (textureName == "SolidColor") {
+        newTexture = TextureFactory::createTexture("SolidColor");
+        auto &color = texture.lookup("properties.color");
+        float r = 0, g = 0, b = 0;
+        color.lookupValue("r", r); color.lookupValue("g", g); color.lookupValue("b", b);
+        newTexture->setColor(Math::Color(r, g, b));
     }
     return newTexture;
 }
@@ -118,15 +125,20 @@ MaterialPtr RayTracer::Parser::getMaterial(const libconfig::Setting &material)
 {
     MaterialPtr newMaterial = nullptr;
     std::string materialName = material.lookup("name");
-    newMaterial = MaterialFactory::createMaterial(materialName);
-    float materialR = 0, materialG = 0, materialB = 0, fuzziness = 0, refractionIndex = 0;
-    libconfig::Setting &albedo = material.lookup("albedo");
-    albedo.lookupValue("r", materialR); albedo.lookupValue("g", materialG); albedo.lookupValue("b", materialB);
-    material.lookupValue("fuzziness", fuzziness);
-    material.lookupValue("refractionIndex", refractionIndex);
-    newMaterial->setAlbedo(Math::Color(materialR, materialG, materialB));
-    newMaterial->setFuzziness(fuzziness);
-    newMaterial->setRefractionIndex(refractionIndex);
+    std::string materialType = material.lookup("type");
+    if (materialType == "Material") {
+        newMaterial = MaterialFactory::createMaterial(materialName);
+        float materialR = 0, materialG = 0, materialB = 0, fuzziness = 0, refractionIndex = 0;
+        libconfig::Setting &albedo = material.lookup("albedo");
+        albedo.lookupValue("r", materialR); albedo.lookupValue("g", materialG); albedo.lookupValue("b", materialB);
+        material.lookupValue("fuzziness", fuzziness);
+        material.lookupValue("refractionIndex", refractionIndex);
+        newMaterial->setAlbedo(Math::Color(materialR, materialG, materialB));
+        newMaterial->setFuzziness(fuzziness);
+        newMaterial->setRefractionIndex(refractionIndex);
+    } else if (materialType == "Light") {
+        newMaterial = LightFactory::createLight(materialName);
+    }
     if (material.exists("texture")) {
         TexturePtr texture = getTexture(material.lookup("texture"));
         newMaterial->setTexture(texture);
@@ -138,25 +150,44 @@ MaterialPtr RayTracer::Parser::getMaterial(const libconfig::Setting &material)
 FormPtr RayTracer::Parser::getForm(const std::string &name, const libconfig::Setting &form)
 {
     FormPtr newForm = nullptr;
-    int colorR = 0, colorG = 0, colorB = 0;
-    form.lookupValue("color.r", colorR);
-    form.lookupValue("color.g", colorG);
-    form.lookupValue("color.b", colorB);
     if (name == "spheres") {
         float sphereX = 0, sphereY = 0, sphereZ = 0, sphereRadius = 0;
+        int colorR = 0, colorG = 0, colorB = 0;
+        form.lookupValue("color.r", colorR);
+        form.lookupValue("color.g", colorG);
+        form.lookupValue("color.b", colorB);
         form.lookupValue("x", sphereX);
         form.lookupValue("y", sphereY);
         form.lookupValue("z", sphereZ);
         form.lookupValue("radius", sphereRadius);
-        newForm = FormFactory::createForm("Sphere");
-        newForm->setCenter(Math::Point3D(sphereX, sphereY, sphereZ));
-        newForm->setRadius((double) sphereRadius);
-        newForm->setColor(Math::Color(colorR, colorG, colorB));
-        if (form.exists("material")) {
-            MaterialPtr material = getMaterial(form.lookup("material"));
-            newForm->setMaterial(material);
-        } else
-            newForm->setMaterial(nullptr);
+        std::string formName = form.lookup("name");
+        if (formName == "Sphere") {
+            newForm = FormFactory::createForm(formName);
+            newForm->setCenter(Math::Point3D(sphereX, sphereY, sphereZ));
+            newForm->setRadius((double) sphereRadius);
+            newForm->setColor(Math::Color(colorR, colorG, colorB));
+            if (form.exists("material")) {
+                MaterialPtr material = getMaterial(form.lookup("material"));
+                newForm->setMaterial(material);
+            } else
+                newForm->setMaterial(nullptr);
+        }
+    } else if (name == "rectangle") {
+        std::string formName = form.lookup("name");
+        if (formName == "RectangleXY") {
+            float x0 = 0, x1 = 0, y0 = 0, y1 = 0, k = 0;
+            // int colorR = 0, colorG = 0, colorB = 0;
+            // form.lookupValue("color.r", colorR); form.lookupValue("color.g", colorG); form.lookupValue("color.b", colorB);
+            form.lookupValue("x0", x0); form.lookupValue("x1", x1); form.lookupValue("y0", y0); form.lookupValue("y1", y1); form.lookupValue("k", k);
+            newForm = FormFactory::createForm(formName);
+            newForm->initRectangle(x0, x1, y0, y1, 0, 0, k);
+            // newForm->setColor(Math::Color(colorR, colorG, colorB));
+            if (form.exists("material")) {
+                MaterialPtr material = getMaterial(form.lookup("material"));
+                newForm->setMaterial(material);
+            } else
+                newForm->setMaterial(nullptr);
+        }
     }
 
     return newForm;

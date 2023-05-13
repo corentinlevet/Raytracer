@@ -132,47 +132,6 @@ RayTracer::Forms::FormList RayTracer::Raytracer::randomScene()
     return world;
 }
 
-RayTracer::Forms::FormList RayTracer::Raytracer::simpleLight()
-{
-    auto perlinTexture = TextureFactory::createTexture("Perlin");
-    perlinTexture->setScale(4.0);
-
-    auto sphereMaterial = MaterialFactory::createMaterial("Lambertian");
-    sphereMaterial->setTexture(perlinTexture);
-    sphereMaterial->setAlbedo(RayTracer::Math::Color(0.5, 0.5, 0.5));
-
-    auto sphere1 = FormFactory::createForm("Sphere");
-    auto sphere2 = FormFactory::createForm("Sphere");
-
-    sphere1->setCenter(RayTracer::Math::Point3D(0, -1000, 0));
-    sphere1->setRadius(1000);
-    sphere1->setMaterial(sphereMaterial);
-
-    sphere2->setCenter(RayTracer::Math::Point3D(0, 2, 0));
-    sphere2->setRadius(2);
-    sphere2->setMaterial(sphereMaterial);
-
-    auto lightTexture = TextureFactory::createTexture("SolidColor");
-    lightTexture->setColor(RayTracer::Math::Color(4, 4, 4));
-
-    auto diffuseLight = LightFactory::createLight("Diffuse");
-    diffuseLight->setTexture(lightTexture);
-
-    auto rectangle = FormFactory::createForm("RectangleXY");
-
-    rectangle->initRectangle(3, 5, 1, 3, 0, 0, -2);
-    rectangle->setMaterial(diffuseLight);
-
-    RayTracer::Forms::FormList world;
-
-    world.add(sphere1);
-    world.add(sphere2);
-
-    world.add(rectangle);
-
-    return world;
-}
-
 RayTracer::Forms::FormList RayTracer::Raytracer::cornellBox()
 {
     auto solidColor1 = TextureFactory::createTexture("SolidColor");
@@ -555,20 +514,13 @@ RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
         //         _world = randomScene();
         //         break;
         //     default:
-        //     case 5:
-        //         _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
-        //         _world = simpleLight();
-        //         break;
         //     case 6:
-        //         _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
         //         _world = cornellBox();
         //         break;
         //     case 7:
-        //         _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
         //         _world = cornellSmoke();
         //         break;
         //     case 8:
-        //         _background = RayTracer::Math::Color(0.0, 0.0, 0.0);
         //         _world = finalScene();
         //         break;
         // }
