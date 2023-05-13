@@ -28,6 +28,7 @@
                     const double time1 = 0.0,
                     std::tuple<int, int> resolution = std::tuple<int, int>(1920, 1080),
                     std::tuple<int, int, int> rotation = std::tuple<int, int, int>(0, 0, 0),
+                    const RayTracer::Math::Color &background = RayTracer::Math::Color(0.0, 0.0, 0.0),
                     const Math::Point3D &origin = Math::Point3D(),
                     const RayTracer::Camera::Screen &screen = RayTracer::Camera::Screen(Math::Point3D(), Math::Vector3D(1, 0), Math::Vector3D(0, 1)),
                     const RayTracer::Math::Vector3D u = Math::Vector3D(),
@@ -45,6 +46,7 @@
                 double getViewportWidth() const;
                 const std::tuple<int, int> &getResolution() const;
                 const std::tuple<int, int, int> &getRotation() const;
+                const RayTracer::Math::Color &getBackground() const;
                 const Math::Point3D &getOrigin() const;
                 const RayTracer::Camera::Screen &getScreen() const;
 
@@ -55,6 +57,7 @@
                 void setViewportWidth(double viewportWidth);
                 void setResolution(const std::tuple<int, int> &resolution);
                 void setRotation(const std::tuple<int, int, int> &rotation);
+                void setBackground(const RayTracer::Math::Color &background);
                 void setOrigin(const Math::Point3D &origin);
                 void setScreen(const RayTracer::Camera::Screen &screen);
 
@@ -74,6 +77,8 @@
 
                 std::tuple<int, int> _resolution;
                 std::tuple<int, int, int> _rotation;
+
+                RayTracer::Math::Color _background;
 
                 RayTracer::Math::Point3D _origin;
                 RayTracer::Camera::Screen _screen;

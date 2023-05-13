@@ -39,6 +39,7 @@ RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera
     double aspectRatioX = _config.lookup("camera.aspectRatio.width"), aspectRatioY = _config.lookup("camera.aspectRatio.height");
     double aspectRatio = aspectRatioX / aspectRatioY;
     double aperture = _config.lookup("camera.aperture");
+    double backgroundR = _config.lookup("camera.background.r"), backgroundG = _config.lookup("camera.background.g"), backgroundB = _config.lookup("camera.background.b");
 
     double theta = degreesToRadians(fov);
     double h = tan(theta / 2);
@@ -67,6 +68,7 @@ RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera
         0,
         std::tuple<int, int>(width, height),
         std::tuple<int, int, int>(directionX, directionY, directionZ),
+        RayTracer::Math::Color(backgroundR, backgroundG, backgroundB),
         origin,
         RayTracer::Camera::Screen(Math::Point3D(lowerLeftCorner.getX(), lowerLeftCorner.getY(), lowerLeftCorner.getZ()), horizontal, vertical),
         u,

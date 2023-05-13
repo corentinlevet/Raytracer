@@ -522,7 +522,7 @@ void RayTracer::Raytracer::run()
                 double u = (x + randomDouble()) / (imageWidth - 1);
                 double v = (y + randomDouble()) / (imageHeight - 1);
                 RayTracer::Ray ray = _camera.ray(u, v);
-                pixelColor += ray.rayColor(ray, _background, _world, maxDepth);
+                pixelColor += ray.rayColor(ray, _camera.getBackground(), _world, maxDepth);
             }
             pixelColor.writeColor(file, samplesPerPixel);
             pixelColors.push_back(pixelColor);
@@ -548,7 +548,6 @@ RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
     try {
         _sceneFile = sceneFile;
         RayTracer::Parser parser(sceneFile);
-        _background = RayTracer::Math::Color(0.70, 0.80, 1.00);
         _camera = parser.getCamera(_camera);
         _world = parser.getWorld();
         // switch (0) {
