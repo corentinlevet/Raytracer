@@ -48,6 +48,7 @@
                 Camera::Camera getCamera(RayTracer::Camera::Camera &camera);
                 Forms::FormList getWorld();
                 FormPtr getForm(const std::string &name, const libconfig::Setting &form);
+                void getTransformations(FormPtr &form, const libconfig::Setting &transformations);
                 MaterialPtr getMaterial(const libconfig::Setting &material);
                 TexturePtr getTexture(const libconfig::Setting &texture);
 

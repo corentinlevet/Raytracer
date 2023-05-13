@@ -128,14 +128,22 @@ MaterialPtr RayTracer::Parser::getMaterial(const libconfig::Setting &material)
     std::string materialType = material.lookup("type");
     if (materialType == "Material") {
         newMaterial = MaterialFactory::createMaterial(materialName);
-        float materialR = 0, materialG = 0, materialB = 0, fuzziness = 0, refractionIndex = 0;
-        libconfig::Setting &albedo = material.lookup("albedo");
-        albedo.lookupValue("r", materialR); albedo.lookupValue("g", materialG); albedo.lookupValue("b", materialB);
-        material.lookupValue("fuzziness", fuzziness);
-        material.lookupValue("refractionIndex", refractionIndex);
-        newMaterial->setAlbedo(Math::Color(materialR, materialG, materialB));
-        newMaterial->setFuzziness(fuzziness);
-        newMaterial->setRefractionIndex(refractionIndex);
+        if (material.exists("albedo")) {
+            float materialR = 0, materialG = 0, materialB = 0;
+            const libconfig::Setting &albedo = material.lookup("albedo");
+            albedo.lookupValue("r", materialR); albedo.lookupValue("g", materialG); albedo.lookupValue("b", materialB);
+            newMaterial->setAlbedo(Math::Color(materialR, materialG, materialB));
+        }
+        if (material.exists("fuzziness")) {
+            float fuzziness = 0;
+            material.lookupValue("fuzziness", fuzziness);
+            newMaterial->setFuzziness(fuzziness);
+        }
+        if (material.exists("refractionIndex")) {
+            float refractionIndex = 0;
+            material.lookupValue("refractionIndex", refractionIndex);
+            newMaterial->setRefractionIndex(refractionIndex);
+        }
     } else if (materialType == "Light") {
         newMaterial = LightFactory::createLight(materialName);
     }
@@ -145,6 +153,45 @@ MaterialPtr RayTracer::Parser::getMaterial(const libconfig::Setting &material)
     } else
         newMaterial->setTexture(nullptr);
     return newMaterial;
+}
+
+void RayTracer::Parser::getTransformations(FormPtr &form, const libconfig::Setting &transformations)
+{
+    for (auto &t : transformations) {
+        std::string transformationName = t.lookup("type");
+        if (transformationName == "Translate") {
+            FormPtr translation = FormFactory::createForm("Translate");
+            float x = 0, y = 0, z = 0;
+            auto &properties = t.lookup("properties");
+            properties.lookupValue("x", x); properties.lookupValue("y", y); properties.lookupValue("z", z);
+            translation->initTranslate(form, Math::Vector3D(x, y, z));
+            form = translation;
+        }
+        if (transformationName == "RotateX") {
+            FormPtr rotation = FormFactory::createForm("RotateX");
+            float angle = 0;
+            auto &properties = t.lookup("properties");
+            properties.lookupValue("angle", angle);
+            rotation->initRotate(form, angle);
+            form = rotation;
+        }
+        if (transformationName == "RotateY") {
+            FormPtr rotation = FormFactory::createForm("RotateY");
+            float angle = 0;
+            auto &properties = t.lookup("properties");
+            properties.lookupValue("angle", angle);
+            rotation->initRotate(form, angle);
+            form = rotation;
+        }
+        if (transformationName == "RotateZ") {
+            FormPtr rotation = FormFactory::createForm("RotateZ");
+            float angle = 0;
+            auto &properties = t.lookup("properties");
+            properties.lookupValue("angle", angle);
+            rotation->initRotate(form, angle);
+            form = rotation;
+        }
+    }
 }
 
 FormPtr RayTracer::Parser::getForm(const std::string &name, const libconfig::Setting &form)
@@ -172,23 +219,47 @@ FormPtr RayTracer::Parser::getForm(const std::string &name, const libconfig::Set
             } else
                 newForm->setMaterial(nullptr);
         }
-    } else if (name == "rectangle") {
+    } else if (name == "rectangles") {
         std::string formName = form.lookup("name");
         if (formName == "RectangleXY") {
             float x0 = 0, x1 = 0, y0 = 0, y1 = 0, k = 0;
-            // int colorR = 0, colorG = 0, colorB = 0;
-            // form.lookupValue("color.r", colorR); form.lookupValue("color.g", colorG); form.lookupValue("color.b", colorB);
             form.lookupValue("x0", x0); form.lookupValue("x1", x1); form.lookupValue("y0", y0); form.lookupValue("y1", y1); form.lookupValue("k", k);
             newForm = FormFactory::createForm(formName);
             newForm->initRectangle(x0, x1, y0, y1, 0, 0, k);
-            // newForm->setColor(Math::Color(colorR, colorG, colorB));
-            if (form.exists("material")) {
-                MaterialPtr material = getMaterial(form.lookup("material"));
-                newForm->setMaterial(material);
-            } else
-                newForm->setMaterial(nullptr);
+        } else if (formName == "RectangleXZ") {
+            float x0 = 0, x1 = 0, z0 = 0, z1 = 0, k = 0;
+            form.lookupValue("x0", x0); form.lookupValue("x1", x1); form.lookupValue("z0", z0); form.lookupValue("z1", z1); form.lookupValue("k", k);
+            newForm = FormFactory::createForm(formName);
+            newForm->initRectangle(x0, x1, 0, 0, z0, z1, k);
+        } else if (formName == "RectangleYZ") {
+            float y0 = 0, y1 = 0, z0 = 0, z1 = 0, k = 0;
+            form.lookupValue("y0", y0); form.lookupValue("y1", y1); form.lookupValue("z0", z0); form.lookupValue("z1", z1); form.lookupValue("k", k);
+            newForm = FormFactory::createForm(formName);
+            newForm->initRectangle(0, 0, y0, y1, z0, z1, k);
         }
+        if (form.exists("material")) {
+            MaterialPtr material = getMaterial(form.lookup("material"));
+            newForm->setMaterial(material);
+        } else
+            newForm->setMaterial(nullptr);
+    } else if (name == "boxes") {
+        std::string formName = form.lookup("name");
+        float point0X = 0, point0Y = 0, point0Z = 0, point1X = 0, point1Y = 0, point1Z = 0;
+        auto &point0 = form.lookup("point0");
+        auto &point1 = form.lookup("point1");
+        point0.lookupValue("x", point0X); point0.lookupValue("y", point0Y); point0.lookupValue("z", point0Z);
+        point1.lookupValue("x", point1X); point1.lookupValue("y", point1Y); point1.lookupValue("z", point1Z);
+        MaterialPtr material;
+        newForm = FormFactory::createForm(formName);
+        if (form.exists("material")) {
+            material = getMaterial(form.lookup("material"));
+            newForm->initBox(Math::Point3D(point0X, point0Y, point0Z), Math::Point3D(point1X, point1Y, point1Z), material);
+        } else
+            newForm->setMaterial(nullptr);
     }
+
+    if (form.exists("transformations"))
+        getTransformations(newForm, form.lookup("transformations"));
 
     return newForm;
 }
