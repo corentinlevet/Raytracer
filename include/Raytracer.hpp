@@ -33,6 +33,7 @@
                 RayTracer::Forms::FormList simpleLight();
                 RayTracer::Forms::FormList cornellBox();
                 RayTracer::Forms::FormList cornellSmoke();
+                RayTracer::Forms::FormList finalScene();
 
                 class softError : public Error {
                     public:

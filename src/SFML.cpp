@@ -24,7 +24,7 @@ RayTracer::SFML::~SFML()
 
 void RayTracer::SFML::initWindow(int width, int height)
 {
-    _window.create(sf::VideoMode(width, height), "Raytracer");
+    _window.create(sf::VideoMode(width, height), "Raytracer", sf::Style::Titlebar | sf::Style::Close);
     _window.setFramerateLimit(60);
     _pixels.resize(width * height);
 }

@@ -54,34 +54,32 @@
 
                 bool boundingBox(double t0, double t1, AxisAlignedBoundingBox &boundingBox) const override;
 
+                static bool boxCompare(const FormPtr a, const FormPtr b, int axis) {
+                    RayTracer::Forms::AxisAlignedBoundingBox boxA;
+                    RayTracer::Forms::AxisAlignedBoundingBox boxB;
+
+                    if (!a->boundingBox(0, 0, boxA) || !b->boundingBox(0, 0, boxB))
+                        std::cerr << "No bounding box in BVHNode constructor." << std::endl;
+
+                    return boxA.getMinimum()[axis] < boxB.getMinimum()[axis];
+                }
+
+                static bool boxXCompare(const FormPtr a, const FormPtr b) {
+                    return boxCompare(a, b, 0);
+                }
+                static bool boxYCompare(const FormPtr a, const FormPtr b) {
+                    return boxCompare(a, b, 1);
+                }
+                static bool boxZCompare(const FormPtr a, const FormPtr b) {
+                    return boxCompare(a, b, 2);
+                }
+
             private:
                 AxisAlignedBoundingBox _boundingBox;
 
                 FormPtr _left;
                 FormPtr _right;
         };
-    }
-
-    inline bool boxCompare(const FormPtr a, const FormPtr b, int axis) {
-        RayTracer::Forms::AxisAlignedBoundingBox boxA;
-        RayTracer::Forms::AxisAlignedBoundingBox boxB;
-
-        if (!a->boundingBox(0, 0, boxA) || !b->boundingBox(0, 0, boxB))
-            std::cerr << "No bounding box in BVHNode constructor." << std::endl;
-
-        return boxA.getMinimum()[axis] < boxB.getMinimum()[axis];
-    }
-
-    bool boxXCompare(const FormPtr a, const FormPtr b) {
-        return boxCompare(a, b, 0);
-    }
-
-    bool boxYCompare(const FormPtr a, const FormPtr b) {
-        return boxCompare(a, b, 1);
-    }
-
-    bool boxZCompare(const FormPtr a, const FormPtr b) {
-        return boxCompare(a, b, 2);
     }
 
 #endif /* !BVHNODE_HPP_ */

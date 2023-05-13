@@ -20,14 +20,18 @@ RayTracer::Forms::BVHNode::BVHNode(const std::vector<FormPtr> &forms, size_t sta
 
     int axis = randomInt(0, 2);
 
-    auto comparator = (axis == 0) ? boxXCompare : (axis == 1) ? boxYCompare : boxZCompare;
-
     size_t objectSpan = end - start;
 
     if (objectSpan == 1) {
         _left = _right = formsCopy[start];
     } else if (objectSpan == 2) {
-        if (comparator(formsCopy[start], formsCopy[start + 1])) {
+        if (axis == 0 && boxXCompare(formsCopy[start], formsCopy[start + 1])) {
+            _left = formsCopy[start];
+            _right = formsCopy[start + 1];
+        } else if (axis == 1 && boxYCompare(formsCopy[start], formsCopy[start + 1])) {
+            _left = formsCopy[start];
+            _right = formsCopy[start + 1];
+        } else if (axis == 2 && boxZCompare(formsCopy[start], formsCopy[start + 1])) {
             _left = formsCopy[start];
             _right = formsCopy[start + 1];
         } else {
@@ -35,7 +39,12 @@ RayTracer::Forms::BVHNode::BVHNode(const std::vector<FormPtr> &forms, size_t sta
             _right = formsCopy[start];
         }
     } else {
-        std::sort(formsCopy.begin() + start, formsCopy.begin() + end, comparator);
+        if (axis == 0)
+            std::sort(formsCopy.begin() + start, formsCopy.begin() + end, boxXCompare);
+        else if (axis == 1)
+            std::sort(formsCopy.begin() + start, formsCopy.begin() + end, boxYCompare);
+        else
+            std::sort(formsCopy.begin() + start, formsCopy.begin() + end, boxZCompare);
 
         auto mid = start + objectSpan / 2;
 
