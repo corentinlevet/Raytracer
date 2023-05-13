@@ -86,6 +86,10 @@
                     (void)x0; (void)x1; (void)y0; (void)y1; (void)z0; (void)z1; (void)k;
                 }
 
+                virtual void initBox(const RayTracer::Math::Point3D &p0, const RayTracer::Math::Point3D &p1, const MaterialPtr &material) {
+                    (void)p0; (void)p1; (void)material;
+                }
+
                 virtual bool hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const {
                     (void)ray; (void)t_min; (void)t_max; (void)hitRecord;
                     return false;

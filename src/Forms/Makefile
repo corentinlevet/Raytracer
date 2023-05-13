@@ -26,6 +26,15 @@ RM			=	rm -rf
 SRC					=	HitRecord.cpp
 SRC					+=	../Ray.cpp
 
+SRC_BOX				=	3D/Box.cpp
+SRC_BOX				+=	FormFactory.cpp
+SRC_BOX				+=	FormList.cpp
+SRC_BOX				+=	$(SRC)
+
+OBJ_BOX				=	$(SRC_BOX:.cpp=.o)
+
+NAME_BOX			=	../../libs/Forms/3D/Box.so
+
 SRC_CUBE			=	3D/Cube.cpp
 SRC_CUBE			+=	$(SRC)
 
@@ -151,6 +160,9 @@ endef
 all:
 	@$(call check_math)
 	@printf "%b" "$(ERROR_COLOR)Compiling Forms...\n$(NO_COLOR)"
+	@printf "%b" "$(ERROR_COLOR)\tCompiling Box...\n$(NO_COLOR)"
+	@make compile_box -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_BOX) $(OBJ_BOX) $(INC) $(LIB)
 	@printf "%b" "$(ERROR_COLOR)\tCompiling Cube...\n$(NO_COLOR)"
 	@make compile_cube -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_CUBE) $(OBJ_CUBE) $(INC) $(LIB)
@@ -174,6 +186,8 @@ all:
 %.o: %.cpp
 	@$(call run_and_test, $(CXX) $(CXXFLAGS) -c $< -o $@ $(INC) $(LIB))
 
+compile_box: $(OBJ_BOX)
+
 compile_cube: $(OBJ_CUBE)
 
 compile_movingsphere: $(OBJ_MOVING_SPHERE)
@@ -187,12 +201,12 @@ compile_rectangleyz: $(OBJ_RECTANGLEYZ)
 compile_sphere: $(OBJ_SPHERE)
 
 clean:
-	@$(RM) $(OBJ_CUBE) $(OBJ_MOVING_SPHERE) $(OBJ_RECTANGLEXY) \
+	@$(RM) $(OBJ_BOX) $(OBJ_CUBE) $(OBJ_MOVING_SPHERE) $(OBJ_RECTANGLEXY) \
 		$(OBJ_RECTANGLEXZ) $(OBJ_RECTANGLEYZ) $(OBJ_SPHERE)
 	@printf "%-95b%b" "$(CLEAN_COLOR)Forms cleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 fclean: clean
-	@$(RM) $(NAME_CUBE) $(NAME_MOVING_SPHERE) $(NAME_RECTANGLEXY) \
+	@$(RM) $(NAME_BOX) $(NAME_CUBE) $(NAME_MOVING_SPHERE) $(NAME_RECTANGLEXY) \
 		$(NAME_RECTANGLEXZ) $(NAME_RECTANGLEYZ) $(NAME_SPHERE)
 	@printf "%-95b%b" "$(FCLEAN_COLOR)Forms fcleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 

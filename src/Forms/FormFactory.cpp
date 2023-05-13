@@ -10,6 +10,7 @@
 FormPtr RayTracer::Forms::FormFactory::createForm(const std::string &name)
 {
     std::map<std::string, std::string> paths = {
+        {"Box", "libs/Forms/3D/Box.so"},
         {"Cube", "libs/Forms/3D/Cube.so"},
         {"MovingSphere", "libs/Forms/3D/MovingSphere.so"},
         {"RectangleXY", "libs/Forms/2D/RectangleXY.so"},

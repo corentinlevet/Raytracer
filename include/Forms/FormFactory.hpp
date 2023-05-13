@@ -12,7 +12,12 @@
 
     #include "DLLoader.hpp"
 
+    #include "2D/RectangleXY.hpp"
+    #include "2D/RectangleXZ.hpp"
+    #include "2D/RectangleYZ.hpp"
+
     #include "3D/Cube.hpp"
+    #include "3D/MovingSphere.hpp"
     #include "3D/Sphere.hpp"
 
     #include <functional>

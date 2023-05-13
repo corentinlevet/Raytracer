@@ -291,6 +291,12 @@ RayTracer::Forms::FormList RayTracer::Raytracer::cornellBox()
     whiteRect3->initRectangle(0, 555, 0, 555, 0, 0, 555);
     whiteRect3->setMaterial(white);
 
+    auto box1 = FormFactory::createForm("Box");
+    box1->initBox(RayTracer::Math::Point3D(130, 0, 65), RayTracer::Math::Point3D(295, 165, 230), white);
+
+    auto box2 = FormFactory::createForm("Box");
+    box2->initBox(RayTracer::Math::Point3D(265, 0, 295), RayTracer::Math::Point3D(430, 330, 460), white);
+
     RayTracer::Forms::FormList world;
 
     world.add(lightRect);
@@ -299,6 +305,8 @@ RayTracer::Forms::FormList RayTracer::Raytracer::cornellBox()
     world.add(whiteRect1);
     world.add(whiteRect2);
     world.add(whiteRect3);
+    world.add(box1);
+    world.add(box2);
 
     return world;
 }
