@@ -12,8 +12,6 @@
 
     #include "IMaterial.hpp"
 
-    #include "TextureFactory.hpp"
-
     namespace RayTracer::Materials {
         class AMaterial : public IMaterial {
             public:
@@ -44,6 +42,14 @@
 
                 void setTexture(const TexturePtr texture) override final {
                     _texture = texture;
+                }
+
+                virtual void initIsotropic(const RayTracer::Math::Color &albedo) {
+                    (void)albedo;
+                }
+
+                virtual void initIsotropic(const TexturePtr &texture) {
+                    (void)texture;
                 }
 
             protected:

@@ -83,6 +83,8 @@
                 virtual void initTranslate(const std::shared_ptr<RayTracer::Forms::IForm> &form, const RayTracer::Math::Vector3D &offset) = 0;
                 virtual void initRotate(const std::shared_ptr<RayTracer::Forms::IForm> &form, double angle) = 0;
 
+                virtual void initConstantMedium(const std::shared_ptr<RayTracer::Forms::IForm> &form, double density, const RayTracer::Math::Color &color) = 0;
+
                 /**
                  * @brief Checks if the Ray hits the Form
                  *

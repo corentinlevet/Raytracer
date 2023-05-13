@@ -57,6 +57,9 @@
                 virtual void setRefractionIndex(const double refractionIndex) = 0;
 
                 virtual void setTexture(const TexturePtr texture) = 0;
+
+                virtual void initIsotropic(const RayTracer::Math::Color &albedo) = 0;
+                virtual void initIsotropic(const TexturePtr &texture) = 0;
         };
     }
 

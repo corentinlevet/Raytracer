@@ -161,11 +161,13 @@ compile_perlin: $(OBJ_PERLIN)
 compile_solidcolor: $(OBJ_SOLIDCOLOR)
 
 clean:
-	@$(RM) $(OBJ_CHECKER) $(OBJ_IMAGE) $(OBJ_PERLIN) $(OBJ_SOLIDCOLOR)
+	@$(RM) $(OBJ_CHECKER) $(OBJ_IMAGE) $(OBJ_ISOTROPIC) $(OBJ_PERLIN) \
+		$(OBJ_SOLIDCOLOR)
 	@printf "%-95b%b" "$(CLEAN_COLOR)Textures cleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 fclean: clean
-	@$(RM) $(NAME_CHECKER) $(NAME_IMAGE) $(NAME_PERLIN) $(NAME_SOLIDCOLOR)
+	@$(RM) $(NAME_CHECKER) $(NAME_IMAGE) $(NAME_ISOTROPIC) $(NAME_PERLIN) \
+		$(NAME_SOLIDCOLOR)
 	@printf "%-95b%b" "$(FCLEAN_COLOR)Textures fcleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 re: fclean all

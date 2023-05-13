@@ -33,6 +33,14 @@ OBJ_DIELECTRIC	=	$(SRC_DIELECTRIC:.cpp=.o)
 
 NAME_DIELECTRIC	=	../../libs/Materials/Dielectric.so
 
+SRC_ISOTROPIC	=	Isotropic.cpp
+SRC_ISOTROPIC	+=	../Textures/TextureFactory.cpp
+SRC_ISOTROPIC	+=	$(SRC)
+
+OBJ_ISOTROPIC	=	$(SRC_ISOTROPIC:.cpp=.o)
+
+NAME_ISOTROPIC	=	../../libs/Materials/Isotropic.so
+
 SRC_LAMBERTIAN	=	Lambertian.cpp
 SRC_LAMBERTIAN	+=	../Textures/TextureFactory.cpp
 SRC_LAMBERTIAN	+=	$(SRC)
@@ -132,6 +140,9 @@ all:
 	@printf "%b" "$(ERROR_COLOR)\tCompiling Dielectric...\n$(NO_COLOR)"
 	@make compile_dielectric -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_DIELECTRIC) $(OBJ_DIELECTRIC) $(INC) $(LIB)
+	@printf "%b" "$(ERROR_COLOR)\tCompiling Isotropic...\n$(NO_COLOR)"
+	@make compile_isotropic -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_ISOTROPIC) $(OBJ_ISOTROPIC) $(INC) $(LIB)
 	@printf "%b" "$(ERROR_COLOR)\tCompiling Lambertian...\n$(NO_COLOR)"
 	@make compile_lambertian -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_LAMBERTIAN) $(OBJ_LAMBERTIAN) $(INC) $(LIB)
@@ -145,16 +156,18 @@ all:
 
 compile_dielectric: $(OBJ_DIELECTRIC)
 
+compile_isotropic: $(OBJ_ISOTROPIC)
+
 compile_lambertian: $(OBJ_LAMBERTIAN)
 
 compile_metal: $(OBJ_METAL)
 
 clean:
-	@$(RM) $(OBJ_LAMBERTIAN) $(OBJ_METAL) $(OBJ_DIELECTRIC)
+	@$(RM) $(OBJ_DIELECTRIC) $(OBJ_ISOTROPIC) $(OBJ_LAMBERTIAN) $(OBJ_METAL)
 	@printf "%-95b%b" "$(CLEAN_COLOR)Materials cleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 fclean: clean
-	@$(RM) $(NAME_LAMBERTIAN) $(NAME_METAL) $(NAME_DIELECTRIC)
+	@$(RM) $(NAME_DIELECTRIC) $(NAME_ISOTROPIC) $(NAME_LAMBERTIAN) $(NAME_METAL)
 	@printf "%-95b%b" "$(FCLEAN_COLOR)Materials fcleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 re: fclean all

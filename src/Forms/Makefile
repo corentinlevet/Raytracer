@@ -36,6 +36,14 @@ OBJ_BOX				=	$(SRC_BOX:.cpp=.o)
 
 NAME_BOX			=	../../libs/Forms/3D/Box.so
 
+SRC_CONSTANT_MEDIUM	=	Instances/ConstantMedium.cpp
+SRC_CONSTANT_MEDIUM	+=	../Materials/MaterialFactory.cpp
+SRC_CONSTANT_MEDIUM	+=	$(SRC)
+
+OBJ_CONSTANT_MEDIUM	=	$(SRC_CONSTANT_MEDIUM:.cpp=.o)
+
+NAME_CONSTANT_MEDIUM=	../../libs/Forms/Instances/ConstantMedium.so
+
 SRC_CUBE			=	3D/Cube.cpp
 SRC_CUBE			+=	$(SRC)
 
@@ -193,6 +201,9 @@ all:
 	@printf "%b" "$(ERROR_COLOR)\tCompiling Box...\n$(NO_COLOR)"
 	@make compile_box -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_BOX) $(OBJ_BOX) $(INC) $(LIB)
+	@printf "%b" "$(ERROR_COLOR)\tCompiling ConstantMedium...\n$(NO_COLOR)"
+	@make compile_constantmedium -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_CONSTANT_MEDIUM) $(OBJ_CONSTANT_MEDIUM) $(INC) $(LIB)
 	@printf "%b" "$(ERROR_COLOR)\tCompiling Cube...\n$(NO_COLOR)"
 	@make compile_cube -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_CUBE) $(OBJ_CUBE) $(INC) $(LIB)
@@ -230,6 +241,8 @@ all:
 
 compile_box: $(OBJ_BOX)
 
+compile_constantmedium: $(OBJ_CONSTANT_MEDIUM)
+
 compile_cube: $(OBJ_CUBE)
 
 compile_movingsphere: $(OBJ_MOVING_SPHERE)
@@ -251,15 +264,15 @@ compile_sphere: $(OBJ_SPHERE)
 compile_translate: $(OBJ_TRANSLATE)
 
 clean:
-	@$(RM) $(OBJ_BOX) $(OBJ_CUBE) $(OBJ_MOVING_SPHERE) $(OBJ_RECTANGLEXY) \
-		$(OBJ_RECTANGLEXZ) $(OBJ_RECTANGLEYZ) $(OBJ_ROTATEX) $(OBJ_ROTATEY) \
-		$(OBJ_ROTATEZ) $(OBJ_SPHERE) $(OBJ_TRANSLATE)
+	@$(RM) $(OBJ_BOX) $(OBJ_CONSTANT_MEDIUM) $(OBJ_CUBE) $(OBJ_MOVING_SPHERE) \
+		$(OBJ_RECTANGLEXY) $(OBJ_RECTANGLEXZ) $(OBJ_RECTANGLEYZ) $(OBJ_ROTATEX) \
+		$(OBJ_ROTATEY) $(OBJ_ROTATEZ) $(OBJ_SPHERE) $(OBJ_TRANSLATE)
 	@printf "%-95b%b" "$(CLEAN_COLOR)Forms cleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 fclean: clean
-	@$(RM) $(NAME_BOX) $(NAME_CUBE) $(NAME_MOVING_SPHERE) $(NAME_RECTANGLEXY) \
-		$(NAME_RECTANGLEXZ) $(NAME_RECTANGLEYZ) $(NAME_ROTATEX) $(NAME_ROTATEY) \
-		$(NAME_ROTATEZ) $(NAME_SPHERE) $(NAME_TRANSLATE)
+	@$(RM) $(NAME_BOX) $(NAME_CONSTANT_MEDIUM) $(NAME_CUBE) $(NAME_MOVING_SPHERE) \
+		$(NAME_RECTANGLEXY) $(NAME_RECTANGLEXZ) $(NAME_RECTANGLEYZ) $(NAME_ROTATEX) \
+		$(NAME_ROTATEY) $(NAME_ROTATEZ) $(NAME_SPHERE) $(NAME_TRANSLATE)
 	@printf "%-95b%b" "$(FCLEAN_COLOR)Forms fcleaned !" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 re: fclean all

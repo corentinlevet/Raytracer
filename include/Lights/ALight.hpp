@@ -27,6 +27,14 @@
 
                 virtual RayTracer::Math::Color emitted(double u, double v, const RayTracer::Math::Point3D &point) const = 0;
 
+                virtual void initIsotropic(const RayTracer::Math::Color &albedo) {
+                    (void)albedo;
+                }
+
+                virtual void initIsotropic(const TexturePtr &texture) {
+                    (void)texture;
+                }
+
             protected:
                 std::string _name;
 

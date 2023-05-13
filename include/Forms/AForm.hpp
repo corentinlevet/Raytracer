@@ -98,6 +98,10 @@
                     (void)form; (void)angle;
                 }
 
+                virtual void initConstantMedium(const FormPtr &form, double density, const RayTracer::Math::Color &color) {
+                    (void)form; (void)density; (void)color;
+                }
+
                 virtual bool hits(const RayTracer::Ray &ray, double t_min, double t_max, HitRecord &hitRecord) const {
                     (void)ray; (void)t_min; (void)t_max; (void)hitRecord;
                     return false;
