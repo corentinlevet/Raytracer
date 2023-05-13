@@ -26,7 +26,6 @@
                 void run();
 
                 /* Scenes */
-                RayTracer::Forms::FormList randomScene();
                 RayTracer::Forms::FormList finalScene();
 
                 class softError : public Error {

@@ -4,7 +4,7 @@ B-OOP-400_raytracer_bootstrap.pdf
 
 # Binary
 raytracer
-PPMtoPNG
+bonus/PPMtoPNG/PPMtoPNG
 
 # Temp files
 *.o

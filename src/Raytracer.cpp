@@ -19,119 +19,6 @@
 
 /* Public methods */
 
-RayTracer::Forms::FormList RayTracer::Raytracer::randomScene()
-{
-    RayTracer::Forms::FormList world;
-
-    auto checker = TextureFactory::createTexture("Checker");
-    auto solidcolor1 = TextureFactory::createTexture("SolidColor");
-    solidcolor1->setColor(RayTracer::Math::Color(0.0, 0.0, 0.0));
-    auto solidcolor2 = TextureFactory::createTexture("SolidColor");
-    solidcolor2->setColor(RayTracer::Math::Color(0.9, 0.9, 0.9));
-    checker->setTextureOdd(solidcolor1);
-    checker->setTextureEven(solidcolor2);
-
-    auto groundMaterial = MaterialFactory::createMaterial("Lambertian");
-    groundMaterial->setTexture(checker);
-    groundMaterial->setAlbedo(RayTracer::Math::Color(0.5, 0.5, 0.5));
-
-    auto sphere = FormFactory::createForm("Sphere");
-    sphere->setCenter(RayTracer::Math::Point3D(0, -1000, 0));
-    sphere->setRadius(1000);
-    sphere->setMaterial(groundMaterial);
-
-    world.add(sphere);
-
-    for (int a = -11; a < 11; a++) {
-        for (int b = -11; b < 11; b++) {
-            auto chooseMat = randomDouble();
-            auto center = RayTracer::Math::Point3D(a + 0.9 * randomDouble(), 0.2, b + 0.9 * randomDouble());
-
-            if ((center - RayTracer::Math::Point3D(4, 0.2, 0)).length() > 0.9) {
-                MaterialPtr sphereMaterial;
-                FormPtr sphere;
-
-                if (chooseMat < 0.8) {
-                    // Diffuse
-
-                    auto center2 = center + RayTracer::Math::Point3D(0, randomDouble(0, 0.5), 0);
-
-                    sphere = FormFactory::createForm("MovingSphere");
-                    sphere->setCenter0(center);
-                    sphere->setCenter1(center2);
-                    sphere->setTime0(0.0);
-                    sphere->setTime1(1.0);
-                    sphere->setRadius(0.2);
-
-                    auto albedo = RayTracer::Math::Color(randomDouble(), randomDouble(), randomDouble()) * RayTracer::Math::Color(randomDouble(), randomDouble(), randomDouble());
-                    sphereMaterial = MaterialFactory::createMaterial("Lambertian");
-                    sphereMaterial->setAlbedo(albedo);
-                    sphereMaterial->setTexture(nullptr);
-                } else if (chooseMat < 0.95) {
-                    // Metal
-
-                    sphere = FormFactory::createForm("Sphere");
-                    sphere->setCenter(center);
-                    sphere->setRadius(0.2);
-
-                    auto albedo = RayTracer::Math::Color(randomDouble(0.5, 1), randomDouble(0.5, 1), randomDouble(0.5, 1));
-                    auto fuzziness = randomDouble(0, 0.5);
-                    sphereMaterial = MaterialFactory::createMaterial("Metal");
-                    sphereMaterial->setAlbedo(albedo);
-                    sphereMaterial->setFuzziness(fuzziness);
-                } else {
-                    // Glass
-
-                    sphere = FormFactory::createForm("Sphere");
-                    sphere->setCenter(center);
-                    sphere->setRadius(0.2);
-
-                    sphereMaterial = MaterialFactory::createMaterial("Dielectric");
-                    sphereMaterial->setRefractionIndex(1.5);
-                }
-
-                sphere->setMaterial(sphereMaterial);
-
-                world.add(sphere);
-            }
-        }
-    }
-
-    auto dielectric = MaterialFactory::createMaterial("Dielectric");
-    dielectric->setRefractionIndex(1.5);
-
-    auto sphere1 = FormFactory::createForm("Sphere");
-    sphere1->setCenter(RayTracer::Math::Point3D(0, 1, 0));
-    sphere1->setRadius(1.0);
-    sphere1->setMaterial(dielectric);
-
-    world.add(sphere1);
-
-    auto lambertian = MaterialFactory::createMaterial("Lambertian");
-    lambertian->setAlbedo(RayTracer::Math::Color(0.4, 0.2, 0.1));
-    lambertian->setTexture(nullptr);
-
-    auto sphere2 = FormFactory::createForm("Sphere");
-    sphere2->setCenter(RayTracer::Math::Point3D(-4, 1, 0));
-    sphere2->setRadius(1.0);
-    sphere2->setMaterial(lambertian);
-
-    world.add(sphere2);
-
-    auto metal = MaterialFactory::createMaterial("Metal");
-    metal->setAlbedo(RayTracer::Math::Color(0.7, 0.6, 0.5));
-    metal->setFuzziness(0.0);
-
-    auto sphere3 = FormFactory::createForm("Sphere");
-    sphere3->setCenter(RayTracer::Math::Point3D(4, 1, 0));
-    sphere3->setRadius(1.0);
-    sphere3->setMaterial(metal);
-
-    world.add(sphere3);
-
-    return world;
-}
-
 RayTracer::Forms::FormList RayTracer::Raytracer::finalScene()
 {
     RayTracer::Forms::FormList boxes1;
@@ -317,7 +204,7 @@ void RayTracer::Raytracer::run()
 
     _sfml.initWindow(imageWidth, imageHeight);
 
-    const int samplesPerPixel = 200;
+    const int samplesPerPixel = 25;
     const int maxDepth = 50;
 
     std::vector<RayTracer::Math::Color> pixelColors(imageWidth);
@@ -363,9 +250,6 @@ RayTracer::Raytracer::Raytracer(const std::string &sceneFile)
         _camera = parser.getCamera(_camera);
         _world = parser.getWorld();
         // switch (0) {
-        //     case 1:
-        //         _world = randomScene();
-        //         break;
         //     default:
         //     case 8:
         //         _world = finalScene();

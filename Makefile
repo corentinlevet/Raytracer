@@ -114,7 +114,7 @@ all:	header $(OBJ) math forms materials textures lights
 
 bonus: all
 	@printf "\n"
-	@make -s -C bonus
+	@make -s -C bonus/PPMtoPNG
 
 src/%.o:	src/%.cpp
 	@$(call run_and_test, $(CXX) $(CXXFLAGS) $(INC) $(LIB) $(LDFLAGS) -c $< -o $@)
@@ -150,7 +150,7 @@ textures:
 	@make -s -C src/Textures
 
 clean:
-	@make -s clean -C bonus &>/dev/null
+	@make -s clean -C bonus/PPMtoPNG &>/dev/null
 	@make -s clean -C src/Forms &>/dev/null
 	@make -s clean -C src/Lights &>/dev/null
 	@make -s clean -C src/Math &>/dev/null
@@ -160,7 +160,7 @@ clean:
 	@printf "%-95b%b" "$(CLEAN_COLOR)clean" "$(OK_COLOR)[✓]$(NO_COLOR)\n"
 
 fclean:	clean
-	@make -s fclean -C bonus &>/dev/null
+	@make -s fclean -C bonus/PPMtoPNG &>/dev/null
 	@make -s fclean -C src/Forms &>/dev/null
 	@make -s fclean -C src/Lights &>/dev/null
 	@make -s fclean -C src/Math &>/dev/null
