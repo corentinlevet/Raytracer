@@ -12,6 +12,8 @@
 
     #include <fstream>
     #include <iostream>
+    #include <mutex>
+    #include <thread>
 
     #include "Camera.hpp"
     #include "FormList.hpp"
@@ -24,9 +26,6 @@
                 ~Raytracer() = default;
 
                 void run();
-
-                /* Scenes */
-                RayTracer::Forms::FormList finalScene();
 
                 class softError : public Error {
                     public:

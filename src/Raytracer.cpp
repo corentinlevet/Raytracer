@@ -18,13 +18,6 @@ void RayTracer::Raytracer::run()
     fileName = fileName.substr(0, fileName.find_last_of('.'));
     fileName = "screenshots/" + fileName + ".ppm";
 
-    std::ofstream file(fileName, std::ios::out | std::ios::trunc);
-
-    if (!file.is_open()) {
-        std::cerr << "Error: could not open file " << fileName << std::endl;
-        exit(84);
-    }
-
     std::tuple resolution = _camera.getResolution();
 
     const int imageWidth = std::get<0>(resolution);
@@ -32,40 +25,75 @@ void RayTracer::Raytracer::run()
 
     _sfml.initWindow(imageWidth, imageHeight);
 
-    const int samplesPerPixel = 25;
+    const int samplesPerPixel = 128;
     const int maxDepth = 50;
 
-    std::vector<RayTracer::Math::Color> pixelColors(imageWidth);
+    const int numThreads = std::thread::hardware_concurrency();
+    const int stripHeight = imageHeight / numThreads;
+    std::vector<std::thread> threads(numThreads);
+    std::mutex windowMutex;
+    std::vector<RayTracer::Math::Color> pixelColorsToWrite(imageWidth * imageHeight);
 
-    file << "P3" << std::endl;
-    file << imageWidth << " " << imageHeight << std::endl;
-    file << "255" << std::endl;
+    for (int j = 1; j <= samplesPerPixel; j *= 2) {
+        for (int t = 0; t < numThreads; t++) {
+            threads[t] = std::thread([&, t]() {
+                std::vector<RayTracer::Math::Color> pixelColors(imageWidth);
 
-    for (int y = imageHeight - 1; y >= 0; y--) {
-        std::cerr << "\rScanlines remaining: " << y << " " << std::flush;
-        for (int x = 0; x < imageWidth; x++) {
-            RayTracer::Math::Color pixelColor(0, 0, 0);
-            for (int s = 0; s < samplesPerPixel; s++) {
-                double u = (x + randomDouble()) / (imageWidth - 1);
-                double v = (y + randomDouble()) / (imageHeight - 1);
-                RayTracer::Ray ray = _camera.ray(u, v);
-                pixelColor += ray.rayColor(ray, _camera.getBackground(), _world, maxDepth);
-            }
-            pixelColor.writeColor(file, samplesPerPixel);
-            pixelColors.push_back(pixelColor);
-            if (_sfml.isWindowOpen())
-                _sfml.checkEventClose();
+                for (int y = t * stripHeight + stripHeight; y >= t * stripHeight; y--) {
+                    for (int x = 0; x < imageWidth; x++) {
+                        RayTracer::Math::Color pixelColor(0, 0, 0);
+                        for (int s = 0; s < j; s++) {
+                            double u = (x + randomDouble()) / (imageWidth - 1);
+                            double v = (y + randomDouble()) / (imageHeight - 1);
+                            RayTracer::Ray ray = _camera.ray(u, v);
+                            pixelColor += ray.rayColor(ray, _camera.getBackground(), _world, maxDepth);
+                        }
+                        pixelColors.push_back(pixelColor);
+                        pixelColorsToWrite[(imageHeight - y - 1) * imageWidth + x] = pixelColor;
+                        windowMutex.lock();
+                        if (_sfml.isWindowOpen())
+                            _sfml.checkEventClose();
+                        windowMutex.unlock();
+                    }
+                    windowMutex.lock();
+                    if (_sfml.isWindowOpen())
+                        _sfml.printPixels(pixelColors, imageWidth, imageHeight - y - 1, j);
+                    pixelColors.clear();
+                    windowMutex.unlock();
+                }
+            });
         }
-        if (_sfml.isWindowOpen())
-            _sfml.printPixels(pixelColors, imageWidth, imageHeight - y - 1, samplesPerPixel);
-        pixelColors.clear();
+
+        for (auto& t : threads) {
+            t.join();
+        }
+
+        std::ofstream file(fileName, std::ios::out | std::ios::trunc);
+
+        if (!file.is_open()) {
+            std::cerr << "Error: could not open file " << fileName << std::endl;
+            exit(84);
+        }
+
+        file << "P3" << std::endl;
+        file << imageWidth << " " << imageHeight << std::endl;
+        file << "255" << std::endl;
+
+        for (auto &pixelColor : pixelColorsToWrite)
+            pixelColor.writeColor(file, j);
+
+        file.close();
+
+        pixelColorsToWrite.clear();
+        pixelColorsToWrite.resize(imageWidth * imageHeight);
+
+        std::cerr << "Done writing to file with " << j << " samples per pixel." << std::endl;
     }
+
+    std::cerr << "Done." << std::endl;
 
     _sfml.waitWindowClose();
 
-    file.close();
-
-    std::cerr << "\nDone." << std::endl;
 }
 
 /* Constructor */
