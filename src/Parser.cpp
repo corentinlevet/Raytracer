@@ -336,5 +336,9 @@ RayTracer::Forms::FormList RayTracer::Parser::getWorld()
         }
     }
 
+    auto bvhBox = std::make_shared<RayTracer::Forms::BVHNode>(world, 0, 1);
+    world.clear();
+    world.add(bvhBox);
+
     return world;
 }
