@@ -25,11 +25,12 @@ void RayTracer::Raytracer::run()
 
     _sfml.initWindow(imageWidth, imageHeight);
 
-    const int samplesPerPixel = 128;
+    const int samplesPerPixel = 1024;
     const int maxDepth = 50;
 
     const int numThreads = std::thread::hardware_concurrency();
     const int stripHeight = imageHeight / numThreads;
+    const int lostPixels = imageHeight % numThreads;
     std::vector<std::thread> threads(numThreads);
     std::mutex windowMutex;
     std::vector<RayTracer::Math::Color> pixelColorsToWrite(imageWidth * imageHeight);
@@ -39,7 +40,17 @@ void RayTracer::Raytracer::run()
             threads[t] = std::thread([&, t]() {
                 std::vector<RayTracer::Math::Color> pixelColors(imageWidth);
 
-                for (int y = t * stripHeight + stripHeight; y >= t * stripHeight; y--) {
+                int height = 0;
+                int newStripHeight = stripHeight;
+
+                if (lostPixels - t > 0) {
+                    newStripHeight++;
+                    height = newStripHeight * t;
+                } else {
+                    height = newStripHeight * t + lostPixels;
+                }
+
+                for (int y = height; y < height + newStripHeight + 1 && y < imageHeight; y++) {
                     for (int x = 0; x < imageWidth; x++) {
                         RayTracer::Math::Color pixelColor(0, 0, 0);
                         for (int s = 0; s < j; s++) {
