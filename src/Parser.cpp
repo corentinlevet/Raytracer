@@ -312,6 +312,19 @@ FormPtr RayTracer::Parser::getForm(const std::string &name, const libconfig::Set
         }
         auto bvhBox = std::make_shared<RayTracer::Forms::BVHNode>(forms, 0, 1);
         newForm = bvhBox;
+    } else if (name == "cylinders") {
+        std::string formName = form.lookup("name");
+        newForm = FormFactory::createForm(formName);
+        float x = 0, y = 0, z = 0, radius = 0, height = 0;
+        form.lookupValue("x", x); form.lookupValue("y", y); form.lookupValue("z", z); form.lookupValue("radius", radius); form.lookupValue("height", height);
+        newForm->setCenter(Math::Point3D(x, y, z));
+        newForm->setRadius(radius);
+        newForm->setHeight(height);
+        if (form.exists("material")) {
+            MaterialPtr material = getMaterial(form.lookup("material"));
+            newForm->setMaterial(material);
+        } else
+            newForm->setMaterial(nullptr);
     }
 
     if (form.exists("transformations"))

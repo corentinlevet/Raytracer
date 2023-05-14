@@ -82,6 +82,10 @@
                     (void)right;
                 }
 
+                virtual void setHeight(double height) {
+                    (void)height;
+                }
+
                 virtual void initRectangle(double x0, double x1, double y0, double y1, double z0, double z1, double k) {
                     (void)x0; (void)x1; (void)y0; (void)y1; (void)z0; (void)z1; (void)k;
                 }

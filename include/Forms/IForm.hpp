@@ -77,6 +77,8 @@
                 virtual void setLeft(const std::shared_ptr<RayTracer::Forms::IForm> &left) = 0;
                 virtual void setRight(const std::shared_ptr<RayTracer::Forms::IForm> &right) = 0;
 
+                virtual void setHeight(double height) = 0;
+
                 virtual void initRectangle(double x0, double x1, double y0, double y1, double z0, double z1, double k) = 0;
                 virtual void initBox(const RayTracer::Math::Point3D &p0, const RayTracer::Math::Point3D &p1, const MaterialPtr &material) = 0;
 

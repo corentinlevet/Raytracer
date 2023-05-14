@@ -13,6 +13,7 @@ FormPtr RayTracer::Forms::FormFactory::createForm(const std::string &name)
         {"Box", "libs/Forms/3D/Box.so"},
         {"ConstantMedium", "libs/Forms/Instances/ConstantMedium.so"},
         {"Cube", "libs/Forms/3D/Cube.so"},
+        {"Cylinder", "libs/Forms/3D/Cylinder.so"},
         {"MovingSphere", "libs/Forms/3D/MovingSphere.so"},
         {"RectangleXY", "libs/Forms/2D/RectangleXY.so"},
         {"RectangleXZ", "libs/Forms/2D/RectangleXZ.so"},
