@@ -26,6 +26,8 @@
                 ~Raytracer() = default;
 
                 void run();
+                void runWithUpscaling(const int imageWidth, const int imageHeight);
+                void runWithoutUpscaling(const int samplesPerPixel, const int imageWidth, const int imageHeight);
 
                 class softError : public Error {
                     public:

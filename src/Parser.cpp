@@ -42,6 +42,9 @@ RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera
     double aspectRatio = aspectRatioX / aspectRatioY;
     double aperture = _config.lookup("camera.aperture");
     double backgroundR = _config.lookup("camera.background.r"), backgroundG = _config.lookup("camera.background.g"), backgroundB = _config.lookup("camera.background.b");
+    int samplesPerPixel = _config.lookup("camera.samplesPerPixel");
+    int up = _config.lookup("camera.upscale");
+    bool upscale = up == 1 ? true : false;
 
     double theta = degreesToRadians(fov);
     double h = tan(theta / 2);
@@ -63,6 +66,8 @@ RayTracer::Camera::Camera RayTracer::Parser::getCamera(RayTracer::Camera::Camera
     RayTracer::Math::Vector3D lowerLeftCorner = orig - horizontal / 2 - vertical / 2 - focusDist * w;
 
     RayTracer::Camera::Camera camera(
+        upscale,
+        samplesPerPixel,
         aperture,
         aspectRatio,
         fov,

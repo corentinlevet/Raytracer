@@ -13,7 +13,7 @@
 
 /* Constructors and destructors */
 
-RayTracer::Camera::Camera::Camera(const double aperture, const double aspectRatio, const double fov, const double time0, const double time1, std::tuple<int, int> resolution, std::tuple<int, int, int> rotation, const RayTracer::Math::Color &background, const RayTracer::Math::Point3D &origin, const RayTracer::Camera::Screen &screen, const RayTracer::Math::Vector3D u, const RayTracer::Math::Vector3D v, const RayTracer::Math::Vector3D w) : _aspectRatio(aspectRatio), _fov(fov), _time0(time0), _time1(time1), _resolution(resolution), _rotation(rotation), _background(background), _origin(origin), _screen(screen), _u(u), _v(v), _w(w)
+RayTracer::Camera::Camera::Camera(const bool upscale, const int samplesPerPixel, const double aperture, const double aspectRatio, const double fov, const double time0, const double time1, std::tuple<int, int> resolution, std::tuple<int, int, int> rotation, const RayTracer::Math::Color &background, const RayTracer::Math::Point3D &origin, const RayTracer::Camera::Screen &screen, const RayTracer::Math::Vector3D u, const RayTracer::Math::Vector3D v, const RayTracer::Math::Vector3D w) : _upscale(upscale), _samplesPerPixel(samplesPerPixel), _aspectRatio(aspectRatio), _fov(fov), _time0(time0), _time1(time1), _resolution(resolution), _rotation(rotation), _background(background), _origin(origin), _screen(screen), _u(u), _v(v), _w(w)
 {
     _lensRadius = aperture / 2.0;
     _focalLength = 1.0;
@@ -22,6 +22,16 @@ RayTracer::Camera::Camera::Camera(const double aperture, const double aspectRati
 }
 
 /* Getters and setters */
+
+bool RayTracer::Camera::Camera::getUpscale() const
+{
+    return _upscale;
+}
+
+int RayTracer::Camera::Camera::getSamplesPerPixel() const
+{
+    return _samplesPerPixel;
+}
 
 double RayTracer::Camera::Camera::getAspectRatio() const
 {
@@ -71,6 +81,16 @@ const RayTracer::Math::Point3D &RayTracer::Camera::Camera::getOrigin() const
 const RayTracer::Camera::Screen &RayTracer::Camera::Camera::getScreen() const
 {
     return _screen;
+}
+
+void RayTracer::Camera::Camera::setUpscale(bool upscale)
+{
+    _upscale = upscale;
+}
+
+void RayTracer::Camera::Camera::setSamplesPerPixel(int samplesPerPixel)
+{
+    _samplesPerPixel = samplesPerPixel;
 }
 
 void RayTracer::Camera::Camera::setAspectRatio(double aspectRatio)

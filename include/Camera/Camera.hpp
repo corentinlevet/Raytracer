@@ -21,6 +21,8 @@
         class Camera {
             public:
                 Camera(
+                    const bool upscale = false,
+                    const int samplesPerPixel = 128,
                     const double aperture = 0.0,
                     const double aspectRatio = 16.0 / 9.0,
                     const double fov = 90.0,
@@ -39,6 +41,8 @@
 
                 /* Getters and setters */
 
+                bool getUpscale() const;
+                int getSamplesPerPixel() const;
                 double getAspectRatio() const;
                 double getFocalLength() const;
                 double getFov() const;
@@ -50,6 +54,8 @@
                 const Math::Point3D &getOrigin() const;
                 const RayTracer::Camera::Screen &getScreen() const;
 
+                void setUpscale(bool upscale);
+                void setSamplesPerPixel(int samplesPerPixel);
                 void setAspectRatio(double aspectRatio);
                 void setFocalLength(double focalLength);
                 void setFov(double fov);
@@ -66,6 +72,10 @@
                 RayTracer::Ray ray(double u, double v) const;
 
             private:
+                bool _upscale;
+
+                int _samplesPerPixel;
+
                 double _aspectRatio;
                 double _focalLength;
                 double _fov;
