@@ -114,6 +114,8 @@ all:	header $(OBJ) math forms materials textures lights
 
 bonus: all
 	@printf "\n"
+	@make -s bonus -C src/Textures
+	@printf "\n"
 	@make -s -C bonus/PPMtoPNG
 
 src/%.o:	src/%.cpp

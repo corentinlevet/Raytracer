@@ -138,9 +138,6 @@ all:
 	@printf "%b" "$(ERROR_COLOR)\tCompiling Checker...\n$(NO_COLOR)"
 	@make compile_checker -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_CHECKER) $(OBJ_CHECKER) $(INC) $(LIB)
-	@printf "%b" "$(ERROR_COLOR)\tCompiling ImageTexture...\n$(NO_COLOR)"
-	@make compile_image -s
-	@$(CXX) $(CXXFLAGS) -o $(NAME_IMAGE) $(OBJ_IMAGE) $(INC) $(LIB)
 	@printf "%b" "$(ERROR_COLOR)\tCompiling Perlin...\n$(NO_COLOR)"
 	@make compile_perlin -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_PERLIN) $(OBJ_PERLIN) $(INC) $(LIB)
@@ -148,6 +145,14 @@ all:
 	@make compile_solidcolor -s
 	@$(CXX) $(CXXFLAGS) -o $(NAME_SOLIDCOLOR) $(OBJ_SOLIDCOLOR) $(INC) $(LIB)
 	@printf "%b" "$(OK_COLOR)Textures compiled !\n$(NO_COLOR)"
+
+bonus:
+	@$(call check_math)
+	@printf "%b" "$(ERROR_COLOR)Compiling Bonus Textures...\n$(NO_COLOR)"
+	@printf "%b" "$(ERROR_COLOR)\tCompiling ImageTexture...\n$(NO_COLOR)"
+	@make compile_image -s
+	@$(CXX) $(CXXFLAGS) -o $(NAME_IMAGE) $(OBJ_IMAGE) $(INC) $(LIB)
+	@printf "%b" "$(OK_COLOR)Bonus Textures compiled !\n$(NO_COLOR)"
 
 %.o: %.cpp
 	@$(call run_and_test, $(CXX) $(CXXFLAGS) -c $< -o $@ $(INC) $(LIB))
