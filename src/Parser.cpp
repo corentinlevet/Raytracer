@@ -325,6 +325,21 @@ FormPtr RayTracer::Parser::getForm(const std::string &name, const libconfig::Set
             newForm->setMaterial(material);
         } else
             newForm->setMaterial(nullptr);
+    } else if (name == "planes") {
+        std::string formName = form.lookup("name");
+        std::string axis = form.lookup("axis");
+        float position = 0;
+        form.lookupValue("position", position);
+        if (axis == "X") {
+            newForm = FormFactory::createForm("RectangleYZ");
+            newForm->initRectangle(0, 0, -10000, 10000, -10000, 10000, position);
+        } else if (axis == "Y") {
+            newForm = FormFactory::createForm("RectangleXZ");
+            newForm->initRectangle(-10000, 10000, 0, 0, -10000, 10000, position);
+        } else if (axis == "Z") {
+            newForm = FormFactory::createForm("RectangleXY");
+            newForm->initRectangle(-10000, 10000, -10000, 10000, 0, 0, position);
+        }
     }
 
     if (form.exists("transformations"))
