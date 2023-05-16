@@ -29,8 +29,6 @@ def writeCamera(file):
         "    };\n"
         "    fieldOfView = 40.0;\n"
         "    aperture = 0.0;\n"
-        "    samplesPerPixel = 1024;\n"
-        "    upscale = 1;\n"
         "};\n"
     )
 
