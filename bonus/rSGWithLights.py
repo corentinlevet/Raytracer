@@ -23,9 +23,9 @@ def writeCamera(file):
         "        z = 0;\n"
         "    };\n"
         "    background = {\n"
-        "        r = 0.7;\n"
-        "        g = 0.8;\n"
-        "        b = 1.0;\n"
+        "        r = 0.0;\n"
+        "        g = 0.0;\n"
+        "        b = 0.0;\n"
         "    };\n"
         "    fieldOfView = 20.0;\n"
         "    aperture = 0.1;\n"
@@ -35,49 +35,39 @@ def writeCamera(file):
     )
 
 def main():
-    file = open("scenes/randomScene.cfg", "w")
+    file = open("scenes/randomSceneWithLights.cfg", "w")
     writeCamera(file)
+
     file.write(
         "\n"
         "primitives:\n"
         "{\n"
-        "    spheres = (\n"
+        "    planes = (\n"
         "        {\n"
-        "            name = \"Sphere\";\n"
-        "            x = 0.0;\n"
-        "            y = -1000.0;\n"
-        "            z = 0.0;\n"
-        "            radius = 1000.0;\n"
-        "            color = {\n"
-        "                r = 0.0;\n"
-        "                g = 0.0;\n"
-        "                b = 0.0;\n"
-        "            };\n"
+        "            name = \"Plane\";\n"
+        "            axis = \"Y\";\n"
+        "            position = 0.0;\n"
         "            material = {\n"
         "                type = \"Material\";\n"
         "                name = \"Lambertian\";\n"
-        "                albedo = {\n"
-        "                    r = 0.5;\n"
-        "                    g = 0.5;\n"
-        "                    b = 0.5;\n"
-        "                };\n"
         "                texture = {\n"
-        "                    name = \"Checker\";\n"
+        "                    name = \"SolidColor\";\n"
         "                    properties = {\n"
-        "                        color1 = {\n"
-        "                            r = 0.0;\n"
-        "                            g = 0.0;\n"
-        "                            b = 0.0;\n"
-        "                        };\n"
-        "                        color2 = {\n"
-        "                            r = 1.0;\n"
-        "                            g = 1.0;\n"
-        "                            b = 1.0;\n"
+        "                        color = {\n"
+        "                            r = 0.5;\n"
+        "                            g = 0.5;\n"
+        "                            b = 0.5;\n"
         "                        };\n"
         "                    };\n"
         "                };\n"
         "            };\n"
-        "        },\n"
+        "        }\n"
+        "    );\n"
+        "\n"
+    )
+
+    file.write(
+        "    spheres = (\n"
     )
 
     for a in range(-11, 12, 1):
@@ -86,7 +76,7 @@ def main():
             center = (a + 0.9 * random.uniform(0, 1), 0.2, b + 0.9 * random.uniform(0, 1))
 
             if (center[0] - 4) * (center[0] - 4) + (center[1] - 0.2) * (center[1] - 0.2) + (center[2] - 0) * (center[2] - 0) > 0.9 * 0.9:
-                if chooseMat < 0.8:
+                if chooseMat < 0.7:
                     file.write(
                         "        {\n"
                         "            name = \"Sphere\";\n"
@@ -110,31 +100,6 @@ def main():
                         "            };\n"
                         "        },\n"
                     )
-                elif chooseMat < 0.95:
-                    file.write(
-                        "        {\n"
-                        "            name = \"Sphere\";\n"
-                        "            x = " + "{:.1f}".format(center[0]) + ";\n"
-                        "            y = " + "{:.1f}".format(center[1]) + ";\n"
-                        "            z = " + "{:.1f}".format(center[2]) + ";\n"
-                        "            radius = 0.2;\n"
-                        "            color = {\n"
-                        "                r = 0.0;\n"
-                        "                g = 0.0;\n"
-                        "                b = 0.0;\n"
-                        "            };\n"
-                        "            material = {\n"
-                        "                type = \"Material\";\n"
-                        "                name = \"Metal\";\n"
-                        "                albedo = {\n"
-                        "                    r = " + "{:.1f}".format(random.uniform(0.5, 1)) + ";\n"
-                        "                    g = " + "{:.1f}".format(random.uniform(0.5, 1)) + ";\n"
-                        "                    b = " + "{:.1f}".format(random.uniform(0.5, 1)) + ";\n"
-                        "                };\n"
-                        "                fuzziness = " + "{:.1f}".format(random.uniform(0, 0.5)) + ";\n"
-                        "            };\n"
-                        "        },\n"
-                    )
                 else:
                     file.write(
                         "        {\n"
@@ -149,9 +114,18 @@ def main():
                         "                b = 0.0;\n"
                         "            };\n"
                         "            material = {\n"
-                        "                type = \"Material\";\n"
-                        "                name = \"Dielectric\";\n"
-                        "                refractionIndex = 1.5;\n"
+                        "                type = \"Light\";\n"
+                        "                name = \"Diffuse\";\n"
+                        "                texture = {\n"
+                        "                    name = \"SolidColor\";\n"
+                        "                    properties = {\n"
+                        "                        color = {\n"
+                        "                            r = " + "{:.1f}".format(random.uniform(0, 9)) + ";\n"
+                        "                            g = " + "{:.1f}".format(random.uniform(0, 9)) + ";\n"
+                        "                            b = " + "{:.1f}".format(random.uniform(0, 9)) + ";\n"
+                        "                        };\n"
+                        "                    };\n"
+                        "                };\n"
                         "            };\n"
                         "        },\n"
                     )
@@ -169,9 +143,18 @@ def main():
         "                b = 0.0;\n"
         "            };\n"
         "            material = {\n"
-        "                type = \"Material\";\n"
-        "                name = \"Dielectric\";\n"
-        "                refractionIndex = 1.5;\n"
+        "                type = \"Light\";\n"
+        "                name = \"Diffuse\";\n"
+        "                texture = {\n"
+        "                    name = \"SolidColor\";\n"
+        "                    properties = {\n"
+        "                        color = {\n"
+        "                            r = 7.0;\n"
+        "                            g = 7.0;\n"
+        "                            b = 7.0;\n"
+        "                        };\n"
+        "                    };\n"
+        "                };\n"
         "            };\n"
         "        },\n"
         "        {\n"
